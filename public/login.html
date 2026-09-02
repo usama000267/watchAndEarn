@@ -1,0 +1,370 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login | Watch & Earn</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+    .auth-page {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fbff, #eef4ff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 20px;
+    }
+
+    .auth-box {
+        width: 100%;
+        max-width: 440px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 22px;
+        padding: 35px;
+        box-shadow: 0 25px 60px rgba(15,23,42,.10);
+    }
+
+    .auth-logo {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 22px;
+    }
+
+    .auth-title {
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+    .auth-title h1 {
+        font-size: 28px;
+        margin-bottom: 7px;
+    }
+
+    .auth-title p {
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .form-group {
+        margin-bottom: 17px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 7px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 13px 14px;
+        border: 1px solid #dbe2ea;
+        border-radius: 11px;
+        outline: none;
+        font-size: 14px;
+        transition: .2s;
+    }
+
+    .form-group input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+    }
+
+    .auth-submit {
+        width: 100%;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+
+    .auth-extra {
+        text-align: center;
+        margin-top: 20px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .auth-extra a {
+        color: #2563eb;
+        font-weight: 700;
+    }
+
+    .back-home {
+        display: block;
+        text-align: center;
+        margin-top: 18px;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .password-wrap {
+        position: relative;
+    }
+
+    .password-wrap input {
+        padding-right: 55px;
+    }
+
+    .show-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 0;
+        background: transparent;
+        color: #64748b;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    @media(max-width:500px) {
+
+        .auth-box {
+            padding: 25px 20px;
+        }
+
+    }
+
+</style>
+
+</head><body><div class="auth-page"><div class="auth-box">
+
+
+    <div class="auth-logo">
+
+        <div class="logo-area">
+
+            <div class="logo-icon">W</div>
+
+            <div class="logo-text">
+
+                <strong>
+                    Watch <span>&</span> Earn
+                </strong>
+
+                <small>
+                    Gaming Content Platform
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="auth-title">
+
+        <h1>
+            Welcome Back
+        </h1>
+
+        <p>
+            Login to access your Watch & Earn account.
+        </p>
+
+    </div>
+
+
+    <form id="loginForm">
+
+
+        <div class="form-group">
+
+            <label for="loginEmail">
+                Email / Gmail
+            </label>
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Enter your email"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="loginPassword">
+                Password
+            </label>
+
+
+            <div class="password-wrap">
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+
+
+                <button
+                    type="button"
+                    class="show-password"
+                    onclick="togglePassword('loginPassword', this)"
+                >
+                    Show
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="btn btn-primary auth-submit"
+        >
+            Login
+        </button>
+
+
+    </form>
+
+
+    <div class="auth-extra">
+
+        Don't have an account?
+
+        <a href="register.html">
+            Create Account
+        </a>
+
+    </div>
+
+
+    <a
+        href="index.html"
+        class="back-home"
+    >
+        ← Back to Home
+    </a>
+
+
+</div>
+
+</div><script>
+
+
+function togglePassword(id, button) {
+
+    const input =
+        document.getElementById(id);
+
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        button.textContent = "Hide";
+
+    } else {
+
+        input.type = "password";
+
+        button.textContent = "Show";
+
+    }
+
+}
+
+
+
+document
+.getElementById("loginForm")
+.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+
+    const email =
+        document
+        .getElementById("loginEmail")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("loginPassword")
+        .value;
+
+
+    const button =
+        document.querySelector(".auth-submit");
+
+
+    button.disabled = true;
+
+    button.textContent = "Logging in...";
+
+
+    try {
+
+
+        const response = await fetch(
+            "/api/login",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                credentials: "include",
+
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Invalid email or password."
+            );
+
+        }
+
+
+        alert("Login successful!");
+
+
+       window.location.href = "dashboard.html";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Login error: " +
+            error.message
+        );
+
+
+        button.disabled = false;
+
+        button.textContent = "Login";
+
+    }
+
+});
+
+
+</script></body></html>

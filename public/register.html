@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Watch & Earn</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .auth-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8fbff, #eef4ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .auth-box {
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            padding: 35px;
+            box-shadow: 0 25px 60px rgba(15,23,42,.10);
+        }
+
+        .auth-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 22px;
+        }
+
+        .auth-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .auth-title h1 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .auth-title p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dbe2ea;
+            border-radius: 11px;
+            outline: none;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .form-group input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+        }
+
+        .password-wrap {
+            position: relative;
+        }
+
+        .password-wrap input {
+            padding-right: 55px;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 0;
+            background: transparent;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .terms {
+            display: flex;
+            gap: 9px;
+            align-items: flex-start;
+            margin: 5px 0 20px;
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .terms input {
+            margin-top: 3px;
+        }
+
+        .terms a {
+            color: #2563eb;
+            font-weight: 700;
+        }
+
+        .auth-submit {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .auth-extra {
+            text-align: center;
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .auth-extra a {
+            color: #2563eb;
+            font-weight: 700;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        @media(max-width:550px) {
+
+            .auth-box {
+                padding: 25px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-box">
+
+        <div class="auth-logo">
+
+            <div class="logo-area">
+
+                <div class="logo-icon">W</div>
+
+                <div class="logo-text">
+                    <strong>Watch <span>&</span> Earn</strong>
+                    <small>Gaming Content Platform</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="auth-title">
+
+            <h1>Create Account</h1>
+
+            <p>
+                Join Watch & Earn and manage your account
+                from one dashboard.
+            </p>
+
+        </div>
+
+
+        <form id="registerForm">
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="fullName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        placeholder="Your full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Choose username"
+                        required
+                        minlength="3"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="email">
+                    Gmail / Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="example@gmail.com"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="mobile">
+                    Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="mobile"
+                    placeholder="03XXXXXXXXX"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="password-wrap">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Create password"
+                        required
+                        minlength="8"
+                    >
+
+                    <button
+                        type="button"
+                        class="show-password"
+                        onclick="togglePassword('password', this)"
+                    >
+                        Show
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
+
+                <div class="password-wrap">
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm password"
+                        required
+                        minlength="8"
+                    >
+
+                    <button
+                        type="button"
+                        class="show-password"
+                        onclick="togglePassword('confirmPassword', this)"
+                    >
+                        Show
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <label class="terms">
+
+                <input type="checkbox" id="terms" required>
+
+                <span>
+                    I agree to the
+                    <a href="#">Terms & Conditions</a>
+                    and
+                    <a href="#">Privacy Policy</a>.
+                </span>
+
+            </label>
+
+
+            <button
+                type="submit"
+                class="btn btn-primary auth-submit"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+
+        <div class="auth-extra">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </div>
+
+
+        <a href="index.html" class="back-home">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function togglePassword(id, button) {
+
+    const input = document.getElementById(id);
+
+    if (input.type === "password") {
+        input.type = "text";
+        button.textContent = "Hide";
+    } else {
+        input.type = "password";
+        button.textContent = "Show";
+    }
+
+}
+
+
+document
+.getElementById("registerForm")
+.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const fullName =
+        document.getElementById("fullName").value.trim();
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const mobile =
+        document.getElementById("mobile").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+    const terms =
+        document.getElementById("terms").checked;
+const referral =
+    new URLSearchParams(window.location.search).get("ref") || "";
+
+    if (!terms) {
+        alert("Please accept the Terms & Conditions.");
+        return;
+    }
+
+
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+
+    if (password.length < 8) {
+        alert("Password must be at least 8 characters.");
+        return;
+    }
+
+
+    const submitButton =
+        document.querySelector(".auth-submit");
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Creating Account...";
+
+
+    try {
+
+        const response = await fetch("/api/register", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+    full_name: fullName,
+    username: username,
+    email: email,
+    mobile: mobile,
+    password: password,
+    referral: referral
+})
+
+        });
+
+
+        const data = await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message || "Registration failed."
+            );
+
+        }
+
+
+        alert(
+            "Account created successfully! Please login."
+        );
+
+
+        window.location.href = "login.html";
+
+
+    } catch (error) {
+
+        alert(error.message);
+
+        submitButton.disabled = false;
+        submitButton.textContent = "Create Account";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

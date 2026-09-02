@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Account Activation - Watch & Earn</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#0f172a;
+}
+
+.container{
+    max-width:650px;
+    margin:auto;
+    padding:18px 14px 60px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.logo{
+    font-size:21px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#2563eb;
+}
+
+.back{
+    border:0;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:22px;
+    padding:22px;
+    box-shadow:0 8px 25px rgba(15,23,42,.06);
+}
+
+.header{
+    text-align:center;
+    margin-bottom:22px;
+}
+
+.icon{
+    width:65px;
+    height:65px;
+    margin:0 auto 13px;
+    border-radius:50%;
+    background:#eff6ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:31px;
+}
+
+.header h1{
+    font-size:24px;
+    margin-bottom:7px;
+}
+
+.header p{
+    color:#64748b;
+    font-size:13px;
+    line-height:1.6;
+}
+
+/* PAYMENT SELECT */
+
+.section-title{
+    font-size:16px;
+    font-weight:800;
+    margin-bottom:9px;
+}
+
+.select-box{
+    margin-bottom:20px;
+}
+
+select{
+    width:100%;
+    padding:14px;
+    border:1px solid #cbd5e1;
+    border-radius:11px;
+    background:#fff;
+    color:#0f172a;
+    font-size:14px;
+    font-weight:700;
+    outline:none;
+}
+
+select:focus{
+    border-color:#2563eb;
+}
+
+/* PAYMENT DETAILS */
+
+.payment-details{
+    display:none;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:16px;
+    padding:17px;
+    margin-bottom:20px;
+}
+
+.payment-details.show{
+    display:block;
+}
+
+.method-title{
+    font-size:18px;
+    font-weight:800;
+    margin-bottom:15px;
+    color:#2563eb;
+}
+
+.info-row{
+    padding:11px 0;
+    border-bottom:1px solid #e2e8f0;
+}
+
+.info-row:last-child{
+    border-bottom:0;
+}
+
+.info-label{
+    display:block;
+    color:#64748b;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.info-value{
+    font-size:14px;
+    font-weight:800;
+    word-break:break-all;
+}
+
+.amount-box{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    border-radius:12px;
+    padding:14px;
+    margin-top:14px;
+    text-align:center;
+}
+
+.amount-box small{
+    display:block;
+    color:#64748b;
+    margin-bottom:5px;
+}
+
+.amount-box strong{
+    color:#2563eb;
+    font-size:24px;
+}
+
+.copy-btn{
+    width:100%;
+    border:0;
+    background:#2563eb;
+    color:#fff;
+    padding:11px;
+    border-radius:9px;
+    font-weight:800;
+    cursor:pointer;
+    margin-top:9px;
+}
+
+.copy-btn:active{
+    transform:scale(.98);
+}
+
+/* UPLOAD */
+
+.upload-section{
+    display:none;
+    margin-top:5px;
+}
+
+.upload-section.show{
+    display:block;
+}
+
+.upload-label{
+    display:block;
+    font-size:15px;
+    font-weight:800;
+    margin-bottom:9px;
+}
+
+.upload-box{
+    border:2px dashed #bfdbfe;
+    background:#f8fbff;
+    border-radius:14px;
+    padding:18px;
+    text-align:center;
+    cursor:pointer;
+}
+
+.upload-box input{
+    width:100%;
+    font-size:13px;
+}
+
+.file-name{
+    display:none;
+    margin-top:10px;
+    background:#f0fdf4;
+    color:#15803d;
+    border:1px solid #bbf7d0;
+    padding:10px;
+    border-radius:9px;
+    font-size:12px;
+    font-weight:700;
+    word-break:break-word;
+}
+
+/* REFERENCE */
+
+.reference{
+    margin-top:17px;
+}
+
+.reference label{
+    display:block;
+    font-size:13px;
+    font-weight:800;
+    margin-bottom:7px;
+}
+
+.reference input{
+    width:100%;
+    padding:13px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    outline:none;
+    font-size:14px;
+}
+
+.reference input:focus{
+    border-color:#2563eb;
+}
+
+/* SUBMIT */
+
+.submit-btn{
+    width:100%;
+    border:0;
+    background:#16a34a;
+    color:#fff;
+    padding:14px;
+    border-radius:11px;
+    font-weight:800;
+    font-size:15px;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+.submit-btn:disabled{
+    background:#94a3b8;
+    cursor:not-allowed;
+}
+
+.message{
+    display:none;
+    margin-top:15px;
+    padding:13px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+    line-height:1.5;
+}
+
+.success{
+    display:block;
+    background:#f0fdf4;
+    color:#15803d;
+    border:1px solid #bbf7d0;
+}
+
+.error{
+    display:block;
+    background:#fef2f2;
+    color:#dc2626;
+    border:1px solid #fecaca;
+}
+
+.note{
+    margin-top:15px;
+    padding:12px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    border-radius:10px;
+    color:#9a3412;
+    font-size:12px;
+    line-height:1.6;
+}
+
+@media(max-width:500px){
+
+    .container{
+        padding:12px 10px 50px;
+    }
+
+    .card{
+        padding:17px;
+    }
+
+    .header h1{
+        font-size:22px;
+    }
+
+    .topbar{
+        gap:8px;
+    }
+
+    .logo{
+        font-size:19px;
+    }
+
+    .back{
+        padding:8px 11px;
+        font-size:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+
+        <div class="logo">
+            Watch <span>&</span> Earn
+        </div>
+
+        <button
+            class="back"
+            onclick="window.location.href='dashboard.html'">
+            ← Dashboard
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="header">
+
+            <div class="icon">
+                🔐
+            </div>
+
+            <h1>
+                Account Activation
+            </h1>
+
+            <p>
+                Select your payment method and submit
+                your payment proof to activate your account.
+            </p>
+
+        </div>
+
+
+        <!-- PAYMENT METHOD -->
+
+        <div class="select-box">
+
+            <div class="section-title">
+                Select Payment Method
+            </div>
+
+            <select id="paymentMethod" onchange="showPaymentDetails()">
+
+                <option value="">
+                    Select Payment Method
+                </option>
+
+                <option value="upaisa">
+                    UPaisa
+                </option>
+
+                <option value="bep20">
+                    USDT BEP20
+                </option>
+
+                <option value="trc20">
+                    USDT TRC20
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- UPaisa -->
+
+        <div
+            id="upaisaDetails"
+            class="payment-details">
+
+            <div class="method-title">
+                UPaisa Payment
+            </div>
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Account Holder
+                </span>
+
+                <span class="info-value">
+                    Naseem Bibi
+                </span>
+
+            </div>
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    UPaisa Number
+                </span>
+
+                <span class="info-value">
+                    03499230392
+                </span>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyText('03499230392')">
+                    📋 Copy Number
+                </button>
+
+            </div>
+
+            <div class="amount-box">
+
+                <small>
+                    Payment Amount
+                </small>
+
+                <strong>
+                    Rs. 1,500
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- BEP20 -->
+
+        <div
+            id="bep20Details"
+            class="payment-details">
+
+            <div class="method-title">
+                USDT BEP20
+            </div>
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    BEP20 Wallet Address
+                </span>
+
+                <span class="info-value">
+                    0xa1d82829F53050D25CeD9CFA73350c40b103e1f1
+                </span>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyText('0xa1d82829F53050D25CeD9CFA73350c40b103e1f1')">
+                    📋 Copy Address
+                </button>
+
+            </div>
+
+            <div class="amount-box">
+
+                <small>
+                    Payment Amount
+                </small>
+
+                <strong>
+                    5.30 USDT
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- TRC20 -->
+
+        <div
+            id="trc20Details"
+            class="payment-details">
+
+            <div class="method-title">
+                USDT TRC20
+            </div>
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    TRC20 Wallet Address
+                </span>
+
+                <span class="info-value">
+                    TM9Lwe4DFEfEnVERutnUotMtPt1sTyBL9g
+                </span>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyText('TM9Lwe4DFEfEnVERutnUotMtPt1sTyBL9g')">
+                    📋 Copy Address
+                </button>
+
+            </div>
+
+            <div class="amount-box">
+
+                <small>
+                    Payment Amount
+                </small>
+
+                <strong>
+                    5.50 USDT
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- UPLOAD -->
+
+        <div
+            id="uploadSection"
+            class="upload-section">
+
+            <div class="upload-label">
+                Upload Payment Proof
+            </div>
+
+            <div class="upload-box">
+
+                <input
+                    type="file"
+                    id="paymentProof"
+                    accept="image/*"
+                    onchange="fileSelected()">
+
+                <div style="margin-top:8px;color:#64748b;font-size:12px;">
+                    Select your payment screenshot from gallery
+                </div>
+
+            </div>
+
+            <div
+                id="fileName"
+                class="file-name">
+            </div>
+
+
+            <div class="reference">
+
+                <label for="reference">
+                    Payment Reference / Transaction ID
+                </label>
+
+                <input
+                    type="text"
+                    id="reference"
+                    placeholder="Enter transaction ID">
+
+            </div>
+
+
+            <button
+                id="submitBtn"
+                class="submit-btn"
+                onclick="submitActivation()">
+
+                Submit Activation Request
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="message"
+            class="message">
+        </div>
+
+
+        <div class="note">
+
+            Please make sure the payment method, amount and
+            wallet/number are correct before sending your payment.
+            Your activation request will be reviewed after submission.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function showPaymentDetails(){
+
+    const method =
+        document.getElementById("paymentMethod").value;
+
+    document.getElementById("upaisaDetails")
+        .classList.remove("show");
+
+    document.getElementById("bep20Details")
+        .classList.remove("show");
+
+    document.getElementById("trc20Details")
+        .classList.remove("show");
+
+    document.getElementById("uploadSection")
+        .classList.remove("show");
+
+
+    if(!method){
+        return;
+    }
+
+
+    if(method === "upaisa"){
+
+        document.getElementById("upaisaDetails")
+            .classList.add("show");
+
+    }
+
+
+    if(method === "bep20"){
+
+        document.getElementById("bep20Details")
+            .classList.add("show");
+
+    }
+
+
+    if(method === "trc20"){
+
+        document.getElementById("trc20Details")
+            .classList.add("show");
+
+    }
+
+
+    document.getElementById("uploadSection")
+        .classList.add("show");
+
+}
+
+
+async function copyText(text){
+
+    try{
+
+        await navigator.clipboard.writeText(text);
+
+        alert("Copied successfully.");
+
+    }catch(error){
+
+        const textarea =
+            document.createElement("textarea");
+
+        textarea.value=text;
+
+        document.body.appendChild(textarea);
+
+        textarea.select();
+
+        document.execCommand("copy");
+
+        textarea.remove();
+
+        alert("Copied successfully.");
+
+    }
+
+}
+
+
+function fileSelected(){
+
+    const input =
+        document.getElementById("paymentProof");
+
+    const fileName =
+        document.getElementById("fileName");
+
+
+    if(input.files && input.files.length>0){
+
+        fileName.style.display="block";
+
+        fileName.textContent =
+            "✓ Selected: " +
+            input.files[0].name;
+
+    }else{
+
+        fileName.style.display="none";
+
+    }
+
+}
+
+
+async function submitActivation(){
+
+    const method =
+        document.getElementById("paymentMethod").value;
+
+    const proof =
+        document.getElementById("paymentProof");
+
+    const reference =
+        document.getElementById("reference")
+        .value
+        .trim();
+
+    const button =
+        document.getElementById("submitBtn");
+
+
+    if(!method){
+
+        showMessage(
+            "Please select a payment method.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(!proof.files || proof.files.length===0){
+
+        showMessage(
+            "Please upload your payment proof.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(!reference){
+
+        showMessage(
+            "Please enter your payment transaction ID.",
+            false
+        );
+
+        return;
+    }
+
+
+    button.disabled=true;
+    button.textContent="Submitting...";
+
+
+    try{
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "payment_method",
+            method
+        );
+
+        formData.append(
+            "reference",
+            reference
+        );
+
+        formData.append(
+            "payment_proof",
+            proof.files[0]
+        );
+
+
+        const response =
+            await fetch(
+                "/api/activation/request",
+                {
+                    method:"POST",
+                    credentials:"include",
+                    body:formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            showMessage(
+                data.message ||
+                "Unable to submit activation request.",
+                false
+            );
+
+            button.disabled=false;
+            button.textContent=
+                "Submit Activation Request";
+
+            return;
+        }
+
+
+        showMessage(
+            "✓ Activation request submitted successfully. Please wait for admin review.",
+            true
+        );
+
+        button.disabled=true;
+        button.textContent=
+            "Request Submitted";
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Server error. Please try again.",
+            false
+        );
+
+        button.disabled=false;
+        button.textContent=
+            "Submit Activation Request";
+
+    }
+
+}
+
+
+function showMessage(text,success){
+
+    const message =
+        document.getElementById("message");
+
+    message.className =
+        "message " +
+        (success ? "success" : "error");
+
+    message.textContent=text;
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Referral - Watch & Earn</title><style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#0f172a;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    padding:15px 12px 60px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#2563eb;
+}
+
+.back{
+    border:0;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.referral-card{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    border-radius:22px;
+    padding:24px;
+    margin-bottom:18px;
+    box-shadow:0 10px 25px rgba(37,99,235,.18);
+}
+
+.referral-card small{
+    opacity:.9;
+}
+
+.referral-card h1{
+    margin-top:8px;
+    font-size:30px;
+}
+
+.link-box{
+    background:white;
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:18px;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+.link-box h2{
+    font-size:18px;
+    margin-bottom:7px;
+}
+
+.subtitle{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:13px;
+}
+
+.link-row{
+    display:flex;
+    gap:8px;
+}
+
+#referralLink{
+    flex:1;
+    min-width:0;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    background:#f8fafc;
+    font-size:13px;
+}
+
+.copy-btn{
+    border:0;
+    background:#2563eb;
+    color:white;
+    padding:0 16px;
+    border-radius:10px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.stat{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:17px;
+    padding:18px;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+.stat small{
+    color:#64748b;
+    font-size:12px;
+}
+
+.stat strong{
+    display:block;
+    font-size:22px;
+    margin-top:7px;
+}
+
+.panel{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+.panel h2{
+    font-size:19px;
+    margin-bottom:5px;
+}
+
+.referral-item{
+    padding:14px 0;
+    border-bottom:1px solid #eef2f7;
+}
+
+.referral-item:last-child{
+    border-bottom:0;
+}
+
+.item-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-weight:800;
+}
+
+.item-bottom{
+    color:#64748b;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.earning{
+    color:#16a34a;
+}
+
+.empty{
+    text-align:center;
+    padding:30px 10px;
+    color:#64748b;
+}
+
+.loading{
+    text-align:center;
+    padding:30px;
+    color:#64748b;
+}
+
+.message{
+    display:none;
+    margin-top:10px;
+    padding:10px;
+    border-radius:9px;
+    background:#f0fdf4;
+    color:#15803d;
+    font-size:12px;
+    font-weight:700;
+}
+
+@media(max-width:500px){
+
+    .container{
+        padding:14px 11px 50px;
+    }
+
+    .link-row{
+        flex-direction:column;
+    }
+
+    .copy-btn{
+        padding:12px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .panel{
+        padding:17px;
+    }
+}
+</style></head><body><div class="container"><div class="topbar">
+
+    <div class="logo">
+        Watch <span>&</span> Earn
+    </div>
+
+    <button
+        class="back"
+        onclick="window.location.href='dashboard.html'">
+        ← Dashboard
+    </button>
+
+</div>
+
+
+<div class="referral-card">
+
+    <small>
+        Total Referral Earnings
+    </small>
+
+    <h1 id="totalReferralEarnings">
+        Rs. 0.00
+    </h1>
+
+</div>
+
+
+<div class="link-box">
+
+    <h2>
+        🔗 Your Referral Link
+    </h2>
+
+    <div class="subtitle">
+        Share this link with your friends.
+    </div>
+
+    <div class="link-row">
+
+        <input
+            type="text"
+            id="referralLink"
+            readonly
+            value="Loading...">
+
+        <button
+            class="copy-btn"
+            onclick="copyReferralLink()">
+            Copy
+        </button>
+
+    </div>
+
+    <div
+        id="copyMessage"
+        class="message">
+        Referral link copied.
+    </div>
+
+</div>
+
+
+<div class="stats">
+
+    <div class="stat">
+
+        <small>
+            Total Referrals
+        </small>
+
+        <strong id="totalReferrals">
+            0
+        </strong>
+
+    </div>
+
+
+    <div class="stat">
+
+        <small>
+            Signup Bonus
+        </small>
+
+        <strong>
+            Rs. 500
+        </strong>
+
+    </div>
+
+</div>
+
+
+<div class="panel">
+
+    <h2>
+        Referral History
+    </h2>
+
+    <div class="subtitle">
+        Your referral bonuses and commission earnings
+    </div>
+
+    <div id="referralHistory">
+
+        <div class="loading">
+            Loading referral history...
+        </div>
+
+    </div>
+
+</div>
+
+</div><script>
+
+let referralLink = "";
+
+
+/* ================= LOAD REFERRAL ================= */
+
+async function loadReferral(){
+
+    const history =
+        document.getElementById(
+            "referralHistory"
+        );
+
+    try{
+
+        /*
+         * Referral API will be connected
+         * in server.js next.
+         */
+
+        const response =
+            await fetch(
+                "/api/referrals",
+                {
+                    credentials:"include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            history.innerHTML=`
+                <div class="empty">
+                    Unable to load referral information.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        referralLink =
+            data.referral_link || "";
+
+
+        document.getElementById(
+            "referralLink"
+        ).value =
+            referralLink || "Referral link unavailable";
+
+
+        document.getElementById(
+            "totalReferrals"
+        ).textContent =
+            Number(
+                data.total_referrals || 0
+            );
+
+
+        document.getElementById(
+            "totalReferralEarnings"
+        ).textContent =
+            "Rs. " +
+            Number(
+                data.total_earnings || 0
+            ).toFixed(2);
+
+
+        const records =
+            data.history || [];
+
+
+        if(records.length === 0){
+
+            history.innerHTML=`
+                <div class="empty">
+                    No referral earnings yet.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        history.innerHTML =
+            records.map(item => {
+
+                const amount =
+                    Number(
+                        item.amount || 0
+                    );
+
+
+                return `
+
+                    <div class="referral-item">
+
+                        <div class="item-top">
+
+                            <span>
+                                ${item.description || "Referral Earning"}
+                            </span>
+
+                            <span class="earning">
+                                + Rs. ${amount.toFixed(2)}
+                            </span>
+
+                        </div>
+
+                        <div class="item-bottom">
+
+                            ${
+                                item.created_at
+                                ? formatDate(
+                                    item.created_at
+                                  )
+                                : ""
+                            }
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+
+    }catch(error){
+
+        console.error(
+            "REFERRAL ERROR:",
+            error
+        );
+
+        history.innerHTML=`
+            <div class="empty">
+                Unable to load referral information.
+            </div>
+        `;
+    }
+
+}
+
+
+/* ================= COPY ================= */
+
+function copyReferralLink(){
+
+    const input =
+        document.getElementById(
+            "referralLink"
+        );
+
+    if(!input.value ||
+       input.value === "Loading..." ||
+       input.value === "Referral link unavailable"){
+
+        return;
+    }
+
+
+    navigator.clipboard.writeText(
+        input.value
+    )
+    .then(()=>{
+
+        const message =
+            document.getElementById(
+                "copyMessage"
+            );
+
+        message.style.display="block";
+
+        setTimeout(()=>{
+            message.style.display="none";
+        },2000);
+
+    })
+    .catch(()=>{
+
+        input.select();
+        document.execCommand("copy");
+
+        alert("Referral link copied.");
+
+    });
+
+}
+
+
+/* ================= DATE ================= */
+
+function formatDate(date){
+
+    if(!date){
+        return "";
+    }
+
+    try{
+
+        return new Date(
+            String(date).replace(" ","T")+"Z"
+        ).toLocaleString();
+
+    }catch(error){
+
+        return date;
+    }
+
+}
+
+
+/* ================= START ================= */
+
+loadReferral();
+
+</script></body>
+</html>

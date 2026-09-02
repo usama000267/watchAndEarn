@@ -1,0 +1,492 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earnings - Watch & Earn</title><style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#0f172a;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    padding:15px 12px 60px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#2563eb;
+}
+
+.back{
+    border:0;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.total-card{
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:white;
+    border-radius:22px;
+    padding:24px;
+    margin-bottom:18px;
+    box-shadow:0 10px 25px rgba(22,163,74,.18);
+}
+
+.total-card small{
+    opacity:.9;
+}
+
+.total-card h1{
+    margin-top:8px;
+    font-size:32px;
+}
+
+.panel{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+.panel h2{
+    font-size:19px;
+    margin-bottom:5px;
+}
+
+.subtitle{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:18px;
+}
+
+.date-card{
+    border:1px solid #e2e8f0;
+    border-radius:15px;
+    margin-bottom:12px;
+    overflow:hidden;
+}
+
+.date-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:14px;
+    background:#f8fafc;
+}
+
+.date-title{
+    font-weight:800;
+}
+
+.date-total{
+    color:#16a34a;
+    font-weight:800;
+}
+
+.earning-item{
+    padding:13px 14px;
+    border-top:1px solid #eef2f7;
+}
+
+.earning-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-weight:700;
+}
+
+.earning-amount{
+    color:#16a34a;
+}
+
+.earning-bottom{
+    color:#64748b;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.empty{
+    text-align:center;
+    padding:35px 10px;
+    color:#64748b;
+}
+
+.loading{
+    text-align:center;
+    padding:30px;
+    color:#64748b;
+}
+
+@media(max-width:500px){
+
+    .container{
+        padding:14px 11px 50px;
+    }
+
+    .total-card{
+        padding:21px;
+    }
+
+    .total-card h1{
+        font-size:28px;
+    }
+
+    .panel{
+        padding:16px;
+    }
+
+    .date-header{
+        align-items:flex-start;
+    }
+
+    .earning-top{
+        font-size:14px;
+    }
+}
+</style></head><body><div class="container"><div class="topbar">
+
+    <div class="logo">
+        Watch <span>&</span> Earn
+    </div>
+
+    <button
+        class="back"
+        onclick="window.location.href='dashboard.html'">
+        ← Dashboard
+    </button>
+
+</div>
+
+
+<div class="total-card">
+
+    <small>
+        Total Earnings
+    </small>
+
+    <h1 id="totalEarnings">
+        Rs. 0.00
+    </h1>
+
+</div>
+
+
+<div class="panel">
+
+    <h2>
+        Earning History
+    </h2>
+
+    <div class="subtitle">
+        Your complete daily earning record
+    </div>
+
+    <div id="earningList">
+
+        <div class="loading">
+            Loading earnings...
+        </div>
+
+    </div>
+
+</div>
+
+</div><script>
+
+async function loadEarnings(){
+
+    const list =
+        document.getElementById("earningList");
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/history",
+                {
+                    credentials:"include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            list.innerHTML=`
+                <div class="empty">
+                    Unable to load earning history.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const earnings =
+            (data.transactions || [])
+            .filter(item =>
+                item.type === "earning"
+            );
+
+
+        if(earnings.length === 0){
+
+            document.getElementById(
+                "totalEarnings"
+            ).textContent="Rs. 0.00";
+
+            list.innerHTML=`
+                <div class="empty">
+                    No earnings yet.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        /* ================= TOTAL ================= */
+
+        const total =
+            earnings.reduce(
+                (sum,item) =>
+                    sum + Number(item.amount || 0),
+                0
+            );
+
+
+        document.getElementById(
+            "totalEarnings"
+        ).textContent =
+            "Rs. " + total.toFixed(2);
+
+
+        /* ================= GROUP BY DATE ================= */
+
+        const grouped = {};
+
+
+        earnings.forEach(item => {
+
+            const date =
+                getDate(item.created_at);
+
+            if(!grouped[date]){
+                grouped[date] = [];
+            }
+
+            grouped[date].push(item);
+
+        });
+
+
+        /* ================= DISPLAY ================= */
+
+        list.innerHTML =
+            Object.keys(grouped)
+            .map(date => {
+
+                const dayEarnings =
+                    grouped[date];
+
+
+                const dayTotal =
+                    dayEarnings.reduce(
+                        (sum,item) =>
+                            sum + Number(item.amount || 0),
+                        0
+                    );
+
+
+                return `
+
+                    <div class="date-card">
+
+                        <div class="date-header">
+
+                            <div class="date-title">
+                                📅 ${formatDateOnly(date)}
+                            </div>
+
+                            <div class="date-total">
+                                + Rs. ${dayTotal.toFixed(2)}
+                            </div>
+
+                        </div>
+
+
+                        ${
+                            dayEarnings
+                            .map(item => {
+
+                                const amount =
+                                    Number(
+                                        item.amount || 0
+                                    );
+
+
+                                return `
+
+                                    <div class="earning-item">
+
+                                        <div class="earning-top">
+
+                                            <span>
+                                                🎬 ${item.description || "Video Earning"}
+                                            </span>
+
+                                            <span class="earning-amount">
+                                                + Rs. ${amount.toFixed(2)}
+                                            </span>
+
+                                        </div>
+
+                                        <div class="earning-bottom">
+
+                                            ${
+                                                item.created_at
+                                                ? formatDateTime(
+                                                    item.created_at
+                                                  )
+                                                : ""
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                `;
+
+                            })
+                            .join("")
+                        }
+
+                    </div>
+
+                `;
+
+            })
+            .join("");
+
+
+    }catch(error){
+
+        console.error(
+            "EARNING HISTORY ERROR:",
+            error
+        );
+
+        list.innerHTML=`
+            <div class="empty">
+                Unable to load earning history.
+            </div>
+        `;
+    }
+
+}
+
+
+/* ================= DATE KEY ================= */
+
+function getDate(date){
+
+    if(!date){
+        return "Unknown Date";
+    }
+
+    return String(date)
+        .substring(0,10);
+}
+
+
+/* ================= DATE DISPLAY ================= */
+
+function formatDateOnly(date){
+
+    if(!date || date === "Unknown Date"){
+        return date;
+    }
+
+    try{
+
+        const parts =
+            date.split("-");
+
+        if(parts.length === 3){
+
+            return (
+                parts[2] +
+                "-" +
+                parts[1] +
+                "-" +
+                parts[0]
+            );
+
+        }
+
+        return date;
+
+    }catch(error){
+
+        return date;
+    }
+
+}
+
+
+/* ================= DATE + TIME ================= */
+
+function formatDateTime(date){
+
+    if(!date){
+        return "";
+    }
+
+    try{
+
+        return new Date(
+            String(date).replace(" ","T")+"Z"
+        ).toLocaleString();
+
+    }catch(error){
+
+        return date;
+    }
+
+}
+
+
+/* ================= START ================= */
+
+loadEarnings();
+
+</script></body>
+</html>

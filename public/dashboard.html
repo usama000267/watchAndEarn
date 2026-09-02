@@ -1,0 +1,1635 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Watch & Earn Dashboard</title><style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#f5f7fb;
+    color:#0f172a;
+    font-family:Arial,sans-serif;
+}
+
+.dashboard{
+    max-width:1150px;
+    margin:auto;
+    padding:20px 15px 70px;
+}
+
+.top-actions{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    gap:15px;
+}
+
+.brand{
+    font-size:22px;
+    font-weight:800;
+}
+
+.brand span{
+    color:#2563eb;
+}
+
+.logout-btn,
+.back-btn{
+    border:0;
+    padding:10px 17px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.logout-btn{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.back-btn{
+    background:#eff6ff;
+    color:#2563eb;
+}
+
+.dashboard-header{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    padding:28px;
+    border-radius:22px;
+    margin-bottom:20px;
+}
+
+.dashboard-header h1{
+    margin:0 0 7px;
+    font-size:28px;
+}
+
+.dashboard-header p{
+    margin:0;
+    opacity:.9;
+    font-size:14px;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.stat-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:17px;
+    padding:20px;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+.stat-icon{
+    font-size:25px;
+    margin-bottom:10px;
+}
+
+.stat-card small{
+    display:block;
+    color:#64748b;
+    margin-bottom:6px;
+}
+
+.stat-card strong{
+    font-size:21px;
+}
+
+.content-grid{
+    display:grid;
+    grid-template-columns:1.4fr .8fr;
+    gap:20px;
+}
+
+.panel{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:22px;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+.panel h2{
+    margin:0 0 7px;
+    font-size:19px;
+}
+
+.panel-subtitle{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:20px;
+}
+
+.user-row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:13px 0;
+    border-bottom:1px solid #eef2f7;
+}
+
+.user-row span{
+    color:#64748b;
+    font-size:13px;
+}
+
+.user-row strong{
+    font-size:13px;
+    text-align:right;
+    word-break:break-word;
+}
+
+.status-active{
+    color:#16a34a!important;
+}
+
+.status-inactive{
+    color:#dc2626!important;
+}
+
+.action-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.action-btn{
+    display:block;
+    width:100%;
+    border:0;
+    text-decoration:none;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:14px;
+    border-radius:11px;
+    text-align:center;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.action-btn:hover{
+    background:#dbeafe;
+}
+
+.activate-btn{
+    display:block;
+    width:100%;
+    margin-top:14px;
+    border:0;
+    background:#f97316;
+    color:white;
+    padding:14px;
+    border-radius:11px;
+    text-align:center;
+    font-weight:800;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.activate-btn:hover{
+    background:#ea580c;
+}
+
+.activation-box{
+    margin-top:20px;
+    padding:16px;
+    border-radius:14px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+}
+
+.activation-box h3{
+    margin:0 0 7px;
+    color:#c2410c;
+    font-size:15px;
+}
+
+.activation-box p{
+    margin:0;
+    color:#9a3412;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.activation-active{
+    background:#f0fdf4;
+    border-color:#bbf7d0;
+}
+
+.activation-active h3,
+.activation-active p{
+    color:#15803d;
+}
+
+.task-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:17px;
+    padding:18px;
+    margin-bottom:13px;
+}
+
+.task-card h3{
+    margin:0 0 9px;
+    font-size:17px;
+}
+
+.task-info{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:14px;
+}
+
+.watch-btn,
+.claim-btn{
+    width:100%;
+    border:0;
+    padding:13px;
+    border-radius:11px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.watch-btn{
+    background:#2563eb;
+    color:white;
+}
+
+.watch-btn:disabled,
+.claim-btn:disabled{
+    background:#94a3b8;
+    cursor:not-allowed;
+}
+
+.claim-btn{
+    background:#16a34a;
+    color:white;
+    margin-top:10px;
+}
+
+.timer-box{
+    display:none;
+    margin-top:12px;
+    padding:13px;
+    border-radius:11px;
+    background:#eff6ff;
+    color:#1d4ed8;
+    text-align:center;
+    font-weight:700;
+}
+
+.video-box{
+    display:none;
+    margin-top:15px;
+}
+
+.video-box iframe{
+    width:100%;
+    height:315px;
+    border:0;
+    border-radius:13px;
+}
+
+.claim-area{
+    display:none;
+    margin-top:12px;
+}
+
+.success-message{
+    display:none;
+    margin-top:10px;
+    padding:12px;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#15803d;
+    font-size:13px;
+    font-weight:700;
+}
+
+.loading{
+    text-align:center;
+    padding:70px 20px;
+    color:#64748b;
+}
+
+.empty-box{
+    text-align:center;
+    padding:35px 15px;
+    color:#64748b;
+}
+
+@media(max-width:850px){
+
+    .stats-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .content-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:500px){
+
+    .dashboard{
+        padding:15px 12px 60px;
+    }
+
+    .dashboard-header{
+        padding:22px;
+    }
+
+    .dashboard-header h1{
+        font-size:23px;
+    }
+
+    .stat-card{
+        padding:15px;
+    }
+
+    .stat-card strong{
+        font-size:18px;
+    }
+
+    .panel{
+        padding:17px;
+    }
+
+    .action-grid{
+        grid-template-columns:1fr;
+    }
+
+    .video-box iframe{
+        height:220px;
+    }
+
+    .user-row{
+        flex-direction:column;
+        gap:4px;
+    }
+
+    .user-row strong{
+        text-align:left;
+    }
+}
+</style></head><body><div id="app">
+    <div class="loading">
+        Loading your account...
+    </div>
+</div><script>
+
+let currentUser = null;
+
+
+/* ================= LOAD DASHBOARD ================= */
+
+async function loadPage(){
+
+    try{
+
+        const response = await fetch("/api/me",{
+            method:"GET",
+            credentials:"include"
+        });
+
+        const data = await response.json();
+
+        if(response.ok && data.success && data.user){
+
+            currentUser = data.user;
+
+            showDashboard(data.user);
+
+        }else{
+
+            window.location.href="login.html";
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        document.getElementById("app").innerHTML=`
+
+            <div class="dashboard">
+
+                <div class="panel">
+
+                    <h2>Unable to load dashboard</h2>
+
+                    <p class="panel-subtitle">
+                        Please make sure the server is running.
+                    </p>
+
+                    <button
+                        class="action-btn"
+                        onclick="loadPage()">
+                        Try Again
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+    }
+}
+
+
+/* ================= DASHBOARD ================= */
+
+function showDashboard(user){
+
+    const balance =
+        Number(user.wallet_balance || 0).toFixed(2);
+
+    const active =
+        user.activation_status === "active";
+
+
+    document.getElementById("app").innerHTML=`
+
+        <div class="dashboard">
+
+            <div class="top-actions">
+
+                <div class="brand">
+                    Watch <span>&</span> Earn
+                </div>
+
+                <button
+                    class="logout-btn"
+                    onclick="logoutUser()">
+                    Logout
+                </button>
+
+            </div>
+
+
+            <div class="dashboard-header">
+
+                <h1>
+                    Welcome, ${escapeHTML(user.full_name)}
+                </h1>
+
+                <p>
+                    Your Watch & Earn account dashboard
+                </p>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">💰</div>
+
+                    <small>
+                        Wallet Balance
+                    </small>
+
+                    <strong id="walletBalance">
+                        Rs. ${balance}
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">🎬</div>
+
+                    <small>
+                        Today's Tasks
+                    </small>
+
+                    <strong id="taskCount">
+                        ...
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">📈</div>
+
+                    <small>
+                        Today's Earning
+                    </small>
+
+                    <strong id="todayEarning">
+                        Rs. 0.00
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ${active ? "✅" : "🔒"}
+                    </div>
+
+                    <small>
+                        Account Status
+                    </small>
+
+                    <strong class="${active ? "status-active" : "status-inactive"}">
+                        ${active ? "Active" : "Inactive"}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="content-grid">
+
+
+                <!-- ACCOUNT INFORMATION -->
+
+                <div class="panel">
+
+                    <h2>
+                        Account Information
+                    </h2>
+
+                    <div class="panel-subtitle">
+                        Your registered account details
+                    </div>
+
+
+                    <div class="user-row">
+                        <span>Full Name</span>
+
+                        <strong>
+                            ${escapeHTML(user.full_name)}
+                        </strong>
+                    </div>
+
+
+                    <div class="user-row">
+                        <span>Username</span>
+
+                        <strong>
+                            ${escapeHTML(user.username)}
+                        </strong>
+                    </div>
+
+
+                    <div class="user-row">
+                        <span>Email</span>
+
+                        <strong>
+                            ${escapeHTML(user.email)}
+                        </strong>
+                    </div>
+
+
+                    <div class="user-row">
+                        <span>Mobile</span>
+
+                        <strong>
+                            ${escapeHTML(user.mobile)}
+                        </strong>
+                    </div>
+
+
+                    <div class="user-row">
+
+                        <span>
+                            Account Status
+                        </span>
+
+                        <strong class="${active ? "status-active" : "status-inactive"}">
+                            ${active ? "Active" : "Inactive"}
+                        </strong>
+
+                    </div>
+
+
+                    ${
+                        active
+
+                        ?
+
+                        `
+                        <div class="activation-box activation-active">
+
+                            <h3>
+                                ✓ Account Activated
+                            </h3>
+
+                            <p>
+                                Your account is active.
+                                You can complete available video tasks.
+                            </p>
+
+                        </div>
+                        `
+
+                        :
+
+                        `
+                        <div class="activation-box">
+
+                            <h3>
+                                🔒 Account Not Activated
+                            </h3>
+
+                            <p>
+                                Your account is currently inactive.
+                                Activate your account before completing
+                                earning activities.
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="activation.html"
+                            class="activate-btn">
+                            🔐 Activate Account
+                        </a>
+                        `
+                    }
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="panel">
+
+                    <h2>
+                        Quick Actions
+                    </h2>
+
+                    <div class="panel-subtitle">
+                        Manage your account
+                    </div>
+
+
+                    <div class="action-grid">
+
+                        <button
+                            class="action-btn"
+                            onclick="openTasks()">
+                            🎬 Watch Tasks
+                        </button>
+
+
+                        <a
+                            href="wallet.html"
+                            class="action-btn">
+                            💰 Wallet
+                        </a>
+
+
+                        <a
+                            href="earnings.html"
+                            class="action-btn">
+                            📊 Earnings
+                        </a>
+
+
+                        <a
+                            href="history.html"
+                            class="action-btn">
+                            📚 History
+                        </a>
+
+
+                        <a
+                            href="withdraw.html"
+                            class="action-btn">
+                            💸 Withdraw
+                        </a>
+
+
+                        <a
+                            href="referral.html"
+                            class="action-btn">
+                            🔗 Referral
+                        </a>
+
+
+                        <a
+                            href="support.html"
+                            class="action-btn">
+                            🎧 Support
+                        </a>
+<a
+    href="how-to-work.html"
+    class="action-btn">
+    📖 How To Work?
+</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+
+    loadTaskCount();
+    loadTodayEarning();
+}
+
+
+/* ================= TASK COUNT ================= */
+
+async function loadTaskCount(){
+
+    try{
+
+        const response =
+            await fetch("/api/tasks",{
+                credentials:"include"
+            });
+
+        const data =
+            await response.json();
+
+        const element =
+            document.getElementById("taskCount");
+
+        if(element){
+
+            element.textContent =
+                data.success && data.tasks
+                ? data.tasks.length
+                : "0";
+        }
+
+    }catch(error){
+
+        const element =
+            document.getElementById("taskCount");
+
+        if(element){
+            element.textContent="0";
+        }
+    }
+}
+
+
+/* ================= TODAY EARNING ================= */
+
+async function loadTodayEarning(){
+
+    try{
+
+        const response =
+            await fetch("/api/history",{
+                credentials:"include"
+            });
+
+        const data =
+            await response.json();
+
+        if(!response.ok || !data.success){
+            return;
+        }
+
+
+        let total = 0;
+
+
+        const today =
+            new Date().toISOString().slice(0,10);
+
+
+        data.transactions.forEach(transaction=>{
+
+            if(
+                transaction.type === "earning" &&
+                Number(transaction.amount) > 0
+            ){
+
+                const transactionDate =
+                    String(
+                        transaction.created_at ||
+                        transaction.date ||
+                        ""
+                    ).slice(0,10);
+
+
+                if(transactionDate === today){
+
+                    total += Number(transaction.amount);
+
+                }
+            }
+
+        });
+
+
+        const element =
+            document.getElementById("todayEarning");
+
+
+        if(element){
+
+            element.textContent =
+                "Rs. " + total.toFixed(2);
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Today earning error:",
+            error
+        );
+    }
+}
+
+
+/* ================= OPEN TASKS ================= */
+
+async function openTasks(){
+
+    try{
+
+        const response =
+            await fetch("/api/tasks",{
+                credentials:"include"
+            });
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            alert(
+                data.message ||
+                "Unable to load tasks."
+            );
+
+            return;
+        }
+
+
+        if(!data.tasks || data.tasks.length === 0){
+
+            document.getElementById("app").innerHTML=`
+
+                <div class="dashboard">
+
+                    <div class="top-actions">
+
+                        <div class="brand">
+                            Watch <span>&</span> Earn
+                        </div>
+
+                        <button
+                            class="back-btn"
+                            onclick="loadPage()">
+                            ← Dashboard
+                        </button>
+
+                    </div>
+
+
+                    <div class="panel">
+
+                        <h2>
+                            🎬 Today's Video Tasks
+                        </h2>
+
+                        <div class="panel-subtitle">
+                            Complete available videos and claim your rewards.
+                        </div>
+
+
+                        <div class="empty-box">
+
+                            <h3>
+                                No Tasks Available
+                            </h3>
+
+                            <p>
+                                Admin ne abhi koi video task add nahi kiya.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const tasksHTML =
+            data.tasks
+            .map(task => createTaskHTML(task))
+            .join("");
+
+
+        document.getElementById("app").innerHTML=`
+
+            <div class="dashboard">
+
+                <div class="top-actions">
+
+                    <div class="brand">
+                        Watch <span>&</span> Earn
+                    </div>
+
+                    <button
+                        class="back-btn"
+                        onclick="loadPage()">
+                        ← Dashboard
+                    </button>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <h2>
+                        🎬 Today's Video Tasks
+                    </h2>
+
+                    <div class="panel-subtitle">
+                        Watch the required duration, then claim your reward.
+                    </div>
+
+
+                    ${tasksHTML}
+
+                </div>
+
+            </div>
+        `;
+
+
+        checkCompletedTasks(data.tasks);
+
+    }catch(error){
+
+        console.error(
+            "Tasks error:",
+            error
+        );
+
+        alert(
+            "Unable to load video tasks."
+        );
+    }
+}
+
+
+/* ================= TASK HTML ================= */
+
+function createTaskHTML(task){
+
+    return `
+
+        <div
+            class="task-card"
+            id="task-card-${task.id}">
+
+            <h3>
+                🎬 ${escapeHTML(task.title)}
+            </h3>
+
+
+            <div class="task-info">
+
+                Reward:
+                <strong>
+                    Rs. ${Number(task.reward).toFixed(2)}
+                </strong>
+
+                &nbsp; | &nbsp;
+
+                Duration:
+                <strong>
+                    ${Number(task.duration_minutes)} minute(s)
+                </strong>
+
+            </div>
+
+
+            <button
+                class="watch-btn"
+                id="watch-${task.id}"
+                onclick="watchTask(
+                    '${encodeURIComponent(task.youtube_url)}',
+                    ${task.id},
+                    ${Number(task.duration_minutes)},
+                    ${Number(task.reward)}
+                )">
+
+                ▶ Watch Video
+
+            </button>
+
+
+            <div
+                class="timer-box"
+                id="timer-${task.id}">
+
+                ⏱️ Please watch:
+                <span id="timer-text-${task.id}">
+                    ${Number(task.duration_minutes)}:00
+                </span>
+
+            </div>
+
+
+            <div
+                class="video-box"
+                id="video-${task.id}">
+            </div>
+
+
+            <div
+                class="claim-area"
+                id="claim-area-${task.id}">
+
+                <button
+                    class="claim-btn"
+                    id="claim-${task.id}"
+                    onclick="claimReward(${task.id})"
+                    disabled>
+
+                    🔒 Claim Reward
+
+                </button>
+
+            </div>
+
+
+            <div
+                class="success-message"
+                id="success-${task.id}">
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ================= WATCH TASK ================= */
+
+async function watchTask(
+    encodedURL,
+    taskId,
+    durationMinutes,
+    reward
+){
+
+    const watchButton =
+        document.getElementById(
+            "watch-"+taskId
+        );
+
+    if(!watchButton){
+        return;
+    }
+
+
+    watchButton.disabled=true;
+    watchButton.textContent="Starting...";
+
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/tasks/"+taskId+"/start",
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    credentials:"include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            watchButton.disabled=false;
+
+            watchButton.textContent=
+                "▶ Watch Video";
+
+            alert(
+                data.message ||
+                "Unable to start video."
+            );
+
+            return;
+        }
+
+
+        const youtubeURL =
+            decodeURIComponent(encodedURL);
+
+
+        const embedURL =
+            getYouTubeEmbedURL(youtubeURL);
+
+
+        const videoBox =
+            document.getElementById(
+                "video-"+taskId
+            );
+
+
+        if(videoBox){
+
+            videoBox.style.display="block";
+
+            videoBox.innerHTML=`
+
+                <iframe
+                    src="${embedURL}"
+                    title="Watch Video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            `;
+        }
+
+
+        const timerBox =
+            document.getElementById(
+                "timer-"+taskId
+            );
+
+        const timerText =
+            document.getElementById(
+                "timer-text-"+taskId
+            );
+
+        const claimArea =
+            document.getElementById(
+                "claim-area-"+taskId
+            );
+
+        const claimButton =
+            document.getElementById(
+                "claim-"+taskId
+            );
+
+
+        if(timerBox){
+            timerBox.style.display="block";
+        }
+
+        if(claimArea){
+            claimArea.style.display="block";
+        }
+
+
+        let remaining =
+            Number(data.remaining_seconds);
+
+
+        if(!remaining || remaining < 1){
+
+            remaining =
+                Number(durationMinutes) * 60;
+        }
+
+
+        watchButton.textContent=
+            "▶ Video Started";
+
+
+        const timer =
+            setInterval(()=>{
+
+                remaining--;
+
+
+                if(timerText){
+
+                    const minutes =
+                        Math.floor(remaining/60);
+
+                    const seconds =
+                        remaining%60;
+
+
+                    timerText.textContent =
+                        minutes +
+                        ":" +
+                        String(seconds)
+                        .padStart(2,"0");
+                }
+
+
+                if(remaining <= 0){
+
+                    clearInterval(timer);
+
+
+                    if(timerText){
+
+                        timerText.textContent =
+                            "Completed ✓";
+                    }
+
+
+                    if(claimButton){
+
+                        claimButton.disabled=false;
+
+                        claimButton.textContent =
+                            "💰 Claim Rs. " +
+                            Number(reward).toFixed(2);
+                    }
+
+
+                    if(timerBox){
+
+                        timerBox.style.background=
+                            "#f0fdf4";
+
+                        timerBox.style.color=
+                            "#15803d";
+                    }
+
+                }
+
+            },1000);
+
+
+    }catch(error){
+
+        console.error(
+            "Start video error:",
+            error
+        );
+
+
+        watchButton.disabled=false;
+
+        watchButton.textContent=
+            "▶ Watch Video";
+
+
+        alert(
+            "Unable to start video. Please try again."
+        );
+    }
+}
+
+
+/* ================= CLAIM REWARD ================= */
+
+async function claimReward(taskId){
+
+    const claimButton =
+        document.getElementById(
+            "claim-"+taskId
+        );
+
+
+    if(!claimButton){
+        return;
+    }
+
+
+    claimButton.disabled=true;
+    claimButton.textContent="Claiming...";
+
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/tasks/"+taskId+"/claim",
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    credentials:"include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            claimButton.disabled=false;
+
+            alert(
+                data.message ||
+                "Unable to claim reward."
+            );
+
+            return;
+        }
+
+
+        const walletElement =
+            document.getElementById(
+                "walletBalance"
+            );
+
+
+        if(walletElement){
+
+            walletElement.textContent =
+                "Rs. " +
+                Number(
+                    data.wallet_balance
+                ).toFixed(2);
+        }
+
+
+        claimButton.disabled=true;
+
+        claimButton.textContent=
+            "✅ Reward Claimed";
+
+
+        const successElement =
+            document.getElementById(
+                "success-"+taskId
+            );
+
+
+        if(successElement){
+
+            successElement.style.display="block";
+
+            successElement.textContent =
+                "🎉 Congratulations! Rs. " +
+                Number(data.reward).toFixed(2) +
+                " has been added to your wallet.";
+        }
+
+
+        const watchButton =
+            document.getElementById(
+                "watch-"+taskId
+            );
+
+
+        if(watchButton){
+
+            watchButton.disabled=true;
+
+            watchButton.textContent=
+                "✅ Completed";
+        }
+
+
+        loadTodayEarning();
+
+    }catch(error){
+
+        console.error(
+            "Claim reward error:",
+            error
+        );
+
+
+        claimButton.disabled=false;
+
+        claimButton.textContent=
+            "💰 Claim Reward";
+
+
+        alert(
+            "Unable to claim reward. Please try again."
+        );
+    }
+}
+
+
+/* ================= CHECK COMPLETED TASKS ================= */
+
+async function checkCompletedTasks(tasks){
+
+    for(const task of tasks){
+
+        try{
+
+            const response =
+                await fetch(
+                    "/api/tasks/"+task.id+"/status",
+                    {
+                        credentials:"include"
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if(!response.ok || !data.success){
+                continue;
+            }
+
+
+            const watchButton =
+                document.getElementById(
+                    "watch-"+task.id
+                );
+
+
+            if(data.status === "claimed"){
+
+                if(watchButton){
+
+                    watchButton.disabled=true;
+
+                    watchButton.textContent=
+                        "✅ Completed";
+                }
+
+
+                const claimArea =
+                    document.getElementById(
+                        "claim-area-"+task.id
+                    );
+
+
+                if(claimArea){
+                    claimArea.style.display="block";
+                }
+
+
+                const claimButton =
+                    document.getElementById(
+                        "claim-"+task.id
+                    );
+
+
+                if(claimButton){
+
+                    claimButton.disabled=true;
+
+                    claimButton.textContent=
+                        "✅ Reward Claimed";
+                }
+            }
+
+        }catch(error){
+
+            console.error(
+                "Task status error:",
+                error
+            );
+        }
+    }
+}
+/* ================= YOUTUBE ================= */
+
+function getYouTubeEmbedURL(url){
+
+    try{
+
+        const parsed = new URL(url);
+
+        let videoId = "";
+
+        // Normal YouTube URL
+        if(
+            parsed.hostname.includes("youtube.com") &&
+            parsed.searchParams.get("v")
+        ){
+
+            videoId =
+                parsed.searchParams.get("v");
+        }
+
+        // YouTube Shorts
+        else if(
+            parsed.hostname.includes("youtube.com") &&
+            parsed.pathname.includes("/shorts/")
+        ){
+
+            videoId =
+                parsed.pathname
+                .split("/shorts/")[1]
+                .split("/")[0];
+        }
+
+        // YouTube short URL
+        else if(
+            parsed.hostname.includes("youtu.be")
+        ){
+
+            videoId =
+                parsed.pathname
+                .substring(1)
+                .split("/")[0];
+        }
+
+        if(!videoId){
+
+            return url;
+        }
+
+        return "https://www.youtube.com/embed/" +
+            videoId +
+            "?rel=0";
+
+    }catch(error){
+
+        console.error(
+            "YouTube URL Error:",
+            error
+        );
+
+        return url;
+    }
+}
+
+
+
+/* ================= LOGOUT ================= */
+
+async function logoutUser(){
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/logout",
+                {
+                    method:"POST",
+                    credentials:"include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(data.success){
+
+            window.location.href=
+                "login.html";
+
+        }else{
+
+            alert(
+                data.message ||
+                "Logout failed."
+            );
+        }
+
+    }catch(error){
+
+        alert(
+            "Unable to logout."
+        );
+    }
+}
+
+
+/* ================= ESCAPE HTML ================= */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+/* ================= START ================= */
+
+loadPage();
+
+</script></body>
+</html>

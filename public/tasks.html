@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Watch & Earn - Tasks</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#0f172a;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px 15px 70px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.brand{
+    font-size:22px;
+    font-weight:800;
+}
+
+.brand span{
+    color:#2563eb;
+}
+
+.back-btn{
+    text-decoration:none;
+    background:#e5edff;
+    color:#2563eb;
+    padding:10px 16px;
+    border-radius:10px;
+    font-weight:700;
+    font-size:14px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
+    box-shadow:0 12px 35px rgba(37,99,235,.18);
+}
+
+.hero h1{
+    font-size:25px;
+    margin-bottom:7px;
+}
+
+.hero p{
+    font-size:13px;
+    opacity:.9;
+}
+
+.notice{
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    color:#9a3412;
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:20px;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.tasks{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.task{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 7px 25px rgba(15,23,42,.05);
+}
+
+.task h2{
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.task-info{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:12px 0 18px;
+}
+
+.badge{
+    background:#eff6ff;
+    color:#2563eb;
+    padding:6px 9px;
+    border-radius:7px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.reward{
+    background:#f0fdf4;
+    color:#15803d;
+}
+
+.watch-btn{
+    width:100%;
+    border:0;
+    padding:12px;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.watch-btn:hover{
+    background:#1d4ed8;
+}
+
+.empty{
+    background:white;
+    border:1px solid #e5e7eb;
+    padding:40px 20px;
+    text-align:center;
+    border-radius:18px;
+    color:#64748b;
+}
+
+.loading{
+    text-align:center;
+    padding:50px;
+    color:#64748b;
+}
+
+@media(max-width:650px){
+
+    .container{
+        padding:15px 12px 60px;
+    }
+
+    .tasks{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding:20px;
+    }
+
+    .hero h1{
+        font-size:22px;
+    }
+
+    .header{
+        gap:10px;
+    }
+
+    .brand{
+        font-size:19px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div class="brand">
+            Watch <span>&</span> Earn
+        </div>
+
+        <a href="index.html" class="back-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="hero">
+
+        <h1>🎬 Available Tasks</h1>
+
+        <p>
+            Watch available videos and complete eligible tasks.
+        </p>
+
+    </div>
+
+
+    <div class="notice">
+        🔒 Your account must be activated before you can complete
+        earning tasks.
+    </div>
+
+
+    <div id="tasks" class="loading">
+        Loading tasks...
+    </div>
+
+</div>
+
+
+<script>
+
+async function loadTasks(){
+
+    const container = document.getElementById("tasks");
+
+    try{
+
+        /* Check logged-in user */
+
+        const meResponse = await fetch("/api/me",{
+            credentials:"include"
+        });
+
+        const meData = await meResponse.json();
+
+        if(!meResponse.ok || !meData.success){
+
+            window.location.href = "login.html";
+            return;
+
+        }
+
+
+        const user = meData.user;
+
+
+        /* Get videos */
+
+        const response = await fetch("/api/tasks",{
+            credentials:"include"
+        });
+
+        const data = await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.message || "Unable to load tasks"
+            );
+
+        }
+
+
+        if(!data.tasks || data.tasks.length === 0){
+
+            container.innerHTML = `
+                <div class="empty">
+
+                    <div style="font-size:35px;margin-bottom:10px;">
+                        🎬
+                    </div>
+
+                    <h3>No tasks available</h3>
+
+                    <p style="margin-top:7px;">
+                        New video tasks will appear here when
+                        they are added by the admin.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        container.className = "tasks";
+
+        container.innerHTML = "";
+
+
+        data.tasks.forEach(task => {
+
+            const card = document.createElement("div");
+
+            card.className = "task";
+
+
+            card.innerHTML = `
+
+                <h2>
+                    ${escapeHTML(task.title)}
+                </h2>
+
+                <div class="task-info">
+
+                    <span class="badge reward">
+                        💰 Rs. ${Number(task.reward).toFixed(2)}
+                    </span>
+
+                    <span class="badge">
+                        ⏱ ${Number(task.duration_minutes)} min
+                    </span>
+
+                </div>
+
+                <button
+                    class="watch-btn"
+                    onclick="watchTask(${task.id})">
+
+                    ▶ Watch Task
+
+                </button>
+
+            `;
+
+
+            container.appendChild(card);
+
+        });
+
+
+    }catch(error){
+
+        console.error("Tasks error:",error);
+
+        container.className = "empty";
+
+        container.innerHTML = `
+
+            <h3>Unable to load tasks</h3>
+
+            <p style="margin-top:8px;">
+                ${escapeHTML(error.message)}
+            </p>
+
+        `;
+
+    }
+
+}
+
+
+function watchTask(id){
+
+    window.location.href =
+        "watch.html?id=" + encodeURIComponent(id);
+
+}
+
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+loadTasks();
+
+</script>
+
+</body>
+</html>

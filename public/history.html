@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>History - Watch & Earn</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#f5f7fb;
+    color:#0f172a;
+    font-family:Arial,sans-serif;
+}
+
+.container{
+    max-width:950px;
+    margin:auto;
+    padding:20px 15px 60px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.brand{
+    font-size:22px;
+    font-weight:800;
+}
+
+.brand span{
+    color:#2563eb;
+}
+
+.back-btn{
+    border:0;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:10px 17px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.header{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
+}
+
+.header h1{
+    margin:0 0 7px;
+    font-size:26px;
+}
+
+.header p{
+    margin:0;
+    opacity:.9;
+    font-size:14px;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.summary-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:17px;
+    padding:18px;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+.summary-card small{
+    display:block;
+    color:#64748b;
+    margin-bottom:7px;
+}
+
+.summary-card strong{
+    font-size:20px;
+}
+
+.history-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+.history-card h2{
+    margin:0 0 5px;
+    font-size:19px;
+}
+
+.subtitle{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:18px;
+}
+
+.history-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    padding:16px 0;
+    border-bottom:1px solid #eef2f7;
+}
+
+.history-item:last-child{
+    border-bottom:0;
+}
+
+.history-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.history-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eff6ff;
+    font-size:20px;
+}
+
+.history-info strong{
+    display:block;
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.history-info small{
+    color:#64748b;
+    font-size:12px;
+}
+
+.amount{
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.amount.positive{
+    color:#16a34a;
+}
+
+.amount.negative{
+    color:#dc2626;
+}
+
+.empty{
+    text-align:center;
+    padding:45px 15px;
+    color:#64748b;
+}
+
+.loading{
+    text-align:center;
+    padding:60px 15px;
+    color:#64748b;
+}
+
+.error{
+    background:#fef2f2;
+    color:#dc2626;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+}
+
+@media(max-width:600px){
+
+    .container{
+        padding:15px 12px 50px;
+    }
+
+    .summary{
+        grid-template-columns:1fr;
+    }
+
+    .header{
+        padding:21px;
+    }
+
+    .header h1{
+        font-size:22px;
+    }
+
+    .history-card{
+        padding:16px;
+    }
+
+    .history-item{
+        align-items:flex-start;
+    }
+
+    .history-left{
+        min-width:0;
+    }
+
+    .history-info strong{
+        word-break:break-word;
+    }
+
+    .amount{
+        font-size:13px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+
+        <div class="brand">
+            Watch <span>&</span> Earn
+        </div>
+
+        <a href="dashboard.html" class="back-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+    <div class="header">
+
+        <h1>📚 Transaction History</h1>
+
+        <p>
+            View your deposits, earnings and withdrawals.
+        </p>
+
+    </div>
+
+    <div class="summary">
+
+        <div class="summary-card">
+            <small>Total Deposits</small>
+            <strong id="totalDeposits">Rs. 0.00</strong>
+        </div>
+
+        <div class="summary-card">
+            <small>Total Earnings</small>
+            <strong id="totalEarnings">Rs. 0.00</strong>
+        </div>
+
+        <div class="summary-card">
+            <small>Total Withdrawals</small>
+            <strong id="totalWithdrawals">Rs. 0.00</strong>
+        </div>
+
+    </div>
+
+    <div class="history-card">
+
+        <h2>All Transactions</h2>
+
+        <div class="subtitle">
+            Your complete account transaction record
+        </div>
+
+        <div id="historyList">
+
+            <div class="loading">
+                Loading history...
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+async function loadHistory(){
+
+    try{
+
+        const response = await fetch("/api/history",{
+            credentials:"include"
+        });
+
+        const data = await response.json();
+
+        if(!response.ok || !data.success){
+
+            if(response.status === 401){
+                window.location.href="login.html";
+                return;
+            }
+
+            document.getElementById("historyList").innerHTML=`
+                <div class="error">
+                    Unable to load history.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const transactions = Array.isArray(data.transactions)
+            ? data.transactions
+            : [];
+
+
+        let totalDeposits = 0;
+        let totalEarnings = 0;
+        let totalWithdrawals = 0;
+
+
+        transactions.forEach(transaction=>{
+
+            const amount = Number(transaction.amount || 0);
+
+            const type = String(transaction.type || "").toLowerCase();
+
+
+            if(type === "deposit"){
+                totalDeposits += Math.abs(amount);
+            }
+
+            if(type === "earning" || type === "referral"){
+                totalEarnings += Math.abs(amount);
+            }
+
+            if(type === "withdrawal"){
+                totalWithdrawals += Math.abs(amount);
+            }
+
+        });
+
+
+        document.getElementById("totalDeposits").textContent =
+            "Rs. " + totalDeposits.toFixed(2);
+
+        document.getElementById("totalEarnings").textContent =
+            "Rs. " + totalEarnings.toFixed(2);
+
+        document.getElementById("totalWithdrawals").textContent =
+            "Rs. " + totalWithdrawals.toFixed(2);
+
+
+        const list = document.getElementById("historyList");
+
+
+        if(transactions.length === 0){
+
+            list.innerHTML=`
+                <div class="empty">
+
+                    <div style="font-size:40px;margin-bottom:10px;">
+                        📭
+                    </div>
+
+                    <h3>No Transactions Yet</h3>
+
+                    <p>
+                        Your deposits, earnings and withdrawals
+                        will appear here.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        list.innerHTML = transactions.map(transaction=>{
+
+            const type =
+                String(transaction.type || "").toLowerCase();
+
+            const amount =
+                Number(transaction.amount || 0);
+
+
+            let icon = "📄";
+            let title = "Transaction";
+            let amountClass = "positive";
+            let sign = "+";
+
+
+            if(type === "deposit"){
+
+                icon = "💰";
+                title = "Deposit";
+                amountClass = "positive";
+                sign = "+";
+
+            }else if(type === "earning"){
+
+                icon = "🎬";
+                title = "Video Earning";
+                amountClass = "positive";
+                sign = "+";
+
+            }else if(type === "referral"){
+
+                icon = "🔗";
+                title = "Referral Bonus";
+                amountClass = "positive";
+                sign = "+";
+
+            }else if(type === "withdrawal"){
+
+                icon = "💸";
+                title = "Withdrawal";
+                amountClass = "negative";
+                sign = "-";
+
+            }
+
+
+            const description =
+                transaction.description ||
+                title;
+
+
+            const date =
+                formatDate(
+                    transaction.created_at ||
+                    transaction.date
+                );
+
+
+            return `
+
+                <div class="history-item">
+
+                    <div class="history-left">
+
+                        <div class="history-icon">
+                            ${icon}
+                        </div>
+
+                        <div class="history-info">
+
+                            <strong>
+                                ${escapeHTML(title)}
+                            </strong>
+
+                            <small>
+                                ${escapeHTML(description)}
+                                <br>
+                                ${date}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="amount ${amountClass}">
+                        ${sign} Rs. ${Math.abs(amount).toFixed(2)}
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+
+    }catch(error){
+
+        console.error(
+            "History error:",
+            error
+        );
+
+        document.getElementById("historyList").innerHTML=`
+
+            <div class="error">
+                Server connection error. Please try again.
+            </div>
+
+        `;
+    }
+}
+
+
+function formatDate(value){
+
+    if(!value){
+        return "Date unavailable";
+    }
+
+    const date = new Date(value);
+
+    if(isNaN(date.getTime())){
+        return String(value);
+    }
+
+    return date.toLocaleString("en-PK",{
+        day:"2-digit",
+        month:"short",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+    });
+}
+
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+loadHistory();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watch & Earn - Admin Login</title><style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#111827,#2563eb);
+    padding:20px;
+}
+
+.login-box{
+    width:100%;
+    max-width:400px;
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo h1{
+    font-size:26px;
+    color:#111827;
+}
+
+.logo p{
+    color:#6b7280;
+    margin-top:6px;
+}
+
+label{
+    display:block;
+    margin:15px 0 7px;
+    font-weight:bold;
+    color:#374151;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#2563eb;
+}
+
+button{
+    width:100%;
+    margin-top:22px;
+    padding:13px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+#error{
+    display:none;
+    margin-top:15px;
+    padding:10px;
+    border-radius:8px;
+    background:#fee2e2;
+    color:#b91c1c;
+    text-align:center;
+}
+
+.loading{
+    text-align:center;
+    margin-top:12px;
+    color:#6b7280;
+    display:none;
+}
+</style></head><body><div class="login-box"><div class="logo">
+    <h1>Watch & Earn</h1>
+    <p>Admin Panel Login</p>
+</div>
+
+<form id="loginForm">
+
+    <label for="email">Admin Email</label>
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Enter admin email"
+        required
+    >
+
+    <label for="password">Password</label>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Enter admin password"
+        required
+    >
+
+    <button type="submit" id="loginBtn">
+        Login
+    </button>
+
+    <div class="loading" id="loading">
+        Logging in...
+    </div>
+
+    <div id="error"></div>
+
+</form>
+
+</div><script>
+
+const form = document.getElementById("loginForm");
+const errorBox = document.getElementById("error");
+const loginBtn = document.getElementById("loginBtn");
+const loading = document.getElementById("loading");
+
+form.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    errorBox.style.display = "none";
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    loginBtn.disabled = true;
+    loading.style.display = "block";
+
+    try{
+
+        const response = await fetch("/api/admin/login",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            credentials:"include",
+
+            body:JSON.stringify({
+                email,
+                password
+            })
+
+        });
+
+        const data = await response.json();
+
+        if(!response.ok || !data.success){
+
+            throw new Error(
+                data.message || "Login failed"
+            );
+
+        }
+
+        window.location.href = "/admin.html";
+
+    }catch(error){
+
+        errorBox.textContent = error.message;
+        errorBox.style.display = "block";
+
+    }finally{
+
+        loginBtn.disabled = false;
+        loading.style.display = "none";
+
+    }
+
+});
+
+</script></body>
+</html>

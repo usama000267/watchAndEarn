@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>How It Works - Watch & Earn</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#f5f7fb;
+    color:#0f172a;
+    font-family:Arial,sans-serif;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px 15px 60px;
+}
+
+/* TOP BAR */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    gap:15px;
+}
+
+.brand{
+    font-size:22px;
+    font-weight:800;
+}
+
+.brand span{
+    color:#2563eb;
+}
+
+.back-btn{
+    text-decoration:none;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:10px 17px;
+    border-radius:10px;
+    font-weight:700;
+}
+
+/* HEADER */
+
+.header{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    padding:32px 28px;
+    border-radius:22px;
+    margin-bottom:20px;
+    box-shadow:0 10px 30px rgba(37,99,235,.18);
+}
+
+.header h1{
+    margin:0 0 9px;
+    font-size:29px;
+}
+
+.header p{
+    margin:0;
+    opacity:.92;
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* MAIN CARD */
+
+.content{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+/* INTRO */
+
+.intro{
+    background:#eff6ff;
+    border-radius:15px;
+    padding:18px;
+    margin-bottom:22px;
+    color:#1e3a8a;
+    line-height:1.7;
+    font-size:14px;
+}
+
+/* SECTIONS */
+
+.section{
+    padding:21px 0;
+    border-bottom:1px solid #eef2f7;
+}
+
+.section:last-child{
+    border-bottom:0;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:12px;
+}
+
+.number{
+    width:38px;
+    height:38px;
+    min-width:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eff6ff;
+    color:#2563eb;
+    border-radius:12px;
+    font-weight:800;
+}
+
+.section h2{
+    margin:0;
+    font-size:18px;
+}
+
+.section p{
+    color:#64748b;
+    line-height:1.75;
+    font-size:14px;
+    margin:0 0 10px;
+}
+
+/* LIST */
+
+.list{
+    margin:10px 0 0;
+    padding-left:22px;
+    color:#475569;
+    line-height:1.9;
+    font-size:14px;
+}
+
+.list li{
+    margin-bottom:3px;
+}
+
+/* EARNING BOX */
+
+.earning-box{
+    margin-top:15px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.earning-item{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:13px;
+    padding:15px;
+    text-align:center;
+}
+
+.earning-item strong{
+    display:block;
+    color:#16a34a;
+    font-size:19px;
+    margin-bottom:5px;
+}
+
+.earning-item span{
+    color:#64748b;
+    font-size:12px;
+}
+
+/* IMPORTANT BOX */
+
+.important{
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    border-radius:15px;
+    padding:18px;
+    margin-top:15px;
+}
+
+.important h3{
+    margin:0 0 8px;
+    color:#c2410c;
+    font-size:15px;
+}
+
+.important p{
+    margin:0;
+    color:#9a3412;
+    font-size:13px;
+    line-height:1.7;
+}
+
+/* REFUND */
+
+.refund{
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    border-radius:15px;
+    padding:18px;
+    margin-top:15px;
+}
+
+.refund h3{
+    margin:0 0 8px;
+    color:#15803d;
+    font-size:15px;
+}
+
+.refund p{
+    margin:0;
+    color:#166534;
+    font-size:13px;
+    line-height:1.7;
+}
+
+/* SUPPORT */
+
+.support{
+    margin-top:22px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+}
+
+.support h3{
+    margin:0 0 7px;
+}
+
+.support p{
+    color:#64748b;
+    font-size:13px;
+    margin:0 0 15px;
+}
+
+.support-btn{
+    display:inline-block;
+    text-decoration:none;
+    background:#229ED9;
+    color:white;
+    padding:12px 20px;
+    border-radius:10px;
+    font-weight:700;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    margin-top:25px;
+    color:#64748b;
+    font-size:12px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .container{
+        padding:15px 12px 50px;
+    }
+
+    .header{
+        padding:24px 20px;
+    }
+
+    .header h1{
+        font-size:23px;
+    }
+
+    .content{
+        padding:18px;
+    }
+
+    .earning-box{
+        grid-template-columns:1fr;
+    }
+
+    .section{
+        padding:18px 0;
+    }
+
+    .section-title{
+        align-items:flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <div class="brand">
+            Watch <span>&</span> Earn
+        </div>
+
+        <a href="dashboard.html" class="back-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>📖 How Watch & Earn Works</h1>
+
+        <p>
+            A simple guide explaining how to complete YouTube
+            video tasks and understand your available rewards.
+        </p>
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+        <div class="intro">
+
+            <strong>Welcome to Watch & Earn!</strong><br>
+
+            The working process is simple. Registered users can
+            complete assigned YouTube video tasks and receive
+            rewards according to the number of eligible videos
+            they complete.
+
+        </div>
+
+
+        <!-- STEP 1 -->
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <div class="number">1</div>
+
+                <h2>🎬 Watch Daily Videos</h2>
+
+            </div>
+
+            <p>
+                You can complete a maximum of <strong>10 eligible
+                videos per day</strong>.
+            </p>
+
+            <ul class="list">
+
+                <li>Reward per video: <strong>Rs. 100</strong></li>
+
+                <li>Maximum videos per day: <strong>10</strong></li>
+
+                <li>Maximum daily reward: <strong>Rs. 1,000</strong></li>
+
+            </ul>
+
+
+            <div class="earning-box">
+
+                <div class="earning-item">
+
+                    <strong>Rs. 100</strong>
+
+                    <span>1 Video</span>
+
+                </div>
+
+                <div class="earning-item">
+
+                    <strong>Rs. 500</strong>
+
+                    <span>5 Videos</span>
+
+                </div>
+
+                <div class="earning-item">
+
+                    <strong>Rs. 1,000</strong>
+
+                    <span>10 Videos</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEP 2 -->
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <div class="number">2</div>
+
+                <h2>⏱️ Watch Each Video for 15 Minutes</h2>
+
+            </div>
+
+            <p>
+                Each assigned video must be watched for the required
+                <strong>15-minute duration</strong> before the task
+                can be considered complete.
+            </p>
+
+        </div>
+
+
+        <!-- STEP 3 -->
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <div class="number">3</div>
+
+                <h2>🎮 PUBG Gaming Content</h2>
+
+            </div>
+
+            <p>
+                The assigned videos are focused on
+                <strong>PUBG gaming content</strong>.
+            </p>
+
+            <p>
+                New video tasks may be provided regularly.
+            </p>
+
+        </div>
+
+
+        <!-- STEP 4 -->
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <div class="number">4</div>
+
+                <h2>💰 Daily Limit & Payment</h2>
+
+            </div>
+
+            <p>
+                Each registered Gmail account can complete up to
+                <strong>10 eligible videos per day</strong>.
+            </p>
+
+            <p>
+                If you complete all 10 eligible videos, the total
+                reward is <strong>Rs. 1,000</strong>.
+            </p>
+
+            <ul class="list">
+
+                <li>Minimum example: 1 completed video = Rs. 100</li>
+
+                <li>5 completed videos = Rs. 500</li>
+
+                <li>10 completed videos = Rs. 1,000</li>
+
+            </ul>
+
+            <p>
+                Supported payment methods may include:
+            </p>
+
+            <ul class="list">
+
+                <li>Easypaisa</li>
+
+                <li>JazzCash</li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- STEP 5 -->
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <div class="number">5</div>
+
+                <h2>🌙 Watch Anytime</h2>
+
+            </div>
+
+            <p>
+                You can complete your available tasks at a convenient
+                time during the day or night, provided that the tasks
+                are still available.
+            </p>
+
+        </div>
+
+
+        <!-- STEP 6 -->
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <div class="number">6</div>
+
+                <h2>🔗 New Links Every Day</h2>
+
+            </div>
+
+            <p>
+                New YouTube video links will be provided regularly.
+                Check the <strong>Watch Tasks</strong> section of your
+                dashboard to see the videos currently available.
+            </p>
+
+        </div>
+
+
+        <!-- STEP 7 -->
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <div class="number">7</div>
+
+                <h2>📧 Use Your Registered Gmail Account</h2>
+
+            </div>
+
+            <p>
+                Your registered Gmail account is used to identify your
+                account and track eligible activity.
+            </p>
+
+            <div class="important">
+
+                <h3>⚠️ Important</h3>
+
+                <p>
+                    Please use the same Gmail account that you registered
+                    with when completing your assigned YouTube activities.
+                    Using a different account may prevent the activity
+                    from being properly recognized.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEP 8 -->
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <div class="number">8</div>
+
+                <h2>💳 Registration Fee Refund Policy</h2>
+
+            </div>
+
+            <div class="refund">
+
+                <h3>✓ Refund Information</h3>
+
+                <p>
+                    If you register with Watch & Earn but decide not to
+                    continue with the work after registration, your
+                    registration fee will be eligible for a refund
+                    according to our refund process and applicable
+                    conditions.
+                </p>
+
+                <br>
+
+                <p>
+                    For refund assistance, please contact our support team.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- GUIDELINES -->
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <div class="number">✓</div>
+
+                <h2>Important Guidelines</h2>
+
+            </div>
+
+            <ul class="list">
+
+                <li>Complete only the videos assigned to your account.</li>
+
+                <li>Watch each required video for the full 15 minutes.</li>
+
+                <li>Use your registered Gmail account.</li>
+
+                <li>Do not submit duplicate or invalid activity.</li>
+
+                <li>Check your dashboard regularly for new tasks.</li>
+
+                <li>Follow the instructions displayed with each task.</li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- SUPPORT -->
+
+        <div class="support">
+
+            <h3>💬 Need Help?</h3>
+
+            <p>
+                If you have any questions or problems, contact our
+                support team.
+            </p>
+
+            <a
+                href="support.html"
+                class="support-btn">
+                🎧 Contact Support
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+
+        Watch & Earn Business
+
+    </div>
+
+</div>
+
+</body>
+</html>

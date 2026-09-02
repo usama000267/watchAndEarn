@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wallet - Watch & Earn</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#0f172a;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:18px 12px 60px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#2563eb;
+}
+
+.back{
+    border:0;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:10px 15px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.balance-card{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    border-radius:22px;
+    padding:25px;
+    margin-bottom:18px;
+    box-shadow:0 10px 25px rgba(37,99,235,.18);
+}
+
+.balance-card small{
+    opacity:.85;
+}
+
+.balance-card h1{
+    margin-top:8px;
+    font-size:32px;
+}
+
+.action-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:18px;
+}
+
+.action{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:17px;
+    padding:20px;
+    text-decoration:none;
+    color:#0f172a;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+.action-icon{
+    font-size:27px;
+    margin-bottom:10px;
+}
+
+.action strong{
+    display:block;
+    font-size:17px;
+}
+
+.action p{
+    color:#64748b;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.panel{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 7px 22px rgba(15,23,42,.05);
+}
+
+.panel h2{
+    font-size:19px;
+    margin-bottom:7px;
+}
+
+.subtitle{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:17px;
+}
+
+.transaction{
+    padding:14px 0;
+    border-bottom:1px solid #eef2f7;
+}
+
+.transaction:last-child{
+    border-bottom:0;
+}
+
+.transaction-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-weight:700;
+}
+
+.transaction-bottom{
+    color:#64748b;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.deposit{
+    color:#16a34a;
+}
+
+.withdraw{
+    color:#dc2626;
+}
+
+.empty{
+    text-align:center;
+    padding:30px 10px;
+    color:#64748b;
+}
+
+.loading{
+    text-align:center;
+    padding:30px;
+    color:#64748b;
+}
+
+@media(max-width:500px){
+
+    .container{
+        padding:14px 11px 50px;
+    }
+
+    .balance-card{
+        padding:21px;
+    }
+
+    .balance-card h1{
+        font-size:27px;
+    }
+
+    .action-grid{
+        grid-template-columns:1fr;
+    }
+
+    .panel{
+        padding:17px;
+    }
+
+    .transaction-top{
+        font-size:14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+
+        <div class="logo">
+            Watch <span>&</span> Earn
+        </div>
+
+        <button
+            class="back"
+            onclick="window.location.href='dashboard.html'">
+            ← Dashboard
+        </button>
+
+    </div>
+
+
+    <div class="balance-card">
+
+        <small>
+            Available Wallet Balance
+        </small>
+
+        <h1 id="balance">
+            Rs. 0.00
+        </h1>
+
+    </div>
+
+
+    <div class="action-grid">
+
+        <a href="deposit.html" class="action">
+
+            <div class="action-icon">
+                💰
+            </div>
+
+            <strong>
+                Deposit
+            </strong>
+
+            <p>
+                Add funds to your wallet
+            </p>
+
+        </a>
+
+
+        <a href="withdraw.html" class="action">
+
+            <div class="action-icon">
+                💸
+            </div>
+
+            <strong>
+                Withdraw
+            </strong>
+
+            <p>
+                Withdraw your available balance
+            </p>
+
+        </a>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h2>
+            Wallet Transactions
+        </h2>
+
+        <div class="subtitle">
+            Your latest wallet activity
+        </div>
+
+        <div id="transactions">
+            <div class="loading">
+                Loading transactions...
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+async function loadWallet(){
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    credentials:"include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(!response.ok || !data.success){
+
+            window.location.href="login.html";
+            return;
+        }
+
+        const balance =
+            Number(
+                data.user.wallet_balance || 0
+            );
+
+        document.getElementById("balance")
+            .textContent =
+            "Rs. " + balance.toFixed(2);
+
+
+        loadTransactions();
+
+    }catch(error){
+
+        console.error(
+            "Wallet error:",
+            error
+        );
+
+        document.getElementById("transactions")
+            .innerHTML=`
+                <div class="empty">
+                    Unable to load wallet.
+                </div>
+            `;
+    }
+}
+
+
+async function loadTransactions(){
+
+    const box =
+        document.getElementById("transactions");
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/history",
+                {
+                    credentials:"include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(!response.ok || !data.success){
+
+            box.innerHTML=`
+                <div class="empty">
+                    Unable to load transactions.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const transactions =
+            data.transactions || [];
+
+
+        if(transactions.length === 0){
+
+            box.innerHTML=`
+                <div class="empty">
+                    No wallet transactions yet.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        box.innerHTML =
+            transactions
+            .slice(0,20)
+            .map(transaction => {
+
+                let amount =
+                    Number(
+                        transaction.amount || 0
+                    );
+
+                let type =
+                    String(
+                        transaction.type || ""
+                    );
+
+
+                let className = "";
+
+                let sign = "";
+
+                if(
+                    type === "earning" ||
+                    type === "deposit" ||
+                    type === "deposit_approved"
+                ){
+
+                    className="deposit";
+                    sign="+";
+
+                }else if(
+                    type === "withdrawal" ||
+                    type === "withdrawal_request"
+                ){
+
+                    className="withdraw";
+                    sign="-";
+                }
+
+
+                return `
+
+                    <div class="transaction">
+
+                        <div class="transaction-top">
+
+                            <span>
+                                ${formatType(type)}
+                            </span>
+
+                            <span class="${className}">
+                                ${sign}
+                                Rs. ${Math.abs(amount).toFixed(2)}
+                            </span>
+
+                        </div>
+
+                        <div class="transaction-bottom">
+
+                            ${
+                                transaction.description ||
+                                ""
+                            }
+
+                            ${
+                                transaction.created_at
+                                ? "<br>" +
+                                  formatDate(
+                                      transaction.created_at
+                                  )
+                                : ""
+                            }
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            })
+            .join("");
+
+
+    }catch(error){
+
+        console.error(
+            "Transaction error:",
+            error
+        );
+
+        box.innerHTML=`
+            <div class="empty">
+                Unable to load transactions.
+            </div>
+        `;
+    }
+}
+
+
+function formatType(type){
+
+    const names = {
+
+        earning:
+            "🎬 Video Earning",
+
+        deposit:
+            "💰 Deposit",
+
+        deposit_approved:
+            "✅ Deposit Approved",
+
+        withdrawal_request:
+            "⏳ Withdrawal Pending",
+
+        withdrawal:
+            "✅ Withdrawal Approved",
+
+        withdrawal_refund:
+            "↩️ Withdrawal Refunded"
+
+    };
+
+    return names[type] || type;
+}
+
+
+function formatDate(date){
+
+    if(!date){
+        return "";
+    }
+
+    try{
+
+        return new Date(
+            String(date).replace(" ","T")+"Z"
+        ).toLocaleString();
+
+    }catch(error){
+
+        return date;
+    }
+}
+
+
+loadWallet();
+
+</script>
+
+</body>
+</html>

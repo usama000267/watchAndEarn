@@ -1,0 +1,889 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watch & Earn - Admin Panel</title><style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    color:#222;
+}
+
+.header{
+    background:#111827;
+    color:white;
+    padding:18px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header h1{
+    font-size:22px;
+}
+
+.logout{
+    background:#ef4444;
+    border:none;
+    color:white;
+    padding:9px 16px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.container{
+    padding:25px;
+    max-width:1400px;
+    margin:auto;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:22px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,.07);
+}
+
+.card h3{
+    color:#6b7280;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.card strong{
+    font-size:26px;
+}
+
+.section{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:25px;
+    box-shadow:0 2px 10px rgba(0,0,0,.07);
+}
+
+.section h2{
+    margin-bottom:18px;
+    font-size:20px;
+}
+
+.form{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+input,select{
+    width:100%;
+    padding:11px;
+    border:1px solid #d1d5db;
+    border-radius:7px;
+    outline:none;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+}
+
+.primary{
+    background:#2563eb;
+    color:white;
+    padding:11px 18px;
+    border-radius:7px;
+}
+
+.success{
+    background:#16a34a;
+    color:white;
+    padding:7px 12px;
+    border-radius:6px;
+    margin-right:5px;
+}
+
+.danger{
+    background:#dc2626;
+    color:white;
+    padding:7px 12px;
+    border-radius:6px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+}
+
+th,td{
+    padding:12px 10px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+    font-size:14px;
+}
+
+th{
+    background:#f9fafb;
+}
+
+.status{
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:12px;
+    background:#fef3c7;
+}
+
+.message{
+    margin-top:10px;
+    padding:10px;
+    display:none;
+    border-radius:7px;
+}
+
+@media(max-width:800px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .form{
+        grid-template-columns:1fr;
+    }
+
+    .section{
+        overflow-x:auto;
+    }
+
+    table{
+        min-width:750px;
+    }
+}
+
+@media(max-width:500px){
+    .container{
+        padding:12px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    .card strong{
+        font-size:20px;
+    }
+
+    .header{
+        padding:15px;
+    }
+}
+</style></head><body><div class="header">
+    <h1>Watch & Earn Admin</h1>
+    <button class="logout" onclick="logout()">Logout</button>
+</div><div class="container"><!-- DASHBOARD -->
+
+<div class="stats">
+
+    <div class="card">
+        <h3>Total Users</h3>
+        <strong id="totalUsers">0</strong>
+    </div>
+
+    <div class="card">
+        <h3>Active Users</h3>
+        <strong id="activeUsers">0</strong>
+    </div>
+
+    <div class="card">
+        <h3>Pending Withdrawals</h3>
+        <strong id="pendingWithdrawals">0</strong>
+    </div>
+
+    <div class="card">
+        <h3>Pending Activations</h3>
+        <strong id="pendingActivations">0</strong>
+    </div>
+
+</div>
+
+
+<!-- ACTIVATION PAYMENTS -->
+
+<div class="section">
+
+    <h2>Activation Payments</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Reference</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="activationTable">
+            <tr>
+                <td colspan="7">Loading...</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- WITHDRAWALS -->
+
+<div class="section">
+
+    <h2>Withdrawal Requests</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Account</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="withdrawalTable">
+            <tr>
+                <td colspan="7">Loading...</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- ADD VIDEO -->
+
+<div class="section">
+
+    <h2>Add Video Task</h2>
+
+    <div class="form">
+
+        <input id="videoTitle" placeholder="Video title">
+
+        <input id="videoUrl" placeholder="YouTube URL">
+
+        <input id="videoReward" type="number" placeholder="Reward">
+
+        <input id="videoDuration" type="number" placeholder="Duration (minutes)">
+
+        <button class="primary" onclick="addVideo()">
+            Add Video
+        </button>
+
+    </div>
+
+    <div id="videoMessage" class="message"></div>
+
+</div>
+
+
+<!-- VIDEO TASKS -->
+
+<div class="section">
+
+    <h2>Video Tasks</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Reward</th>
+                <th>Duration</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody id="videoTable">
+            <tr>
+                <td colspan="6">Loading...</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- USERS -->
+
+<div class="section">
+
+    <h2>Users</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Balance</th>
+                <th>Activation</th>
+            </tr>
+        </thead>
+
+        <tbody id="usersTable">
+            <tr>
+                <td colspan="7">Loading...</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+</div><script>
+
+async function api(url, options = {}){
+
+    const response = await fetch(url, {
+        credentials: "include",
+        ...options,
+        headers:{
+            "Content-Type":"application/json",
+            ...(options.headers || {})
+        }
+    });
+
+    const data = await response.json();
+
+    if(!response.ok){
+        throw new Error(data.message || "Server error");
+    }
+
+    return data;
+}
+
+
+/* ================= DASHBOARD ================= */
+
+async function loadDashboard(){
+
+    try{
+
+        const data = await api("/api/admin/dashboard");
+
+        document.getElementById("totalUsers").textContent =
+            data.totalUsers || 0;
+
+        document.getElementById("activeUsers").textContent =
+            data.activeUsers || 0;
+
+        document.getElementById("pendingWithdrawals").textContent =
+            data.pendingWithdrawals || 0;
+
+        document.getElementById("pendingActivations").textContent =
+            data.pendingActivations || 0;
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ================= USERS ================= */
+
+async function loadUsers(){
+
+    try{
+
+        const data = await api("/api/admin/users");
+
+        const table =
+            document.getElementById("usersTable");
+
+        table.innerHTML = "";
+
+        if(!data.users || data.users.length === 0){
+
+            table.innerHTML =
+                `<tr><td colspan="7">No users found</td></tr>`;
+
+            return;
+        }
+
+        data.users.forEach(user => {
+
+            table.innerHTML += `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${escapeHtml(user.full_name)}</td>
+                    <td>${escapeHtml(user.username)}</td>
+                    <td>${escapeHtml(user.email)}</td>
+                    <td>${escapeHtml(user.mobile)}</td>
+                    <td>${Number(user.wallet_balance || 0).toFixed(2)}</td>
+                    <td>${escapeHtml(user.activation_status)}</td>
+                </tr>
+            `;
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ================= ACTIVATIONS ================= */
+
+async function loadActivations(){
+
+    try{
+
+        const data =
+            await api("/api/admin/activation-payments");
+
+        const table =
+            document.getElementById("activationTable");
+
+        table.innerHTML = "";
+
+        if(!data.payments || data.payments.length === 0){
+
+            table.innerHTML =
+                `<tr><td colspan="7">No activation payments</td></tr>`;
+
+            return;
+        }
+
+        data.payments.forEach(payment => {
+
+            let actions = "";
+
+            if(payment.status === "pending"){
+
+                actions = `
+                    <button class="success"
+                    onclick="activationAction(${payment.id},'approve')">
+                    Approve
+                    </button>
+
+                    <button class="danger"
+                    onclick="activationAction(${payment.id},'reject')">
+                    Reject
+                    </button>
+                `;
+
+            }else{
+
+                actions = "-";
+
+            }
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>${payment.id}</td>
+
+                    <td>
+                        ${escapeHtml(payment.username || "")}
+                    </td>
+
+                    <td>${payment.amount}</td>
+
+                    <td>
+                        ${escapeHtml(payment.payment_method || "")}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(payment.transaction_reference || "")}
+                    </td>
+
+                    <td>
+                        <span class="status">
+                            ${escapeHtml(payment.status)}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${actions}
+                    </td>
+
+                </tr>
+            `;
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ================= ACTIVATION ACTION ================= */
+
+async function activationAction(id, action){
+
+    if(!confirm(
+        action === "approve"
+        ? "Approve this activation?"
+        : "Reject this activation?"
+    )) return;
+
+    try{
+
+        await api(
+            `/api/admin/activation-payments/${id}/${action}`,
+            {
+                method:"POST"
+            }
+        );
+
+        alert("Action completed");
+
+        loadDashboard();
+        loadActivations();
+        loadUsers();
+
+    }catch(error){
+
+        alert(error.message);
+
+    }
+
+}
+
+
+/* ================= WITHDRAWALS ================= */
+
+async function loadWithdrawals(){
+
+    try{
+
+        const data =
+            await api("/api/admin/withdrawals");
+
+        const table =
+            document.getElementById("withdrawalTable");
+
+        table.innerHTML = "";
+
+        if(!data.withdrawals || data.withdrawals.length === 0){
+
+            table.innerHTML =
+                `<tr><td colspan="7">No withdrawal requests</td></tr>`;
+
+            return;
+        }
+
+        data.withdrawals.forEach(withdrawal => {
+
+            let actions = "";
+
+            if(withdrawal.status === "pending"){
+
+                actions = `
+
+                    <button class="success"
+                    onclick="withdrawAction(${withdrawal.id},'approve')">
+                    Approve
+                    </button>
+
+                    <button class="danger"
+                    onclick="withdrawAction(${withdrawal.id},'reject')">
+                    Reject
+                    </button>
+
+                `;
+
+            }else{
+
+                actions = "-";
+
+            }
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>${withdrawal.id}</td>
+
+                    <td>
+                        ${escapeHtml(withdrawal.username || "")}
+                    </td>
+
+                    <td>${withdrawal.amount}</td>
+
+                    <td>${escapeHtml(withdrawal.method)}</td>
+
+                    <td>${escapeHtml(withdrawal.account_number)}</td>
+
+                    <td>
+                        <span class="status">
+                            ${escapeHtml(withdrawal.status)}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${actions}
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ================= WITHDRAW ACTION ================= */
+
+async function withdrawAction(id, action){
+
+    if(!confirm(
+        action === "approve"
+        ? "Approve this withdrawal?"
+        : "Reject this withdrawal?"
+    )) return;
+
+    try{
+
+        await api(
+            `/api/admin/withdrawals/${id}/${action}`,
+            {
+                method:"POST"
+            }
+        );
+
+        alert("Withdrawal updated successfully");
+
+        loadDashboard();
+        loadWithdrawals();
+        loadUsers();
+
+    }catch(error){
+
+        alert(error.message);
+
+    }
+
+}
+
+
+/* ================= ADD VIDEO ================= */
+
+async function addVideo(){
+
+    const title =
+        document.getElementById("videoTitle").value.trim();
+
+    const youtube_url =
+        document.getElementById("videoUrl").value.trim();
+
+    const reward =
+        Number(document.getElementById("videoReward").value);
+
+    const duration_minutes =
+        Number(document.getElementById("videoDuration").value);
+
+    if(!title || !youtube_url || !reward || !duration_minutes){
+
+        alert("Please fill all video fields");
+
+        return;
+    }
+
+    try{
+
+        await api("/api/admin/videos",{
+
+            method:"POST",
+
+            body:JSON.stringify({
+
+                title,
+                youtube_url,
+                reward,
+                duration_minutes
+
+            })
+
+        });
+
+        alert("Video added successfully");
+
+        document.getElementById("videoTitle").value = "";
+        document.getElementById("videoUrl").value = "";
+        document.getElementById("videoReward").value = "";
+        document.getElementById("videoDuration").value = "";
+
+        loadVideos();
+
+    }catch(error){
+
+        alert(error.message);
+
+    }
+
+}
+
+
+/* ================= VIDEOS ================= */
+
+async function loadVideos(){
+
+    try{
+
+        const data =
+            await api("/api/admin/videos");
+
+        const table =
+            document.getElementById("videoTable");
+
+        table.innerHTML = "";
+
+        if(!data.videos || data.videos.length === 0){
+
+            table.innerHTML =
+                `<tr><td colspan="6">No video tasks</td></tr>`;
+
+            return;
+
+        }
+
+        data.videos.forEach(video => {
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>${video.id}</td>
+
+                    <td>${escapeHtml(video.title)}</td>
+
+                    <td>${video.reward}</td>
+
+                    <td>${video.duration_minutes} min</td>
+
+                    <td>${escapeHtml(video.task_date)}</td>
+
+                    <td>
+                        ${video.is_active ? "Active" : "Inactive"}
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ================= LOGOUT ================= */
+
+async function logout(){
+
+    try{
+
+        await api("/api/admin/logout",{
+            method:"POST"
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+    window.location.href = "/login.html";
+
+}
+
+
+/* ================= SECURITY ================= */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* ================= LOAD EVERYTHING ================= */
+
+async function loadAll(){
+
+    await Promise.all([
+
+        loadDashboard(),
+        loadUsers(),
+        loadActivations(),
+        loadWithdrawals(),
+        loadVideos()
+
+    ]);
+
+}
+
+loadAll();
+
+</script></body>
+</html>

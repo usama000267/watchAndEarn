@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deposit - Watch & Earn</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#0f172a;
+}
+
+.container{
+    max-width:650px;
+    margin:auto;
+    padding:15px 12px 50px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.logo{
+    font-size:21px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#2563eb;
+}
+
+.back{
+    border:0;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:22px;
+    padding:22px;
+    box-shadow:0 8px 25px rgba(15,23,42,.06);
+}
+
+.header{
+    text-align:center;
+    margin-bottom:22px;
+}
+
+.header-icon{
+    width:65px;
+    height:65px;
+    margin:0 auto 12px;
+    border-radius:50%;
+    background:#eff6ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:31px;
+}
+
+.header h1{
+    font-size:24px;
+    margin-bottom:7px;
+}
+
+.header p{
+    color:#64748b;
+    font-size:14px;
+}
+
+.section{
+    margin-bottom:19px;
+}
+
+.section-title{
+    font-size:16px;
+    font-weight:800;
+    margin-bottom:9px;
+}
+
+select,
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    outline:none;
+    font-size:14px;
+    background:white;
+}
+
+select:focus,
+input:focus{
+    border-color:#2563eb;
+}
+
+.method-card{
+    display:none;
+    margin-top:12px;
+    padding:15px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+}
+
+.method-header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:12px;
+}
+
+.method-logo{
+    width:45px;
+    height:45px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:white;
+    border:1px solid #e2e8f0;
+    font-size:22px;
+    font-weight:900;
+}
+
+.method-name{
+    font-weight:800;
+}
+
+.method-sub{
+    color:#64748b;
+    font-size:12px;
+    margin-top:3px;
+}
+
+.payment-box{
+    padding:12px;
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+.payment-label{
+    color:#64748b;
+    font-size:12px;
+    margin-bottom:6px;
+}
+
+.payment-address{
+    font-size:13px;
+    font-weight:800;
+    word-break:break-all;
+}
+
+.copy-btn{
+    width:100%;
+    border:0;
+    background:#2563eb;
+    color:white;
+    padding:10px;
+    border-radius:9px;
+    margin-top:9px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.notice{
+    padding:12px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    color:#9a3412;
+    border-radius:10px;
+    font-size:12px;
+    line-height:1.5;
+    margin-top:10px;
+}
+
+.file-label{
+    display:block;
+    border:1px dashed #94a3b8;
+    padding:16px;
+    border-radius:10px;
+    text-align:center;
+    color:#64748b;
+    cursor:pointer;
+}
+
+.file-label input{
+    display:none;
+}
+
+.submit{
+    width:100%;
+    border:0;
+    background:#2563eb;
+    color:white;
+    padding:14px;
+    border-radius:11px;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.submit:disabled{
+    background:#94a3b8;
+    cursor:not-allowed;
+}
+
+.message{
+    display:none;
+    margin-top:14px;
+    padding:12px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.success{
+    background:#f0fdf4;
+    color:#15803d;
+    border:1px solid #bbf7d0;
+}
+
+.error{
+    background:#fef2f2;
+    color:#dc2626;
+    border:1px solid #fecaca;
+}
+
+.history{
+    margin-top:22px;
+}
+
+.history h2{
+    font-size:18px;
+    margin-bottom:12px;
+}
+
+.history-item{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:13px;
+    margin-bottom:9px;
+}
+
+.history-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-weight:800;
+}
+
+.history-bottom{
+    color:#64748b;
+    font-size:12px;
+    margin-top:6px;
+}
+
+.status{
+    padding:5px 9px;
+    border-radius:8px;
+    font-size:11px;
+    text-transform:capitalize;
+}
+
+.status-pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.status-approved{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.status-rejected{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+@media(max-width:500px){
+
+    .card{
+        padding:17px;
+    }
+
+    .header h1{
+        font-size:22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+
+        <div class="logo">
+            Watch <span>&</span> Earn
+        </div>
+
+        <button
+            class="back"
+            onclick="window.location.href='wallet.html'">
+            ← Wallet
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="header">
+
+            <div class="header-icon">
+                💰
+            </div>
+
+            <h1>
+                Deposit Funds
+            </h1>
+
+            <p>
+                Submit your payment details for deposit approval.
+            </p>
+
+        </div>
+
+
+        <div class="section">
+
+            <div class="section-title">
+                Deposit Amount
+            </div>
+
+            <input
+                type="number"
+                id="amount"
+                min="1"
+                step="0.01"
+                placeholder="Enter deposit amount">
+
+        </div>
+
+
+        <div class="section">
+
+            <div class="section-title">
+                Payment Method
+            </div>
+
+            <select
+                id="method"
+                onchange="showMethod()">
+
+                <option value="">
+                    Select Payment Method
+                </option>
+
+                <option value="easypaisa">
+                    Easypaisa
+                </option>
+
+                <option value="jazzcash">
+                    JazzCash
+                </option>
+
+                <option value="upaisa">
+                    UPaisa
+                </option>
+
+                <option value="bep20">
+                    USDT BEP20
+                </option>
+
+                <option value="trc20">
+                    USDT TRC20
+                </option>
+
+            </select>
+
+
+            <div
+                id="methodCard"
+                class="method-card">
+
+                <div class="method-header">
+
+                    <div
+                        id="methodLogo"
+                        class="method-logo">
+                        💳
+                    </div>
+
+                    <div>
+
+                        <div
+                            id="methodName"
+                            class="method-name">
+                            Payment Method
+                        </div>
+
+                        <div
+                            id="methodSub"
+                            class="method-sub">
+                            Payment details
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="paymentBox"
+                    class="payment-box"
+                    style="display:none;">
+
+                    <div class="payment-label">
+                        Send Payment To
+                    </div>
+
+                    <div
+                        id="paymentAddress"
+                        class="payment-address">
+                    </div>
+
+                    <button
+                        class="copy-btn"
+                        onclick="copyAddress()">
+                        📋 Copy Payment Details
+                    </button>
+
+                </div>
+
+
+                <div class="notice">
+
+                    ⚠️ Please make the payment first and
+                    enter the transaction/reference number
+                    below. Your deposit will remain
+                    <strong>Pending</strong> until admin approval.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="section">
+
+            <div class="section-title">
+                Transaction / Reference Number
+            </div>
+
+            <input
+                type="text"
+                id="reference"
+                placeholder="Enter payment reference">
+
+        </div>
+
+
+        <div class="section">
+
+            <div class="section-title">
+                Payment Screenshot
+            </div>
+
+            <label class="file-label">
+
+                📸 Select Payment Screenshot
+
+                <input
+                    type="file"
+                    id="paymentProof"
+                    accept="image/*">
+
+            </label>
+
+        </div>
+
+
+        <button
+            class="submit"
+            id="submitBtn"
+            onclick="submitDeposit()">
+
+            Submit Deposit Request
+
+        </button>
+
+
+        <div
+            id="message"
+            class="message">
+        </div>
+
+
+        <div class="history">
+
+            <h2>
+                Deposit History
+            </h2>
+
+            <div id="historyList">
+                Loading...
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ================= PAYMENT DETAILS =================
+   IMPORTANT:
+   In production, replace these demo values with
+   your actual payment account / wallet addresses.
+===================================================== */
+
+const paymentDetails = {
+
+    easypaisa:
+        "03000000000",
+
+    jazzcash:
+        "03XXXXXXXXX",
+
+    upaisa:
+        "03499230392",
+
+    bep20:
+        "0xa1d82829F53050D25CeD9CFA73350c40b103e1f1",
+
+    trc20:
+        "TM9Lwe4DFEfEnVERutnUotMtPt1sTyBL9g"
+
+};
+
+
+/* ================= SHOW METHOD ================= */
+
+function showMethod(){
+
+    const method =
+        document.getElementById("method").value;
+
+    const card =
+        document.getElementById("methodCard");
+
+    const logo =
+        document.getElementById("methodLogo");
+
+    const name =
+        document.getElementById("methodName");
+
+    const sub =
+        document.getElementById("methodSub");
+
+    const paymentBox =
+        document.getElementById("paymentBox");
+
+    const paymentAddress =
+        document.getElementById("paymentAddress");
+
+
+    if(!method){
+
+        card.style.display="none";
+
+        return;
+    }
+
+
+    card.style.display="block";
+    paymentBox.style.display="block";
+
+
+    if(method==="easypaisa"){
+
+        logo.textContent="E";
+        name.textContent="Easypaisa";
+        sub.textContent="Send payment to Easypaisa";
+    }
+
+    else if(method==="jazzcash"){
+
+        logo.textContent="J";
+        name.textContent="JazzCash";
+        sub.textContent="Send payment to JazzCash";
+    }
+
+    else if(method==="upaisa"){
+
+        logo.textContent="U";
+        name.textContent="UPaisa";
+        sub.textContent="Send payment to UPaisa";
+    }
+
+    else if(method==="bep20"){
+
+        logo.textContent="₮";
+        name.textContent="USDT BEP20";
+        sub.textContent="Send USDT using BEP20 network";
+    }
+
+    else if(method==="trc20"){
+
+        logo.textContent="₮";
+        name.textContent="USDT TRC20";
+        sub.textContent="Send USDT using TRC20 network";
+    }
+
+
+    paymentAddress.textContent =
+        paymentDetails[method] || "";
+
+}
+
+
+/* ================= COPY ================= */
+
+function copyAddress(){
+
+    const address =
+        document.getElementById(
+            "paymentAddress"
+        ).textContent;
+
+    if(!address){
+        return;
+    }
+
+
+    navigator.clipboard.writeText(address)
+        .then(()=>{
+
+            alert("Payment details copied.");
+
+        })
+        .catch(()=>{
+
+            alert("Unable to copy.");
+
+        });
+}
+
+
+/* ================= SUBMIT DEPOSIT ================= */
+
+async function submitDeposit(){
+
+    const amount =
+        Number(
+            document.getElementById("amount").value
+        );
+
+    const method =
+        document.getElementById("method").value;
+
+    const reference =
+        document.getElementById("reference")
+        .value
+        .trim();
+
+    const file =
+        document.getElementById("paymentProof")
+        .files[0];
+
+    const button =
+        document.getElementById("submitBtn");
+
+
+    if(!Number.isFinite(amount) || amount<=0){
+
+        showMessage(
+            "Please enter a valid deposit amount.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(!method){
+
+        showMessage(
+            "Please select a payment method.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(!reference){
+
+        showMessage(
+            "Please enter the transaction/reference number.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(!file){
+
+        showMessage(
+            "Please upload your payment screenshot.",
+            false
+        );
+
+        return;
+    }
+
+
+    button.disabled=true;
+    button.textContent="Submitting...";
+
+
+    try{
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "amount",
+            amount
+        );
+
+        formData.append(
+            "payment_method",
+            method
+        );
+
+        formData.append(
+            "reference",
+            reference
+        );
+
+        formData.append(
+            "payment_proof",
+            file
+        );
+
+
+        const response =
+            await fetch(
+                "/api/deposits",
+                {
+                    method:"POST",
+                    credentials:"include",
+                    body:formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            showMessage(
+                data.message ||
+                "Unable to submit deposit.",
+                false
+            );
+
+            button.disabled=false;
+            button.textContent=
+                "Submit Deposit Request";
+
+            return;
+        }
+
+
+        showMessage(
+            "✓ Deposit request submitted successfully. Status: Pending.",
+            true
+        );
+
+
+        document.getElementById("amount")
+            .value="";
+
+        document.getElementById("reference")
+            .value="";
+
+        document.getElementById("paymentProof")
+            .value="";
+
+        document.getElementById("method")
+            .value="";
+
+        document.getElementById("methodCard")
+            .style.display="none";
+
+
+        button.disabled=false;
+        button.textContent=
+            "Submit Deposit Request";
+
+
+        loadHistory();
+
+
+    }catch(error){
+
+        console.error(
+            "Deposit error:",
+            error
+        );
+
+
+        showMessage(
+            "Server error. Please try again.",
+            false
+        );
+
+
+        button.disabled=false;
+        button.textContent=
+            "Submit Deposit Request";
+    }
+
+}
+
+
+/* ================= HISTORY ================= */
+
+async function loadHistory(){
+
+    const list =
+        document.getElementById(
+            "historyList"
+        );
+
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/history",
+                {
+                    credentials:"include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            list.innerHTML=
+                `<div class="history-item">
+                    Unable to load history.
+                </div>`;
+
+            return;
+        }
+
+
+        const deposits =
+            (data.transactions || [])
+            .filter(item =>
+                item.type === "deposit_pending" ||
+                item.type === "deposit" ||
+                item.type === "deposit_approved" ||
+                item.type === "deposit_rejected"
+            );
+
+
+        if(deposits.length===0){
+
+            list.innerHTML=
+                `<div class="history-item">
+                    No deposit history yet.
+                </div>`;
+
+            return;
+        }
+
+
+        list.innerHTML =
+            deposits.map(item => {
+
+                let status =
+                    "pending";
+
+                let statusText =
+                    "Pending";
+
+
+                if(
+                    item.type === "deposit" ||
+                    item.type === "deposit_approved"
+                ){
+
+                    status="approved";
+                    statusText="Approved";
+
+                }
+
+                else if(
+                    item.type === "deposit_rejected"
+                ){
+
+                    status="rejected";
+                    statusText="Rejected";
+                }
+
+
+                return `
+
+                    <div class="history-item">
+
+                        <div class="history-top">
+
+                            <span>
+                                Rs. ${Number(item.amount).toFixed(2)}
+                            </span>
+
+                            <span class="status status-${status}">
+                                ${statusText}
+                            </span>
+
+                        </div>
+
+                        <div class="history-bottom">
+
+                            ${item.description || ""}
+
+                            ${
+                                item.created_at
+                                ? "<br>" +
+                                  formatDate(item.created_at)
+                                : ""
+                            }
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+
+    }catch(error){
+
+        console.error(
+            "History error:",
+            error
+        );
+
+
+        list.innerHTML=
+            `<div class="history-item">
+                Unable to load history.
+            </div>`;
+    }
+
+}
+
+
+/* ================= MESSAGE ================= */
+
+function showMessage(text,success){
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.style.display="block";
+
+
+    message.className =
+        "message " +
+        (success ? "success" : "error");
+
+
+    message.textContent=text;
+
+}
+
+
+/* ================= DATE ================= */
+
+function formatDate(date){
+
+    if(!date){
+        return "";
+    }
+
+
+    try{
+
+        return new Date(
+            String(date).replace(" ","T")+"Z"
+        ).toLocaleString();
+
+    }catch(error){
+
+        return date;
+    }
+}
+
+
+/* ================= START ================= */
+
+loadHistory();
+
+</script>
+
+</body>
+</html>

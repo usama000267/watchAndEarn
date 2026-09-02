@@ -1,0 +1,977 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Withdraw - Watch & Earn</title><style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#0f172a;
+}
+
+.container{
+    max-width:650px;
+    margin:auto;
+    padding:15px 12px 50px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.logo{
+    font-size:21px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#2563eb;
+}
+
+.back{
+    border:0;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:22px;
+    padding:22px;
+    box-shadow:0 8px 25px rgba(15,23,42,.06);
+}
+
+.header{
+    text-align:center;
+    margin-bottom:22px;
+}
+
+.header-icon{
+    width:65px;
+    height:65px;
+    margin:0 auto 12px;
+    border-radius:50%;
+    background:#eff6ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:31px;
+}
+
+.header h1{
+    font-size:24px;
+    margin-bottom:7px;
+}
+
+.header p{
+    color:#64748b;
+    font-size:14px;
+}
+
+.balance{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    border-radius:15px;
+    padding:17px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.balance small{
+    display:block;
+    color:#64748b;
+    margin-bottom:5px;
+}
+
+.balance strong{
+    color:#2563eb;
+    font-size:27px;
+}
+
+.section{
+    margin-bottom:19px;
+}
+
+.section-title{
+    font-size:16px;
+    font-weight:800;
+    margin-bottom:9px;
+}
+
+select,
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    outline:none;
+    font-size:14px;
+    background:white;
+}
+
+select:focus,
+input:focus{
+    border-color:#2563eb;
+}
+
+.method-card{
+    display:none;
+    margin-top:12px;
+    padding:15px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+}
+
+.method-header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:12px;
+}
+
+.method-logo{
+    width:45px;
+    height:45px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:white;
+    border:1px solid #e2e8f0;
+    font-size:22px;
+    font-weight:900;
+}
+
+.method-name{
+    font-weight:800;
+}
+
+.method-sub{
+    color:#64748b;
+    font-size:12px;
+    margin-top:3px;
+}
+
+.info{
+    padding:11px;
+    background:white;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    margin-top:8px;
+}
+
+.info-label{
+    color:#64748b;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.info-value{
+    font-weight:800;
+    font-size:14px;
+    word-break:break-all;
+}
+
+.account-row{
+    display:flex;
+    gap:8px;
+}
+
+.account-row input{
+    flex:1;
+}
+
+.copy-btn{
+    border:0;
+    background:#2563eb;
+    color:white;
+    padding:0 14px;
+    border-radius:10px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.submit{
+    width:100%;
+    border:0;
+    background:#2563eb;
+    color:white;
+    padding:14px;
+    border-radius:11px;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.submit:disabled{
+    background:#94a3b8;
+    cursor:not-allowed;
+}
+
+.message{
+    display:none;
+    margin-top:14px;
+    padding:12px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.success{
+    background:#f0fdf4;
+    color:#15803d;
+    border:1px solid #bbf7d0;
+}
+
+.error{
+    background:#fef2f2;
+    color:#dc2626;
+    border:1px solid #fecaca;
+}
+
+.history{
+    margin-top:22px;
+}
+
+.history h2{
+    font-size:18px;
+    margin-bottom:12px;
+}
+
+.history-item{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:13px;
+    margin-bottom:9px;
+}
+
+.history-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-weight:800;
+}
+
+.history-bottom{
+    color:#64748b;
+    font-size:12px;
+    margin-top:6px;
+}
+
+.status{
+    text-transform:capitalize;
+}
+.status-pending{
+    color:#ca8a04;
+    background:#fef9c3;
+    padding:5px 9px;
+    border-radius:7px;
+}
+
+.status-approved{
+    color:#15803d;
+    background:#dcfce7;
+    padding:5px 9px;
+    border-radius:7px;
+}
+
+.status-rejected{
+    color:#dc2626;
+    background:#fee2e2;
+    padding:5px 9px;
+    border-radius:7px;
+}
+.status{
+    text-transform:capitalize;
+    font-weight:800;
+    padding:5px 9px;
+    border-radius:8px;
+    display:inline-block;
+}
+
+.status-pending{
+    color:#a16207;
+    background:#fef9c3;
+    border:1px solid #fde68a;
+}
+
+.status-approved{
+    color:#15803d;
+    background:#dcfce7;
+    border:1px solid #bbf7d0;
+}
+
+.status-rejected{
+    color:#dc2626;
+    background:#fee2e2;
+    border:1px solid #fecaca;
+}
+@media(max-width:500px){
+
+    .card{
+        padding:17px;
+    }
+
+    .header h1{
+        font-size:22px;
+    }
+
+    .account-row{
+        flex-direction:column;
+    }
+
+    .copy-btn{
+        padding:11px;
+    }
+}
+</style></head><body><div class="container"><div class="topbar">
+
+    <div class="logo">
+        Watch <span>&</span> Earn
+    </div>
+
+    <button
+        class="back"
+        onclick="window.location.href='dashboard.html'">
+        ← Dashboard
+    </button>
+
+</div>
+
+<div class="card">
+
+    <div class="header">
+
+        <div class="header-icon">
+            💸
+        </div>
+
+        <h1>
+            Withdraw Funds
+        </h1>
+
+        <p>
+            Select your preferred withdrawal method.
+        </p>
+
+    </div>
+
+    <div class="balance">
+
+        <small>
+            Available Balance
+        </small>
+
+        <strong id="balance">
+            Rs. 0.00
+        </strong>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Select Payment Method
+        </div>
+
+        <select id="method" onchange="showMethod()">
+
+            <option value="">
+                Select Payment Method
+            </option>
+
+            <option value="easypaisa">
+                Easypaisa
+            </option>
+
+            <option value="jazzcash">
+                JazzCash
+            </option>
+
+            <option value="upaisa">
+                UPaisa
+            </option>
+
+            <option value="usdt_bep20">
+                USDT BEP20
+            </option>
+
+            <option value="usdt_trc20">
+                USDT TRC20
+            </option>
+
+        </select>
+
+
+        <div id="methodCard" class="method-card">
+
+            <div class="method-header">
+
+                <div id="methodLogo" class="method-logo">
+                    💳
+                </div>
+
+                <div>
+
+                    <div id="methodName" class="method-name">
+                        Payment Method
+                    </div>
+
+                    <div id="methodSub" class="method-sub">
+                        Withdrawal account
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="info">
+
+                <div class="info-label">
+                    Enter Account / Wallet Address
+                </div>
+
+                <input
+                    type="text"
+                    id="account"
+                    placeholder="Enter account number or wallet address">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Withdrawal Amount
+        </div>
+
+        <input
+            type="number"
+            id="amount"
+            min="1"
+            step="0.01"
+            placeholder="Enter amount">
+
+    </div>
+
+
+    <button
+        class="submit"
+        id="submitBtn"
+        onclick="submitWithdrawal()">
+
+        Submit Withdrawal Request
+
+    </button>
+
+
+    <div
+        id="message"
+        class="message">
+    </div>
+
+
+    <div class="history">
+
+        <h2>
+            Withdrawal History
+        </h2>
+
+        <div id="historyList">
+            Loading...
+        </div>
+
+    </div>
+
+</div>
+
+</div><script>
+
+let walletBalance = 0;
+
+
+/* =========================
+   LOAD ACCOUNT
+========================= */
+
+async function loadAccount(){
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    credentials:"include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(!response.ok || !data.success){
+
+            window.location.href="index.html";
+            return;
+        }
+
+        walletBalance =
+            Number(data.user.wallet_balance || 0);
+
+        document.getElementById("balance")
+            .textContent =
+            "Rs. " +
+            walletBalance.toFixed(2);
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+}
+
+
+/* =========================
+   PAYMENT METHOD
+========================= */
+
+function showMethod(){
+
+    const method =
+        document.getElementById("method").value;
+
+    const card =
+        document.getElementById("methodCard");
+
+    const logo =
+        document.getElementById("methodLogo");
+
+    const name =
+        document.getElementById("methodName");
+
+    const sub =
+        document.getElementById("methodSub");
+
+    const account =
+        document.getElementById("account");
+
+
+    if(!method){
+
+        card.style.display="none";
+        return;
+    }
+
+    card.style.display="block";
+
+
+    if(method==="easypaisa"){
+
+        logo.textContent="E";
+        name.textContent="Easypaisa";
+        sub.textContent="Enter Easypaisa account number";
+        account.placeholder="03XXXXXXXXX";
+
+    }
+
+    else if(method==="jazzcash"){
+
+        logo.textContent="J";
+        name.textContent="JazzCash";
+        sub.textContent="Enter JazzCash account number";
+        account.placeholder="03XXXXXXXXX";
+
+    }
+
+    else if(method==="upaisa"){
+
+        logo.textContent="U";
+        name.textContent="UPaisa";
+        sub.textContent="Enter UPaisa account number";
+        account.placeholder="03XXXXXXXXX";
+
+    }
+
+    else if(method==="usdt_bep20"){
+
+        logo.textContent="₮";
+        name.textContent="USDT BEP20";
+        sub.textContent="Enter BEP20 wallet address";
+        account.placeholder="Enter BEP20 wallet address";
+
+    }
+
+    else if(method==="usdt_trc20"){
+
+        logo.textContent="₮";
+        name.textContent="USDT TRC20";
+        sub.textContent="Enter TRC20 wallet address";
+        account.placeholder="Enter TRC20 wallet address";
+
+    }
+
+}
+
+
+/* =========================
+   SUBMIT WITHDRAWAL
+========================= */
+
+async function submitWithdrawal(){
+
+    const amount =
+        Number(
+            document.getElementById("amount").value
+        );
+
+    const method =
+        document.getElementById("method").value;
+
+    const account =
+        document.getElementById("account")
+        .value
+        .trim();
+
+    const button =
+        document.getElementById("submitBtn");
+
+
+    if(!method){
+
+        showMessage(
+            "Please select a payment method.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(!account){
+
+        showMessage(
+            "Please enter your account number or wallet address.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(!Number.isFinite(amount) || amount<=0){
+
+        showMessage(
+            "Please enter a valid withdrawal amount.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(amount>walletBalance){
+
+        showMessage(
+            "Insufficient wallet balance.",
+            false
+        );
+
+        return;
+    }
+
+
+    button.disabled=true;
+    button.textContent="Submitting...";
+
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/withdrawals",
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    credentials:"include",
+                    body:JSON.stringify({
+
+                        amount:amount,
+
+                        method:method,
+
+                        account_number:account
+
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            showMessage(
+                data.message ||
+                "Unable to submit withdrawal.",
+                false
+            );
+
+            button.disabled=false;
+            button.textContent=
+                "Submit Withdrawal Request";
+
+            return;
+        }
+
+
+        walletBalance =
+            Number(data.wallet_balance || 0);
+
+        document.getElementById("balance")
+            .textContent =
+            "Rs. " +
+            walletBalance.toFixed(2);
+
+
+        document.getElementById("amount")
+            .value="";
+
+        document.getElementById("account")
+            .value="";
+
+        document.getElementById("method")
+            .value="";
+
+        document.getElementById("methodCard")
+            .style.display="none";
+
+
+        showMessage(
+            "✓ Withdrawal request submitted successfully.",
+            true
+        );
+
+
+        button.disabled=false;
+        button.textContent=
+            "Submit Withdrawal Request";
+
+
+        loadHistory();
+
+    }catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Server error. Please try again.",
+            false
+        );
+
+        button.disabled=false;
+        button.textContent=
+            "Submit Withdrawal Request";
+    }
+
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+async function loadHistory(){
+
+    const list =
+        document.getElementById("historyList");
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/withdrawals",
+                {
+                    credentials:"include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(!response.ok || !data.success){
+
+            list.innerHTML =
+                "<div class='history-item'>Unable to load history.</div>";
+
+            return;
+        }
+
+        const withdrawals =
+            data.withdrawals || [];
+
+        if(withdrawals.length === 0){
+
+            list.innerHTML =
+                "<div class='history-item'>No withdrawal history yet.</div>";
+
+            return;
+        }
+
+        list.innerHTML =
+            withdrawals.map(item => {
+
+                let statusText =
+                    String(item.status || "pending")
+                    .toLowerCase();
+
+                let statusClass =
+                    "status-pending";
+
+                if(statusText === "approved"){
+                    statusClass = "status-approved";
+                }
+
+                if(statusText === "rejected"){
+                    statusClass = "status-rejected";
+                }
+
+                return `
+
+                    <div class="history-item">
+
+                        <div class="history-top">
+
+                            <span>
+                                Rs. ${Number(item.amount).toFixed(2)}
+                            </span>
+
+                            <span class="status ${statusClass}">
+                                ${statusText}
+                            </span>
+
+                        </div>
+
+                        <div class="history-bottom">
+
+                            ${item.method || ""}
+
+                            <br>
+
+                            ${item.account_number || ""}
+
+                            <br>
+
+                            ${formatDate(item.created_at)}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }catch(error){
+
+        console.error(
+            "Withdrawal history error:",
+            error
+        );
+
+        list.innerHTML =
+            "<div class='history-item'>Unable to load history.</div>";
+    }
+}
+
+/* =========================
+   HELPERS
+========================= */
+
+function formatMethod(method){
+
+    if(method === "easypaisa"){
+        return "Easypaisa";
+    }
+
+    if(method === "jazzcash"){
+        return "JazzCash";
+    }
+
+    if(method === "upaisa"){
+        return "UPaisa";
+    }
+
+    if(method === "usdt_bep20"){
+        return "USDT BEP20";
+    }
+
+    if(method === "usdt_trc20"){
+        return "USDT TRC20";
+    }
+
+    return method || "Unknown";
+}
+
+
+function formatDate(date){
+
+    if(!date){
+        return "";
+    }
+
+    return new Date(
+        date.replace(" ","T")+"Z"
+    ).toLocaleString();
+}
+
+
+function showMessage(text,success){
+
+    const message =
+        document.getElementById("message");
+
+    message.style.display="block";
+
+    message.className =
+        "message " +
+        (success ? "success" : "error");
+
+    message.textContent=text;
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadAccount();
+loadHistory();
+
+</script></body>
+</html>
