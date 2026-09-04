@@ -1,7 +1,11 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Watch & Earn Dashboard</title><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watch & Earn Dashboard</title>
+
+<style>
 *{
     box-sizing:border-box;
 }
@@ -16,20 +20,22 @@ body{
 .dashboard{
     max-width:1150px;
     margin:auto;
-    padding:20px 15px 70px;
+    padding:18px 15px 95px;
 }
+
+/* ================= TOP BAR ================= */
 
 .top-actions{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:20px;
-    gap:15px;
+    margin-bottom:18px;
 }
 
 .brand{
     font-size:22px;
     font-weight:800;
+    color:#0f172a;
 }
 
 .brand span{
@@ -39,7 +45,7 @@ body{
 .logout-btn,
 .back-btn{
     border:0;
-    padding:10px 17px;
+    padding:10px 16px;
     border-radius:10px;
     cursor:pointer;
     font-weight:700;
@@ -55,17 +61,20 @@ body{
     color:#2563eb;
 }
 
+/* ================= HEADER ================= */
+
 .dashboard-header{
     background:linear-gradient(135deg,#2563eb,#1d4ed8);
     color:white;
-    padding:28px;
+    padding:27px;
     border-radius:22px;
-    margin-bottom:20px;
+    margin-bottom:18px;
+    box-shadow:0 10px 28px rgba(37,99,235,.18);
 }
 
 .dashboard-header h1{
     margin:0 0 7px;
-    font-size:28px;
+    font-size:27px;
 }
 
 .dashboard-header p{
@@ -74,66 +83,72 @@ body{
     font-size:14px;
 }
 
+/* ================= STATS ================= */
+
 .stats-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:15px;
-    margin-bottom:20px;
+    gap:14px;
+    margin-bottom:18px;
 }
 
 .stat-card{
     background:white;
     border:1px solid #e5e7eb;
     border-radius:17px;
-    padding:20px;
+    padding:18px;
     box-shadow:0 7px 22px rgba(15,23,42,.05);
 }
 
 .stat-icon{
-    font-size:25px;
-    margin-bottom:10px;
+    font-size:24px;
+    margin-bottom:9px;
 }
 
 .stat-card small{
     display:block;
     color:#64748b;
-    margin-bottom:6px;
+    margin-bottom:5px;
 }
 
 .stat-card strong{
-    font-size:21px;
+    font-size:20px;
 }
+
+/* ================= CONTENT ================= */
 
 .content-grid{
     display:grid;
-    grid-template-columns:1.4fr .8fr;
-    gap:20px;
+    grid-template-columns:1.35fr .85fr;
+    gap:18px;
 }
 
 .panel{
     background:white;
     border:1px solid #e5e7eb;
     border-radius:20px;
-    padding:22px;
+    padding:21px;
     box-shadow:0 7px 22px rgba(15,23,42,.05);
 }
 
 .panel h2{
-    margin:0 0 7px;
+    margin:0 0 6px;
     font-size:19px;
 }
 
 .panel-subtitle{
     color:#64748b;
     font-size:13px;
-    margin-bottom:20px;
+    margin-bottom:18px;
 }
+
+/* ================= ACCOUNT ================= */
 
 .user-row{
     display:flex;
     justify-content:space-between;
     gap:15px;
-    padding:13px 0;
+    padding:12px 0;
     border-bottom:1px solid #eef2f7;
 }
 
@@ -156,29 +171,58 @@ body{
     color:#dc2626!important;
 }
 
+/* ================= ACTIONS ================= */
+
 .action-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:12px;
+    gap:11px;
 }
 
 .action-btn{
-    display:block;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     width:100%;
+    min-height:52px;
     border:0;
     text-decoration:none;
     background:#eff6ff;
     color:#2563eb;
-    padding:14px;
-    border-radius:11px;
+    padding:13px 10px;
+    border-radius:12px;
     text-align:center;
     font-weight:700;
     cursor:pointer;
+    transition:.2s;
 }
 
 .action-btn:hover{
     background:#dbeafe;
+    transform:translateY(-1px);
 }
+
+/* Main four buttons */
+
+.main-action{
+    min-height:78px;
+    flex-direction:column;
+    gap:5px;
+    font-size:14px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+}
+
+.main-action .action-icon{
+    font-size:25px;
+}
+
+.main-action:hover{
+    background:#eff6ff;
+    border-color:#bfdbfe;
+}
+
+/* ================= ACTIVATION ================= */
 
 .activate-btn{
     display:block;
@@ -195,13 +239,9 @@ body{
     cursor:pointer;
 }
 
-.activate-btn:hover{
-    background:#ea580c;
-}
-
 .activation-box{
-    margin-top:20px;
-    padding:16px;
+    margin-top:18px;
+    padding:15px;
     border-radius:14px;
     background:#fff7ed;
     border:1px solid #fed7aa;
@@ -229,6 +269,8 @@ body{
 .activation-active p{
     color:#15803d;
 }
+
+/* ================= TASKS ================= */
 
 .task-card{
     background:#fff;
@@ -315,17 +357,27 @@ body{
     font-weight:700;
 }
 
+.empty-box{
+    text-align:center;
+    padding:35px 15px;
+    color:#64748b;
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.mobile-bottom-nav{
+    display:none;
+}
+
+/* ================= LOADING ================= */
+
 .loading{
     text-align:center;
     padding:70px 20px;
     color:#64748b;
 }
 
-.empty-box{
-    text-align:center;
-    padding:35px 15px;
-    color:#64748b;
-}
+/* ================= TABLET ================= */
 
 @media(max-width:850px){
 
@@ -338,54 +390,224 @@ body{
     }
 }
 
-@media(max-width:500px){
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+    body{
+        background:#f8fafc;
+    }
 
     .dashboard{
-        padding:15px 12px 60px;
+        padding:12px 12px 92px;
+    }
+
+    .top-actions{
+        margin-bottom:14px;
+    }
+
+    .brand{
+        font-size:19px;
+    }
+
+    .logout-btn{
+        padding:8px 12px;
+        font-size:12px;
     }
 
     .dashboard-header{
-        padding:22px;
+        padding:21px;
+        border-radius:19px;
+        margin-bottom:14px;
     }
 
     .dashboard-header h1{
-        font-size:23px;
+        font-size:21px;
+    }
+
+    .dashboard-header p{
+        font-size:12px;
+    }
+
+    /* 2 x 2 stats */
+
+    .stats-grid{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+        margin-bottom:14px;
     }
 
     .stat-card{
-        padding:15px;
+        padding:14px;
+        border-radius:15px;
+    }
+
+    .stat-icon{
+        font-size:21px;
+        margin-bottom:6px;
+    }
+
+    .stat-card small{
+        font-size:11px;
     }
 
     .stat-card strong{
-        font-size:18px;
+        font-size:17px;
+    }
+
+    /* Account first */
+
+    .content-grid{
+        display:flex;
+        flex-direction:column;
+        gap:14px;
     }
 
     .panel{
-        padding:17px;
+        padding:16px;
+        border-radius:18px;
     }
 
+    .panel h2{
+        font-size:17px;
+    }
+
+    .panel-subtitle{
+        font-size:12px;
+        margin-bottom:14px;
+    }
+
+    .user-row{
+        flex-direction:column;
+        gap:4px;
+        padding:11px 0;
+    }
+
+    .user-row strong{
+        text-align:left;
+        font-size:12px;
+    }
+
+    /*
+       Quick Actions first four:
+       Wallet / Earnings / Tasks / Referral
+    */
+
     .action-grid{
-        grid-template-columns:1fr;
+        grid-template-columns:1fr 1fr;
+        gap:9px;
+    }
+
+    .main-action{
+        min-height:76px;
+        border-radius:13px;
+    }
+
+    .main-action .action-icon{
+        font-size:24px;
+    }
+
+    .main-action .action-name{
+        font-size:12px;
+    }
+
+    .secondary-action{
+        min-height:48px;
+        font-size:12px;
+        background:#f8fafc;
+        border:1px solid #e2e8f0;
+    }
+
+    /* Bottom navigation */
+
+    .mobile-bottom-nav{
+        position:fixed;
+        display:flex;
+        left:0;
+        right:0;
+        bottom:0;
+        height:68px;
+        background:rgba(255,255,255,.97);
+        border-top:1px solid #e2e8f0;
+        box-shadow:0 -5px 20px rgba(15,23,42,.08);
+        z-index:9999;
+        justify-content:space-around;
+        align-items:center;
+        padding:5px 4px;
+    }
+
+    .mobile-bottom-nav a,
+    .mobile-bottom-nav button{
+        flex:1;
+        height:58px;
+        border:0;
+        background:none;
+        text-decoration:none;
+        color:#64748b;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        gap:3px;
+        font-size:10px;
+        font-weight:700;
+        cursor:pointer;
+    }
+
+    .mobile-bottom-nav .nav-icon{
+        font-size:20px;
+    }
+
+    .mobile-bottom-nav .active{
+        color:#2563eb;
     }
 
     .video-box iframe{
         height:220px;
     }
 
-    .user-row{
-        flex-direction:column;
-        gap:4px;
-    }
-
-    .user-row strong{
-        text-align:left;
+    .task-card{
+        padding:15px;
     }
 }
-</style></head><body><div id="app">
+
+/* ================= SMALL MOBILE ================= */
+
+@media(max-width:380px){
+
+    .dashboard{
+        padding-left:9px;
+        padding-right:9px;
+    }
+
+    .stat-card strong{
+        font-size:15px;
+    }
+
+    .main-action{
+        min-height:70px;
+    }
+
+    .main-action .action-icon{
+        font-size:21px;
+    }
+
+    .main-action .action-name{
+        font-size:11px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
     <div class="loading">
         Loading your account...
     </div>
-</div><script>
+</div>
+
+<script>
 
 let currentUser = null;
 
@@ -448,16 +670,25 @@ async function loadPage(){
 
 function showDashboard(user){
 
-    const balance =
-        Number(user.wallet_balance || 0).toFixed(2);
+   const balance =
+    Number(user.wallet_balance || 0).toFixed(2);
 
-    const active =
-        user.activation_status === "active";
+const totalDeposit =
+    Number(
+        user.total_deposit ||
+        user.wallet?.total_deposit ||
+        0
+    ).toFixed(2);
+
+const active =
+    user.activation_status === "active";
 
 
     document.getElementById("app").innerHTML=`
 
         <div class="dashboard">
+
+            <!-- TOP BAR -->
 
             <div class="top-actions">
 
@@ -474,6 +705,8 @@ function showDashboard(user){
             </div>
 
 
+            <!-- WELCOME -->
+
             <div class="dashboard-header">
 
                 <h1>
@@ -486,6 +719,8 @@ function showDashboard(user){
 
             </div>
 
+
+            <!-- STATS -->
 
             <div class="stats-grid">
 
@@ -533,7 +768,19 @@ function showDashboard(user){
 
                 </div>
 
+<div class="stat-card">
 
+    <div class="stat-icon">💳</div>
+
+    <small>
+        Total Deposit
+    </small>
+
+    <strong id="totalDeposit">
+        Rs. ${totalDeposit}
+    </strong>
+
+</div>
                 <div class="stat-card">
 
                     <div class="stat-icon">
@@ -553,117 +800,12 @@ function showDashboard(user){
             </div>
 
 
+            <!-- CONTENT -->
+
             <div class="content-grid">
 
 
-                <!-- ACCOUNT INFORMATION -->
-
-                <div class="panel">
-
-                    <h2>
-                        Account Information
-                    </h2>
-
-                    <div class="panel-subtitle">
-                        Your registered account details
-                    </div>
-
-
-                    <div class="user-row">
-                        <span>Full Name</span>
-
-                        <strong>
-                            ${escapeHTML(user.full_name)}
-                        </strong>
-                    </div>
-
-
-                    <div class="user-row">
-                        <span>Username</span>
-
-                        <strong>
-                            ${escapeHTML(user.username)}
-                        </strong>
-                    </div>
-
-
-                    <div class="user-row">
-                        <span>Email</span>
-
-                        <strong>
-                            ${escapeHTML(user.email)}
-                        </strong>
-                    </div>
-
-
-                    <div class="user-row">
-                        <span>Mobile</span>
-
-                        <strong>
-                            ${escapeHTML(user.mobile)}
-                        </strong>
-                    </div>
-
-
-                    <div class="user-row">
-
-                        <span>
-                            Account Status
-                        </span>
-
-                        <strong class="${active ? "status-active" : "status-inactive"}">
-                            ${active ? "Active" : "Inactive"}
-                        </strong>
-
-                    </div>
-
-
-                    ${
-                        active
-
-                        ?
-
-                        `
-                        <div class="activation-box activation-active">
-
-                            <h3>
-                                ✓ Account Activated
-                            </h3>
-
-                            <p>
-                                Your account is active.
-                                You can complete available video tasks.
-                            </p>
-
-                        </div>
-                        `
-
-                        :
-
-                        `
-                        <div class="activation-box">
-
-                            <h3>
-                                🔒 Account Not Activated
-                            </h3>
-
-                            <p>
-                                Your account is currently inactive.
-                                Activate your account before completing
-                                earning activities.
-                            </p>
-
-                        </div>
-
-                        <a
-                            href="activation.html"
-                            class="activate-btn">
-                            🔐 Activate Account
-                        </a>
-                        `
-                    }
-
-                </div>
+               
 
 
                 <!-- QUICK ACTIONS -->
@@ -675,64 +817,137 @@ function showDashboard(user){
                     </h2>
 
                     <div class="panel-subtitle">
-                        Manage your account
+                        Manage your account and earning activities
                     </div>
 
 
                     <div class="action-grid">
 
-                        <button
-                            class="action-btn"
-                            onclick="openTasks()">
-                            🎬 Watch Tasks
-                        </button>
-
+                        <!-- WALLET -->
 
                         <a
                             href="wallet.html"
-                            class="action-btn">
-                            💰 Wallet
+                            class="action-btn main-action">
+
+                            <span class="action-icon">
+                                💰
+                            </span>
+
+                            <span class="action-name">
+                                Wallet
+                            </span>
+
                         </a>
 
+
+                        <!-- EARNINGS -->
 
                         <a
                             href="earnings.html"
-                            class="action-btn">
-                            📊 Earnings
+                            class="action-btn main-action">
+
+                            <span class="action-icon">
+                                📈
+                            </span>
+
+                            <span class="action-name">
+                                Earnings
+                            </span>
+
                         </a>
 
 
-                        <a
-                            href="history.html"
-                            class="action-btn">
-                            📚 History
-                        </a>
+                        <!-- TASKS -->
+
+                        <button
+                            class="action-btn main-action"
+                            onclick="openTasks()">
+
+                            <span class="action-icon">
+                                🎬
+                            </span>
+
+                            <span class="action-name">
+                                Watch Tasks
+                            </span>
+
+                        </button>
 
 
-                        <a
-                            href="withdraw.html"
-                            class="action-btn">
-                            💸 Withdraw
-                        </a>
-
+                        <!-- REFERRALS -->
 
                         <a
                             href="referral.html"
-                            class="action-btn">
-                            🔗 Referral
+                            class="action-btn main-action">
+
+                            <span class="action-icon">
+                                👥
+                            </span>
+
+                            <span class="action-name">
+                                Referrals
+                            </span>
+
+                        </a>
+<!-- PROFILE -->
+
+<a
+    href="profile.html"
+    class="action-btn main-action">
+
+    <span class="action-icon">
+        👤
+    </span>
+
+    <span class="action-name">
+        Profile
+    </span>
+
+</a>
+
+                        <!-- HISTORY -->
+
+                        <a
+                            href="history.html"
+                            class="action-btn secondary-action">
+
+                            📚 History
+
                         </a>
 
+
+                        <!-- WITHDRAW -->
+
+                        <a
+                            href="withdraw.html"
+                            class="action-btn secondary-action">
+
+                            💸 Withdraw
+
+                        </a>
+
+
+                        <!-- SUPPORT -->
 
                         <a
                             href="support.html"
-                            class="action-btn">
+                            class="action-btn secondary-action">
+
                             🎧 Support
+
                         </a>
-<a
-    href="how-to-work.html"
-    class="action-btn">
-    📖 How To Work?
-</a>
+
+
+                        <!-- HOW TO WORK -->
+
+                        <a
+                            href="how-to-work.html"
+                            class="action-btn secondary-action">
+
+                            📖 How To Work
+
+                        </a>
+
                     </div>
 
                 </div>
@@ -740,6 +955,59 @@ function showDashboard(user){
             </div>
 
         </div>
+
+
+        <!-- MOBILE BOTTOM NAVIGATION -->
+
+        <nav class="mobile-bottom-nav">
+
+            <button
+                class="active"
+                onclick="loadPage()">
+
+                <span class="nav-icon">
+                    🏠
+                </span>
+
+                Home
+
+            </button>
+
+
+            <button
+                onclick="openTasks()">
+
+                <span class="nav-icon">
+                    🎬
+                </span>
+
+                Tasks
+
+            </button>
+
+
+            <a href="wallet.html">
+
+                <span class="nav-icon">
+                    💰
+                </span>
+
+                Wallet
+
+            </a>
+
+
+            <a href="referral.html">
+
+                <span class="nav-icon">
+                    👥
+                </span>
+
+                Referrals
+
+            </a>
+
+        </nav>
     `;
 
 
@@ -786,7 +1054,7 @@ async function loadTaskCount(){
 
 
 /* ================= TODAY EARNING ================= */
-
+ 
 async function loadTodayEarning(){
 
     try{
@@ -803,13 +1071,10 @@ async function loadTodayEarning(){
             return;
         }
 
-
         let total = 0;
-
 
         const today =
             new Date().toISOString().slice(0,10);
-
 
         data.transactions.forEach(transaction=>{
 
@@ -825,7 +1090,6 @@ async function loadTodayEarning(){
                         ""
                     ).slice(0,10);
 
-
                 if(transactionDate === today){
 
                     total += Number(transaction.amount);
@@ -835,10 +1099,8 @@ async function loadTodayEarning(){
 
         });
 
-
         const element =
             document.getElementById("todayEarning");
-
 
         if(element){
 
@@ -871,7 +1133,6 @@ async function openTasks(){
         const data =
             await response.json();
 
-
         if(!response.ok || !data.success){
 
             alert(
@@ -881,7 +1142,6 @@ async function openTasks(){
 
             return;
         }
-
 
         if(!data.tasks || data.tasks.length === 0){
 
@@ -935,12 +1195,10 @@ async function openTasks(){
             return;
         }
 
-
         const tasksHTML =
             data.tasks
             .map(task => createTaskHTML(task))
             .join("");
-
 
         document.getElementById("app").innerHTML=`
 
@@ -978,7 +1236,6 @@ async function openTasks(){
 
             </div>
         `;
-
 
         checkCompletedTasks(data.tasks);
 
@@ -1106,10 +1363,8 @@ async function watchTask(
         return;
     }
 
-
-    watchButton.disabled=true;
-    watchButton.textContent="Starting...";
-
+    watchButton.disabled = true;
+    watchButton.textContent = "Starting...";
 
     try{
 
@@ -1125,16 +1380,169 @@ async function watchTask(
                 }
             );
 
-
         const data =
             await response.json();
 
+        /*
+         * ==========================================
+         * ALREADY CLAIMED
+         * ==========================================
+         */
 
-        if(!response.ok || !data.success){
+        if(
+            data.success &&
+            data.status === "claimed"
+        ){
 
-            watchButton.disabled=false;
+            watchButton.disabled = true;
 
-            watchButton.textContent=
+            watchButton.textContent =
+                "✅ Reward Claimed";
+
+            const videoBox =
+                document.getElementById(
+                    "video-"+taskId
+                );
+
+            if(videoBox){
+                videoBox.style.display = "none";
+                videoBox.innerHTML = "";
+            }
+
+            const timerBox =
+                document.getElementById(
+                    "timer-"+taskId
+                );
+
+            if(timerBox){
+                timerBox.style.display = "none";
+            }
+
+            const claimArea =
+                document.getElementById(
+                    "claim-area-"+taskId
+                );
+
+            if(claimArea){
+                claimArea.style.display = "block";
+            }
+
+            const claimButton =
+                document.getElementById(
+                    "claim-"+taskId
+                );
+
+            if(claimButton){
+
+                claimButton.disabled = true;
+
+                claimButton.textContent =
+                    "✅ Reward Claimed";
+            }
+
+            const successElement =
+                document.getElementById(
+                    "success-"+taskId
+                );
+
+            if(successElement){
+
+                successElement.style.display = "block";
+
+                successElement.textContent =
+                    "✅ Reward already claimed for this video.";
+            }
+
+            return;
+        }
+
+        /*
+         * ==========================================
+         * ALREADY COMPLETED
+         * ==========================================
+         */
+
+        if(
+            data.success &&
+            data.status === "completed"
+        ){
+
+            watchButton.disabled = true;
+
+            watchButton.textContent =
+                "✅ Completed";
+
+            const videoBox =
+                document.getElementById(
+                    "video-"+taskId
+                );
+
+            if(videoBox){
+                videoBox.style.display = "none";
+                videoBox.innerHTML = "";
+            }
+
+            const timerBox =
+                document.getElementById(
+                    "timer-"+taskId
+                );
+
+            if(timerBox){
+                timerBox.style.display = "block";
+            }
+
+            const timerText =
+                document.getElementById(
+                    "timer-text-"+taskId
+                );
+
+            if(timerText){
+                timerText.textContent =
+                    "Completed ✓";
+            }
+
+            const claimArea =
+                document.getElementById(
+                    "claim-area-"+taskId
+                );
+
+            if(claimArea){
+                claimArea.style.display = "block";
+            }
+
+            const claimButton =
+                document.getElementById(
+                    "claim-"+taskId
+                );
+
+            if(claimButton){
+
+                claimButton.disabled = false;
+
+                claimButton.textContent =
+                    "💰 Claim Rs. " +
+                    Number(
+                        data.reward || reward
+                    ).toFixed(2);
+            }
+
+            return;
+        }
+
+        /*
+         * ==========================================
+         * NORMAL START ERROR
+         * ==========================================
+         */
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            watchButton.disabled = false;
+
+            watchButton.textContent =
                 "▶ Watch Video";
 
             alert(
@@ -1145,36 +1553,66 @@ async function watchTask(
             return;
         }
 
+        /*
+         * ==========================================
+         * YOUTUBE VIDEO
+         * ==========================================
+         */
 
         const youtubeURL =
             decodeURIComponent(encodedURL);
 
-
         const embedURL =
-            getYouTubeEmbedURL(youtubeURL);
-
+            getYouTubeEmbedURL(
+                youtubeURL
+            );
 
         const videoBox =
             document.getElementById(
                 "video-"+taskId
             );
 
+        if(!embedURL){
+
+            watchButton.disabled = false;
+
+            watchButton.textContent =
+                "▶ Watch Video";
+
+            alert(
+                "This YouTube link is invalid. Please contact support."
+            );
+
+            return;
+        }
 
         if(videoBox){
 
-            videoBox.style.display="block";
+            videoBox.style.display = "block";
 
-            videoBox.innerHTML=`
+            videoBox.innerHTML = `
 
                 <iframe
+                    id="youtube-frame-${taskId}"
                     src="${embedURL}"
                     title="Watch Video"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    width="100%"
+                    height="315"
+                    frameborder="0"
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen>
                 </iframe>
+
             `;
         }
 
+        /*
+         * ==========================================
+         * TIMER / CLAIM AREA
+         * ==========================================
+         */
 
         const timerBox =
             document.getElementById(
@@ -1196,89 +1634,96 @@ async function watchTask(
                 "claim-"+taskId
             );
 
-
         if(timerBox){
-            timerBox.style.display="block";
+            timerBox.style.display = "block";
         }
 
         if(claimArea){
-            claimArea.style.display="block";
+            claimArea.style.display = "block";
         }
 
-
         let remaining =
-            Number(data.remaining_seconds);
+            Number(
+                data.remaining_seconds
+            );
 
-
-        if(!remaining || remaining < 1){
+        if(
+            !Number.isFinite(remaining) ||
+            remaining < 1
+        ){
 
             remaining =
                 Number(durationMinutes) * 60;
         }
 
-
-        watchButton.textContent=
+        watchButton.textContent =
             "▶ Video Started";
 
+        /*
+         * ==========================================
+         * TIMER
+         * ==========================================
+         */
 
         const timer =
-            setInterval(()=>{
+            setInterval(
+                () => {
 
-                remaining--;
-
-
-                if(timerText){
-
-                    const minutes =
-                        Math.floor(remaining/60);
-
-                    const seconds =
-                        remaining%60;
-
-
-                    timerText.textContent =
-                        minutes +
-                        ":" +
-                        String(seconds)
-                        .padStart(2,"0");
-                }
-
-
-                if(remaining <= 0){
-
-                    clearInterval(timer);
-
+                    remaining--;
 
                     if(timerText){
 
+                        const minutes =
+                            Math.floor(
+                                remaining / 60
+                            );
+
+                        const seconds =
+                            remaining % 60;
+
                         timerText.textContent =
-                            "Completed ✓";
+                            minutes +
+                            ":" +
+                            String(seconds)
+                                .padStart(2,"0");
                     }
 
+                    if(remaining <= 0){
 
-                    if(claimButton){
+                        clearInterval(timer);
 
-                        claimButton.disabled=false;
+                        if(timerText){
 
-                        claimButton.textContent =
-                            "💰 Claim Rs. " +
-                            Number(reward).toFixed(2);
+                            timerText.textContent =
+                                "Completed ✓";
+                        }
+
+                        if(claimButton){
+
+                            claimButton.disabled =
+                                false;
+
+                            claimButton.textContent =
+                                "💰 Claim Rs. " +
+                                Number(
+                                    reward
+                                ).toFixed(2);
+                        }
+
+                        if(timerBox){
+
+                            timerBox.style.background =
+                                "#f0fdf4";
+
+                            timerBox.style.color =
+                                "#15803d";
+                        }
+
                     }
 
-
-                    if(timerBox){
-
-                        timerBox.style.background=
-                            "#f0fdf4";
-
-                        timerBox.style.color=
-                            "#15803d";
-                    }
-
-                }
-
-            },1000);
-
+                },
+                1000
+            );
 
     }catch(error){
 
@@ -1287,20 +1732,16 @@ async function watchTask(
             error
         );
 
+        watchButton.disabled = false;
 
-        watchButton.disabled=false;
-
-        watchButton.textContent=
+        watchButton.textContent =
             "▶ Watch Video";
-
 
         alert(
             "Unable to start video. Please try again."
         );
     }
 }
-
-
 /* ================= CLAIM REWARD ================= */
 
 async function claimReward(taskId){
@@ -1310,15 +1751,12 @@ async function claimReward(taskId){
             "claim-"+taskId
         );
 
-
     if(!claimButton){
         return;
     }
 
-
-    claimButton.disabled=true;
-    claimButton.textContent="Claiming...";
-
+    claimButton.disabled = true;
+    claimButton.textContent = "Claiming...";
 
     try{
 
@@ -1334,14 +1772,15 @@ async function claimReward(taskId){
                 }
             );
 
-
         const data =
             await response.json();
 
-
         if(!response.ok || !data.success){
 
-            claimButton.disabled=false;
+            claimButton.disabled = false;
+
+            claimButton.textContent =
+                "💰 Claim Reward";
 
             alert(
                 data.message ||
@@ -1351,14 +1790,19 @@ async function claimReward(taskId){
             return;
         }
 
-
+        /*
+         * Update wallet display with the balance
+         * returned by the server.
+         */
         const walletElement =
             document.getElementById(
                 "walletBalance"
             );
 
-
-        if(walletElement){
+        if(
+            walletElement &&
+            data.wallet_balance !== undefined
+        ){
 
             walletElement.textContent =
                 "Rs. " +
@@ -1367,44 +1811,44 @@ async function claimReward(taskId){
                 ).toFixed(2);
         }
 
+        /*
+         * Permanently show claimed state.
+         */
+        claimButton.disabled = true;
 
-        claimButton.disabled=true;
-
-        claimButton.textContent=
+        claimButton.textContent =
             "✅ Reward Claimed";
-
 
         const successElement =
             document.getElementById(
                 "success-"+taskId
             );
 
-
         if(successElement){
 
-            successElement.style.display="block";
+            successElement.style.display =
+                "block";
 
             successElement.textContent =
                 "🎉 Congratulations! Rs. " +
-                Number(data.reward).toFixed(2) +
-                " has been added to your wallet.";
+                Number(
+                    data.reward || 0
+                ).toFixed(2) +
+                " reward claimed successfully.";
         }
-
 
         const watchButton =
             document.getElementById(
                 "watch-"+taskId
             );
 
-
         if(watchButton){
 
-            watchButton.disabled=true;
+            watchButton.disabled = true;
 
-            watchButton.textContent=
-                "✅ Completed";
+            watchButton.textContent =
+                "✅ Reward Claimed";
         }
-
 
         loadTodayEarning();
 
@@ -1415,19 +1859,16 @@ async function claimReward(taskId){
             error
         );
 
+        claimButton.disabled = false;
 
-        claimButton.disabled=false;
-
-        claimButton.textContent=
+        claimButton.textContent =
             "💰 Claim Reward";
-
 
         alert(
             "Unable to claim reward. Please try again."
         );
     }
 }
-
 
 /* ================= CHECK COMPLETED TASKS ================= */
 
@@ -1445,21 +1886,17 @@ async function checkCompletedTasks(tasks){
                     }
                 );
 
-
             const data =
                 await response.json();
-
 
             if(!response.ok || !data.success){
                 continue;
             }
 
-
             const watchButton =
                 document.getElementById(
                     "watch-"+task.id
                 );
-
 
             if(data.status === "claimed"){
 
@@ -1471,23 +1908,19 @@ async function checkCompletedTasks(tasks){
                         "✅ Completed";
                 }
 
-
                 const claimArea =
                     document.getElementById(
                         "claim-area-"+task.id
                     );
 
-
                 if(claimArea){
                     claimArea.style.display="block";
                 }
-
 
                 const claimButton =
                     document.getElementById(
                         "claim-"+task.id
                     );
-
 
                 if(claimButton){
 
@@ -1507,57 +1940,167 @@ async function checkCompletedTasks(tasks){
         }
     }
 }
+
+
+
 /* ================= YOUTUBE ================= */
 
 function getYouTubeEmbedURL(url){
 
     try{
 
-        const parsed = new URL(url);
+        if(!url){
+            return null;
+        }
+
+        url = String(url).trim();
+
+        // Agar admin ne direct video ID dali ho
+        if(
+            /^[a-zA-Z0-9_-]{11}$/.test(url)
+        ){
+
+            return (
+                "https://www.youtube.com/embed/" +
+                url +
+                "?rel=0&playsinline=1"
+            );
+        }
+
+
+        // URL mein protocol na ho to add karo
+        if(
+            !url.startsWith("http://") &&
+            !url.startsWith("https://")
+        ){
+
+            url = "https://" + url;
+        }
+
+
+        const parsed =
+            new URL(url);
+
+        const hostname =
+            parsed.hostname.toLowerCase();
+
+        const pathname =
+            parsed.pathname;
+
 
         let videoId = "";
 
-        // Normal YouTube URL
+
+        /* ================= YOUTUBE.COM ================= */
+
         if(
-            parsed.hostname.includes("youtube.com") &&
-            parsed.searchParams.get("v")
+            hostname === "youtube.com" ||
+            hostname === "www.youtube.com" ||
+            hostname === "m.youtube.com"
         ){
 
-            videoId =
-                parsed.searchParams.get("v");
+            // https://www.youtube.com/watch?v=XXXXXXXXXXX
+
+            if(
+                pathname === "/watch"
+            ){
+
+                videoId =
+                    parsed.searchParams.get("v") || "";
+
+            }
+
+
+            // https://www.youtube.com/shorts/XXXXXXXXXXX
+
+            else if(
+                pathname.startsWith("/shorts/")
+            ){
+
+                videoId =
+                    pathname
+                    .split("/shorts/")[1]
+                    .split("/")[0];
+
+            }
+
+
+            // https://www.youtube.com/embed/XXXXXXXXXXX
+
+            else if(
+                pathname.startsWith("/embed/")
+            ){
+
+                videoId =
+                    pathname
+                    .split("/embed/")[1]
+                    .split("/")[0];
+
+            }
+
+
+            // https://www.youtube.com/live/XXXXXXXXXXX
+
+            else if(
+                pathname.startsWith("/live/")
+            ){
+
+                videoId =
+                    pathname
+                    .split("/live/")[1]
+                    .split("/")[0];
+
+            }
+
         }
 
-        // YouTube Shorts
+
+        /* ================= YOUTU.BE ================= */
+
         else if(
-            parsed.hostname.includes("youtube.com") &&
-            parsed.pathname.includes("/shorts/")
+            hostname === "youtu.be"
         ){
 
             videoId =
-                parsed.pathname
-                .split("/shorts/")[1]
+                pathname
+                .replace(/^\/+/,"")
                 .split("/")[0];
+
         }
 
-        // YouTube short URL
-        else if(
-            parsed.hostname.includes("youtu.be")
+
+        /* ================= VALIDATE ID ================= */
+
+        videoId =
+            String(videoId)
+            .trim()
+            .split("?")[0]
+            .split("&")[0];
+
+
+        if(
+            !/^[a-zA-Z0-9_-]{11}$/.test(videoId)
         ){
 
-            videoId =
-                parsed.pathname
-                .substring(1)
-                .split("/")[0];
+            console.error(
+                "Invalid YouTube video ID:",
+                videoId,
+                "Original URL:",
+                url
+            );
+
+            return null;
         }
 
-        if(!videoId){
 
-            return url;
-        }
+        /* ================= EMBED URL ================= */
 
-        return "https://www.youtube.com/embed/" +
-            videoId +
-            "?rel=0";
+        return (
+            "https://www.youtube.com/embed/" +
+            encodeURIComponent(videoId) +
+            "?rel=0&playsinline=1"
+        );
+
 
     }catch(error){
 
@@ -1566,11 +2109,9 @@ function getYouTubeEmbedURL(url){
             error
         );
 
-        return url;
+        return null;
     }
 }
-
-
 
 /* ================= LOGOUT ================= */
 
@@ -1587,10 +2128,8 @@ async function logoutUser(){
                 }
             );
 
-
         const data =
             await response.json();
-
 
         if(data.success){
 
@@ -1631,5 +2170,7 @@ function escapeHTML(value){
 
 loadPage();
 
-</script></body>
+</script>
+
+</body>
 </html>

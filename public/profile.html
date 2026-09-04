@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>My Profile - Watch & Earn</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#f5f7fb;
+    color:#0f172a;
+    font-family:Arial,sans-serif;
+}
+
+.profile-page{
+    max-width:850px;
+    margin:auto;
+    padding:18px 15px 40px;
+}
+
+/* ================= TOP BAR ================= */
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.brand{
+    font-size:22px;
+    font-weight:800;
+}
+
+.brand span{
+    color:#2563eb;
+}
+
+.back-btn{
+    border:0;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:10px 16px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+/* ================= HEADER ================= */
+
+.profile-header{
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    color:white;
+
+    padding:28px;
+
+    border-radius:22px;
+
+    margin-bottom:18px;
+
+    box-shadow:
+        0 10px 28px
+        rgba(37,99,235,.18);
+}
+
+.profile-header h1{
+    margin:0 0 7px;
+    font-size:27px;
+}
+
+.profile-header p{
+    margin:0;
+    opacity:.9;
+    font-size:14px;
+}
+
+/* ================= PROFILE CARD ================= */
+
+.profile-card{
+    background:white;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:20px;
+
+    padding:22px;
+
+    box-shadow:
+        0 7px 22px
+        rgba(15,23,42,.05);
+}
+
+/* ================= PROFILE ROW ================= */
+
+.profile-row{
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    padding:17px 0;
+
+    border-bottom:1px solid #eef2f7;
+}
+
+.profile-row:last-child{
+    border-bottom:0;
+}
+
+.profile-icon{
+    width:45px;
+    height:45px;
+
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#eff6ff;
+
+    border-radius:13px;
+
+    font-size:21px;
+}
+
+.profile-info{
+    flex:1;
+    min-width:0;
+}
+
+.profile-label{
+    display:block;
+
+    color:#64748b;
+
+    font-size:12px;
+
+    margin-bottom:5px;
+}
+
+.profile-value{
+    display:block;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    word-break:break-word;
+}
+
+/* ================= STATUS ================= */
+
+.status-active{
+    display:inline-block;
+
+    color:#15803d;
+
+    background:#f0fdf4;
+
+    border:1px solid #bbf7d0;
+
+    padding:6px 11px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+.status-inactive{
+    display:inline-block;
+
+    color:#dc2626;
+
+    background:#fef2f2;
+
+    border:1px solid #fecaca;
+
+    padding:6px 11px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+/* ================= LOADING ================= */
+
+.loading{
+    text-align:center;
+
+    padding:70px 20px;
+
+    color:#64748b;
+}
+
+/* ================= ERROR ================= */
+
+.error-box{
+    background:white;
+
+    border:1px solid #fecaca;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    text-align:center;
+
+    color:#dc2626;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+    .profile-page{
+        padding:12px 12px 30px;
+    }
+
+    .top-bar{
+        margin-bottom:14px;
+    }
+
+    .brand{
+        font-size:19px;
+    }
+
+    .back-btn{
+        padding:8px 12px;
+        font-size:12px;
+    }
+
+    .profile-header{
+        padding:21px;
+
+        border-radius:19px;
+    }
+
+    .profile-header h1{
+        font-size:22px;
+    }
+
+    .profile-header p{
+        font-size:12px;
+    }
+
+    .profile-card{
+        padding:15px;
+        border-radius:18px;
+    }
+
+    .profile-row{
+        padding:14px 0;
+        gap:12px;
+    }
+
+    .profile-icon{
+        width:40px;
+        height:40px;
+        font-size:19px;
+    }
+
+    .profile-label{
+        font-size:11px;
+    }
+
+    .profile-value{
+        font-size:13px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="app">
+
+    <div class="loading">
+        Loading your profile...
+    </div>
+
+</div>
+
+
+<script>
+
+/* ================= LOAD PROFILE ================= */
+
+async function loadProfile(){
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/me",
+                {
+                    method:"GET",
+                    credentials:"include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+
+        if(
+            response.ok &&
+            data.success &&
+            data.user
+        ){
+
+            showProfile(
+                data.user
+            );
+
+        }else{
+
+            window.location.href =
+                "login.html";
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Profile error:",
+            error
+        );
+
+        document.getElementById(
+            "app"
+        ).innerHTML = `
+
+            <div class="profile-page">
+
+                <div class="error-box">
+
+                    <h2>
+                        Unable to load profile
+                    </h2>
+
+                    <p>
+                        Please make sure the server
+                        is running and try again.
+                    </p>
+
+                    <button
+                        class="back-btn"
+                        onclick="loadProfile()">
+
+                        Try Again
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ================= SHOW PROFILE ================= */
+
+function showProfile(user){
+
+    const active =
+        String(
+            user.activation_status || ""
+        ).toLowerCase() === "active";
+
+
+    document.getElementById(
+        "app"
+    ).innerHTML = `
+
+        <div class="profile-page">
+
+
+            <!-- TOP BAR -->
+
+            <div class="top-bar">
+
+                <div class="brand">
+
+                    Watch
+                    <span>&</span>
+                    Earn
+
+                </div>
+
+
+                <a
+                    href="dashboard.html"
+                    class="back-btn">
+
+                    ← Dashboard
+
+                </a>
+
+            </div>
+
+
+            <!-- HEADER -->
+
+            <div class="profile-header">
+
+                <h1>
+                    👤 My Profile
+                </h1>
+
+                <p>
+                    View your registered account details
+                </p>
+
+            </div>
+
+
+            <!-- PROFILE DETAILS -->
+
+            <div class="profile-card">
+
+
+                <!-- FULL NAME -->
+
+                <div class="profile-row">
+
+                    <div class="profile-icon">
+                        👤
+                    </div>
+
+                    <div class="profile-info">
+
+                        <span class="profile-label">
+                            Full Name
+                        </span>
+
+                        <span class="profile-value">
+                            ${escapeHTML(
+                                user.full_name
+                            )}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- USERNAME -->
+
+                <div class="profile-row">
+
+                    <div class="profile-icon">
+                        🔖
+                    </div>
+
+                    <div class="profile-info">
+
+                        <span class="profile-label">
+                            Username
+                        </span>
+
+                        <span class="profile-value">
+                            ${escapeHTML(
+                                user.username
+                            )}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="profile-row">
+
+                    <div class="profile-icon">
+                        📧
+                    </div>
+
+                    <div class="profile-info">
+
+                        <span class="profile-label">
+                            Email Address
+                        </span>
+
+                        <span class="profile-value">
+                            ${escapeHTML(
+                                user.email
+                            )}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MOBILE -->
+
+                <div class="profile-row">
+
+                    <div class="profile-icon">
+                        📱
+                    </div>
+
+                    <div class="profile-info">
+
+                        <span class="profile-label">
+                            Mobile Number
+                        </span>
+
+                        <span class="profile-value">
+                            ${escapeHTML(
+                                user.mobile
+                            )}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACCOUNT STATUS -->
+
+                <div class="profile-row">
+
+                    <div class="profile-icon">
+                        ${active ? "✅" : "🔒"}
+                    </div>
+
+                    <div class="profile-info">
+
+                        <span class="profile-label">
+                            Account Status
+                        </span>
+
+                        <span
+                            class="${
+                                active
+                                ? "status-active"
+                                : "status-inactive"
+                            }">
+
+                            ${
+                                active
+                                ? "Active"
+                                : "Inactive"
+                            }
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ================= ESCAPE HTML ================= */
+
+function escapeHTML(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* ================= START ================= */
+
+loadProfile();
+
+</script>
+
+</body>
+
+</html>

@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wallet - Watch & Earn</title>
-
-<style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Wallet - Watch & Earn</title><style>
 *{
     box-sizing:border-box;
     margin:0;
@@ -140,6 +136,7 @@ body{
     color:#64748b;
     font-size:12px;
     margin-top:5px;
+    line-height:1.7;
 }
 
 .deposit{
@@ -148,6 +145,14 @@ body{
 
 .withdraw{
     color:#dc2626;
+}
+
+.pending{
+    color:#d97706;
+}
+
+.status{
+    font-weight:700;
 }
 
 .empty{
@@ -188,101 +193,93 @@ body{
         font-size:14px;
     }
 }
-</style>
-</head>
+</style></head><body><div class="container"><div class="topbar">
 
-<body>
+    <div class="logo">
+        Watch <span>&</span> Earn
+    </div>
 
-<div class="container">
+    <button
+        class="back"
+        onclick="window.location.href='dashboard.html'">
+        ← Dashboard
+    </button>
 
-    <div class="topbar">
+</div>
 
-        <div class="logo">
-            Watch <span>&</span> Earn
+
+<div class="balance-card">
+
+    <small>
+        Available Wallet Balance
+    </small>
+
+    <h1 id="balance">
+        Rs. 0.00
+    </h1>
+
+</div>
+
+
+<div class="action-grid">
+
+    <a href="deposit.html" class="action">
+
+        <div class="action-icon">
+            💰
         </div>
 
-        <button
-            class="back"
-            onclick="window.location.href='dashboard.html'">
-            ← Dashboard
-        </button>
+        <strong>
+            Deposit
+        </strong>
 
-    </div>
+        <p>
+            Add funds to your wallet
+        </p>
 
-
-    <div class="balance-card">
-
-        <small>
-            Available Wallet Balance
-        </small>
-
-        <h1 id="balance">
-            Rs. 0.00
-        </h1>
-
-    </div>
+    </a>
 
 
-    <div class="action-grid">
+    <a href="withdraw.html" class="action">
 
-        <a href="deposit.html" class="action">
-
-            <div class="action-icon">
-                💰
-            </div>
-
-            <strong>
-                Deposit
-            </strong>
-
-            <p>
-                Add funds to your wallet
-            </p>
-
-        </a>
-
-
-        <a href="withdraw.html" class="action">
-
-            <div class="action-icon">
-                💸
-            </div>
-
-            <strong>
-                Withdraw
-            </strong>
-
-            <p>
-                Withdraw your available balance
-            </p>
-
-        </a>
-
-    </div>
-
-
-    <div class="panel">
-
-        <h2>
-            Wallet Transactions
-        </h2>
-
-        <div class="subtitle">
-            Your latest wallet activity
+        <div class="action-icon">
+            💸
         </div>
 
-        <div id="transactions">
-            <div class="loading">
-                Loading transactions...
-            </div>
+        <strong>
+            Withdraw
+        </strong>
+
+        <p>
+            Withdraw your available balance
+        </p>
+
+    </a>
+
+</div>
+
+
+<div class="panel">
+
+    <h2>
+        Wallet Transactions
+    </h2>
+
+    <div class="subtitle">
+        Your latest wallet activity
+    </div>
+
+    <div id="transactions">
+
+        <div class="loading">
+            Loading transactions...
         </div>
 
     </div>
 
 </div>
 
-
-<script>
+</div><script>
 
 async function loadWallet(){
 
@@ -301,7 +298,7 @@ async function loadWallet(){
 
         if(!response.ok || !data.success){
 
-            window.location.href="login.html";
+            window.location.href = "login.html";
             return;
         }
 
@@ -314,8 +311,7 @@ async function loadWallet(){
             .textContent =
             "Rs. " + balance.toFixed(2);
 
-
-        loadTransactions();
+        await loadTransactions();
 
     }catch(error){
 
@@ -325,7 +321,7 @@ async function loadWallet(){
         );
 
         document.getElementById("transactions")
-            .innerHTML=`
+            .innerHTML = `
                 <div class="empty">
                     Unable to load wallet.
                 </div>
@@ -354,7 +350,7 @@ async function loadTransactions(){
 
         if(!response.ok || !data.success){
 
-            box.innerHTML=`
+            box.innerHTML = `
                 <div class="empty">
                     Unable to load transactions.
                 </div>
@@ -370,7 +366,7 @@ async function loadTransactions(){
 
         if(transactions.length === 0){
 
-            box.innerHTML=`
+            box.innerHTML = `
                 <div class="empty">
                     No wallet transactions yet.
                 </div>
@@ -385,38 +381,157 @@ async function loadTransactions(){
             .slice(0,20)
             .map(transaction => {
 
-                let amount =
+                const amount =
                     Number(
                         transaction.amount || 0
                     );
 
-                let type =
+                const type =
                     String(
                         transaction.type || ""
-                    );
+                    ).toLowerCase();
+
+                const status =
+                    String(
+                        transaction.status || ""
+                    ).toLowerCase();
 
 
                 let className = "";
 
                 let sign = "";
 
-                if(
-                    type === "earning" ||
-                    type === "deposit" ||
-                    type === "deposit_approved"
-                ){
+                let statusText = "";
 
-                    className="deposit";
-                    sign="+";
 
-                }else if(
+                /* =========================
+                   DEPOSIT
+                ========================== */
+
+                if(type === "deposit"){
+
+                    if(status === "approved"){
+
+                        className = "deposit";
+                        sign = "+";
+                        statusText = "Approved";
+
+                    }else if(status === "rejected"){
+
+                        className = "withdraw";
+                        sign = "";
+                        statusText = "Rejected";
+
+                    }else{
+
+                        className = "pending";
+                        sign = "";
+                        statusText = "Pending";
+
+                    }
+
+                }
+
+
+                /* =========================
+                   VIDEO EARNING
+                ========================== */
+
+                else if(type === "earning"){
+
+                    className = "deposit";
+                    sign = "+";
+                    statusText = "Successful";
+
+                }
+
+
+                /* =========================
+                   APPROVED DEPOSIT
+                ========================== */
+
+                else if(type === "deposit_approved"){
+
+                    className = "deposit";
+                    sign = "+";
+                    statusText = "Approved";
+
+                }
+
+
+                /* =========================
+                   WITHDRAWAL
+                ========================== */
+
+                else if(
                     type === "withdrawal" ||
                     type === "withdrawal_request"
                 ){
 
-                    className="withdraw";
-                    sign="-";
+                    if(status === "approved"){
+
+                        className = "withdraw";
+                        sign = "-";
+                        statusText = "Approved";
+
+                    }else if(status === "rejected"){
+
+                        className = "withdraw";
+                        sign = "";
+                        statusText = "Rejected";
+
+                    }else{
+
+                        className = "pending";
+                        sign = "";
+                        statusText = "Pending";
+
+                    }
+
                 }
+
+
+                /* =========================
+                   WITHDRAWAL REFUND
+                ========================== */
+
+                else if(type === "withdrawal_refund"){
+
+                    className = "deposit";
+                    sign = "+";
+                    statusText = "Refunded";
+
+                }
+
+
+                /* =========================
+                   UNKNOWN TYPE
+                ========================== */
+
+                else{
+
+                    className = "";
+
+                    sign = "";
+
+                    statusText =
+                        status || "Pending";
+
+                }
+
+
+                const description =
+                    escapeHTML(
+                        transaction.description || ""
+                    );
+
+
+                const formattedDate =
+                    transaction.created_at
+                    ? formatDate(
+                        transaction.created_at
+                    )
+                    : "";
 
 
                 return `
@@ -430,25 +545,36 @@ async function loadTransactions(){
                             </span>
 
                             <span class="${className}">
+
                                 ${sign}
-                                Rs. ${Math.abs(amount).toFixed(2)}
+
+                                Rs.
+                                ${Math.abs(amount).toFixed(2)}
+
                             </span>
 
                         </div>
 
+
                         <div class="transaction-bottom">
 
                             ${
-                                transaction.description ||
-                                ""
+                                description
                             }
 
+                            <br>
+
+                            <span class="status">
+
+                                Status:
+                                ${statusText}
+
+                            </span>
+
                             ${
-                                transaction.created_at
+                                formattedDate
                                 ? "<br>" +
-                                  formatDate(
-                                      transaction.created_at
-                                  )
+                                  formattedDate
                                 : ""
                             }
 
@@ -469,7 +595,7 @@ async function loadTransactions(){
             error
         );
 
-        box.innerHTML=`
+        box.innerHTML = `
             <div class="empty">
                 Unable to load transactions.
             </div>
@@ -495,14 +621,14 @@ function formatType(type){
             "⏳ Withdrawal Pending",
 
         withdrawal:
-            "✅ Withdrawal Approved",
+            "💸 Withdrawal",
 
         withdrawal_refund:
             "↩️ Withdrawal Refunded"
 
     };
 
-    return names[type] || type;
+    return names[type] || "Wallet Transaction";
 }
 
 
@@ -514,20 +640,58 @@ function formatDate(date){
 
     try{
 
-        return new Date(
-            String(date).replace(" ","T")+"Z"
-        ).toLocaleString();
+        const parsed =
+            new Date(date);
+
+        if(
+            Number.isNaN(
+                parsed.getTime()
+            )
+        ){
+
+            return "";
+        }
+
+        return parsed.toLocaleString(
+            "en-PK",
+            {
+                dateStyle:"medium",
+                timeStyle:"short"
+            }
+        );
 
     }catch(error){
 
-        return date;
+        console.error(
+            "Date format error:",
+            error
+        );
+
+        return "";
     }
+}
+
+
+function escapeHTML(value){
+
+    if(
+        value === undefined ||
+        value === null
+    ){
+
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 }
 
 
 loadWallet();
 
-</script>
-
-</body>
+</script></body>
 </html>

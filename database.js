@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Pool } = require("pg");
 
 const connectionString = process.env.DATABASE_URL;
@@ -97,6 +98,17 @@ async function initDatabase() {
             amount NUMERIC NOT NULL,
             description TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS wallet_settlements (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id),
+            transaction_id INTEGER REFERENCES transactions(id),
+            amount NUMERIC NOT NULL,
+            status TEXT NOT NULL DEFAULT 'pending',
+            settled_by INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            settled_at TIMESTAMP
         );
     `);
 
