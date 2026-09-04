@@ -562,40 +562,65 @@ async function api(
 
 
 /* ================= DASHBOARD ================= */
+async function loadDashboard() {
+    try {
+        const data = await api("/api/admin/dashboard");
 
-async function loadDashboard(){
+        console.log("ADMIN DASHBOARD:", data);
 
-    try{
+        const stats = data.stats || {};
 
-        const data =
-            await api(
-                "/api/admin/dashboard"
-            );
+        const totalUsers =
+            Number(stats.users?.total ?? 0);
 
-document.getElementById("totalUsers").textContent =
-    data.stats?.users?.total || 0;
+        const activeUsers =
+            Number(stats.users?.active ?? 0);
 
-document.getElementById("activeUsers").textContent =
-    data.stats?.users?.active || 0;
+        const pendingWithdrawals =
+            Number(stats.withdrawals?.pending ?? 0);
 
-document.getElementById("pendingWithdrawals").textContent =
-    data.stats?.withdrawals?.pending || 0;
+        const pendingActivations =
+            Number(stats.activations?.pending ?? 0);
 
-document.getElementById("pendingActivations").textContent =
-    data.stats?.activations?.pending || 0;
-    }catch(error){
+        const totalUsersEl =
+            document.getElementById("totalUsers");
+
+        const activeUsersEl =
+            document.getElementById("activeUsers");
+
+        const pendingWithdrawalsEl =
+            document.getElementById("pendingWithdrawals");
+
+        const pendingActivationsEl =
+            document.getElementById("pendingActivations");
+
+        if (totalUsersEl) {
+            totalUsersEl.textContent = totalUsers;
+        }
+
+        if (activeUsersEl) {
+            activeUsersEl.textContent = activeUsers;
+        }
+
+        if (pendingWithdrawalsEl) {
+            pendingWithdrawalsEl.textContent =
+                pendingWithdrawals;
+        }
+
+        if (pendingActivationsEl) {
+            pendingActivationsEl.textContent =
+                pendingActivations;
+        }
+
+    } catch (error) {
 
         console.error(
-            "Dashboard error:",
+            "Dashboard stats error:",
             error
         );
 
     }
-
 }
-
-
-
 /* ================= USERS ================= */
 
 async function loadUsers(){
