@@ -2715,7 +2715,9 @@ app.post("/api/admin/login", (req, res) => {
 /* =========================================================
    ADMIN LOGOUT
 ========================================================= */
-
+app.get("/admin-login", (req, res) => {
+    res.sendFile(path.join(__dirname, "admin-login.html"));
+});
 app.post(
     "/api/admin/logout",
     requireAdmin,
