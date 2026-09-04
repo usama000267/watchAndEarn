@@ -147,7 +147,7 @@ function requireUser(req, res, next) {
 function requireAdmin(req, res, next) {
     if (
         !req.session ||
-        req.session.admin !== true
+        req.session.isAdmin !== true
     ) {
         return res.status(401).json({
             success: false,
