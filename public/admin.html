@@ -287,7 +287,26 @@ th{
     </strong>
 
 </div>
+<!-- TOTAL BUSINESS BUTTON -->
+<div style="margin:20px 0;">
+    <button
+        type="button"
+        onclick="window.location.href='/admin/total-business'"
+        style="
+            width:100%;
+            padding:15px;
+            border:none;
+            border-radius:12px;
+            cursor:pointer;
+            font-size:16px;
+            font-weight:700;
+        "
+    >
+        💰 Total Business
+    </button>
+</div>
 
+</div>
 </div><!-- ================= ACTIVATION PAYMENTS ================= --><div class="section"><h2>
     Activation Payments
 </h2>
@@ -1723,5 +1742,141 @@ async function loadAll(){
 
 
 loadAll();
+async function loadTotalBusiness() {
+    try {
+        const response = await api("/api/admin/total-business");
 
+        if (!response || !response.success) {
+            alert(
+                response?.message ||
+                "Unable to load total business."
+            );
+            return;
+        }
+
+        const totalBusinessEl =
+            document.getElementById("totalBusiness");
+
+        if (totalBusinessEl) {
+            totalBusinessEl.textContent =
+                "Rs " +
+                Number(
+                    response.totalBusiness || 0
+                ).toLocaleString();
+        }
+
+        const historyEl =
+            document.getElementById(
+                "totalBusinessHistory"
+            );
+
+        if (!historyEl) {
+            return;
+        }
+
+        const payments =
+            Array.isArray(response.payments)
+                ? response.payments
+                : [];
+
+        if (payments.length === 0) {
+            historyEl.innerHTML = `
+                <tr>
+                    <td colspan="7">
+                        No approved activation payments found.
+                    </td>
+                </tr>
+            `;
+        } else {
+            historyEl.innerHTML =
+                payments.map(payment => `
+                    <tr>
+                        <td>
+                            ${escapeHtml(
+                                payment.full_name ||
+                                payment.username ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                payment.email || "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                payment.mobile || "-"
+                            )}
+                        </td>
+
+                        <td>
+                            Rs ${Number(
+                                payment.amount || 0
+                            ).toLocaleString()}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                payment.payment_method || "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${
+                                payment.submitted_at
+                                    ? new Date(
+                                        payment.submitted_at
+                                      ).toLocaleString()
+                                    : "-"
+                            }
+                        </td>
+
+                        <td>
+                            <span class="status approved">
+                                Approved
+                            </span>
+                        </td>
+                    </tr>
+                `).join("");
+        }
+
+        const section =
+            document.getElementById(
+                "totalBusinessSection"
+            );
+
+        if (section) {
+            section.style.display = "block";
+
+            section.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+    } catch (error) {
+        console.error(
+            "TOTAL BUSINESS ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to load total business."
+        );
+    }
+}
+
+
+function closeTotalBusiness() {
+    const section =
+        document.getElementById(
+            "totalBusinessSection"
+        );
+
+    if (section) {
+        section.style.display = "none";
+    }
+}
 </script></body></html>

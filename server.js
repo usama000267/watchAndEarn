@@ -173,6 +173,11 @@ app.get("/admin", (req, res) => {
         path.join(__dirname, "public", "admin.html")
     );
 });
+app.get("/admin/total-business", requireAdmin, (req, res) => {
+    res.sendFile(
+        path.join(__dirname, "public", "total-business.html")
+    );
+});
 
 app.get("/login", (req, res) => {
     const file = path.join(__dirname, "public", "login.html");
@@ -2927,7 +2932,95 @@ app.get(
         }
     }
 );
+/* =========================================================
+   ADMIN TOTAL BUSINESS
+   Only APPROVED activation payments are counted
+========================================================= */
 
+app.get(
+    "/api/admin/total-business",
+    requireAdmin,
+    async (req, res) => {
+        try {
+            const business = await db.query(
+                `
+                SELECT
+                    ap.id,
+                    ap.user_id,
+                    ap.amount,
+                    ap.payment_method,
+                    ap.transaction_reference,
+                    ap.status,
+                    ap.submitted_at,
+                    u.username,
+                    u.full_name,
+                    u.email,
+                    u.mobile
+                FROM activation_payments ap
+                JOIN users u
+                    ON u.id = ap.user_id
+                WHERE ap.status = 'approved'
+                ORDER BY ap.submitted_at DESC
+                `
+            );
+
+            const total = await db.query(
+                `
+                SELECT
+                    COALESCE(
+                        SUM(amount),
+                        0
+                    ) AS total
+                FROM activation_payments
+                WHERE status = 'approved'
+                `
+            );
+
+            res.json({
+                success: true,
+
+                totalBusiness:
+                    Number(
+                        total.rows[0].total || 0
+                    ),
+
+                payments:
+                    business.rows.map(payment => ({
+                        id: payment.id,
+                        user_id: payment.user_id,
+                        username: payment.username,
+                        full_name: payment.full_name,
+                        email: payment.email,
+                        mobile: payment.mobile,
+                        amount:
+                            Number(
+                                payment.amount || 0
+                            ),
+                        payment_method:
+                            payment.payment_method,
+                        transaction_reference:
+                            payment.transaction_reference,
+                        status:
+                            payment.status,
+                        submitted_at:
+                            payment.submitted_at
+                    }))
+            });
+
+        } catch (error) {
+            console.error(
+                "ADMIN TOTAL BUSINESS ERROR:",
+                error
+            );
+
+            res.status(500).json({
+                success: false,
+                message:
+                    "Unable to load total business."
+            });
+        }
+    }
+);
 /* =========================================================
    ADMIN USERS
 ========================================================= */
