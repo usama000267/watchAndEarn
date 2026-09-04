@@ -2704,7 +2704,7 @@ app.post("/api/admin/login", (req, res) => {
         });
     }
 
-    req.session.admin = true;
+    req.session.isAdmin = true;
 
     res.json({
         success: true,
