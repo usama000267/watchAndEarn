@@ -572,31 +572,17 @@ async function loadDashboard(){
                 "/api/admin/dashboard"
             );
 
+document.getElementById("totalUsers").textContent =
+    data.stats?.users?.total || 0;
 
-        document.getElementById(
-            "totalUsers"
-        ).textContent =
-            data.totalUsers || 0;
+document.getElementById("activeUsers").textContent =
+    data.stats?.users?.active || 0;
 
+document.getElementById("pendingWithdrawals").textContent =
+    data.stats?.withdrawals?.pending || 0;
 
-        document.getElementById(
-            "activeUsers"
-        ).textContent =
-            data.activeUsers || 0;
-
-
-        document.getElementById(
-            "pendingWithdrawals"
-        ).textContent =
-            data.pendingWithdrawals || 0;
-
-
-        document.getElementById(
-            "pendingActivations"
-        ).textContent =
-            data.pendingActivations || 0;
-
-
+document.getElementById("pendingActivations").textContent =
+    data.stats?.activations?.pending || 0;
     }catch(error){
 
         console.error(
