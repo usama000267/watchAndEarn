@@ -131,17 +131,23 @@ body{
     display:flex;
     align-items:center;
     gap:12px;
+    min-width:0;
 }
 
 .history-icon{
     width:42px;
     height:42px;
+    min-width:42px;
     border-radius:12px;
     display:flex;
     align-items:center;
     justify-content:center;
     background:#eff6ff;
     font-size:20px;
+}
+
+.history-info{
+    min-width:0;
 }
 
 .history-info strong{
@@ -153,6 +159,7 @@ body{
 .history-info small{
     color:#64748b;
     font-size:12px;
+    line-height:1.6;
 }
 
 .amount{
@@ -187,6 +194,7 @@ body{
     border-radius:12px;
     text-align:center;
 }
+
 .status{
     display:inline-block;
     padding:5px 9px;
@@ -214,10 +222,24 @@ body{
     background:#fee2e2;
     border:1px solid #fecaca;
 }
+
 @media(max-width:600px){
 
     .container{
         padding:15px 12px 50px;
+    }
+
+    .topbar{
+        align-items:center;
+    }
+
+    .brand{
+        font-size:19px;
+    }
+
+    .back-btn{
+        padding:9px 13px;
+        font-size:13px;
     }
 
     .summary{
@@ -242,15 +264,25 @@ body{
 
     .history-left{
         min-width:0;
+        flex:1;
+    }
+
+    .history-info{
+        min-width:0;
     }
 
     .history-info strong{
         word-break:break-word;
     }
 
+    .history-info small{
+        word-break:break-word;
+    }
+
     .amount{
         font-size:13px;
     }
+
 }
 </style>
 </head>
@@ -265,15 +297,21 @@ body{
             Watch <span>&</span> Earn
         </div>
 
-        <a href="dashboard.html" class="back-btn">
+        <a
+            href="dashboard.html"
+            class="back-btn"
+        >
             ← Dashboard
         </a>
 
     </div>
 
+
     <div class="header">
 
-        <h1>📚 Transaction History</h1>
+        <h1>
+            📚 Transaction History
+        </h1>
 
         <p>
             View your deposits, earnings and withdrawals.
@@ -281,32 +319,60 @@ body{
 
     </div>
 
+
     <div class="summary">
 
         <div class="summary-card">
-            <small>Total Deposits</small>
-            <strong id="totalDeposits">Rs. 0.00</strong>
+
+            <small>
+                Total Deposits
+            </small>
+
+            <strong id="totalDeposits">
+                Rs. 0.00
+            </strong>
+
         </div>
 
-        <div class="summary-card">
-            <small>Total Earnings</small>
-            <strong id="totalEarnings">Rs. 0.00</strong>
-        </div>
 
         <div class="summary-card">
-            <small>Total Withdrawals</small>
-            <strong id="totalWithdrawals">Rs. 0.00</strong>
+
+            <small>
+                Total Earnings
+            </small>
+
+            <strong id="totalEarnings">
+                Rs. 0.00
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                Total Withdrawals
+            </small>
+
+            <strong id="totalWithdrawals">
+                Rs. 0.00
+            </strong>
+
         </div>
 
     </div>
 
+
     <div class="history-card">
 
-        <h2>All Transactions</h2>
+        <h2>
+            All Transactions
+        </h2>
 
         <div class="subtitle">
             Your complete account transaction record
         </div>
+
 
         <div id="historyList">
 
@@ -323,220 +389,672 @@ body{
 
 <script>
 
+/* =========================================================
+   LOAD HISTORY
+========================================================= */
+
 async function loadHistory(){
 
     try{
 
-        const response = await fetch("/api/history",{
-            credentials:"include"
-        });
+        /* =====================================================
+           NORMAL TRANSACTION HISTORY
+        ===================================================== */
 
-        const data = await response.json();
+        const historyResponse =
+            await fetch(
+                "/api/history",
+                {
+                    credentials:"include"
+                }
+            );
 
-        if(!response.ok || !data.success){
 
-            if(response.status === 401){
-                window.location.href="login.html";
+        const historyData =
+            await historyResponse.json();
+
+
+        if(
+            !historyResponse.ok ||
+            !historyData.success
+        ){
+
+            if(
+                historyResponse.status === 401
+            ){
+
+                window.location.href =
+                    "login.html";
+
                 return;
+
             }
 
-            document.getElementById("historyList").innerHTML=`
+
+            document.getElementById(
+                "historyList"
+            ).innerHTML = `
+
                 <div class="error">
                     Unable to load history.
                 </div>
+
             `;
 
             return;
+
         }
 
 
-        const transactions = Array.isArray(data.transactions)
-            ? data.transactions
+        let transactions =
+            Array.isArray(
+                historyData.transactions
+            )
+            ? historyData.transactions
             : [];
 
+
+        /* =====================================================
+           ACTIVATION HISTORY
+           
+           Existing /api/activation endpoint is used.
+           Existing backend is NOT changed.
+        ===================================================== */
+
+        try{
+
+            const activationResponse =
+                await fetch(
+                    "/api/activation",
+                    {
+                        credentials:"include"
+                    }
+                );
+
+
+            const activationData =
+                await activationResponse.json();
+
+
+            if(
+                activationResponse.ok &&
+                activationData.success &&
+                activationData.payment
+            ){
+
+                const payment =
+                    activationData.payment;
+
+
+                transactions.push({
+
+                    type:
+                        "activation",
+
+                    amount:
+                        Number(
+                            payment.amount || 0
+                        ),
+
+                    description:
+                        "Account activation payment",
+
+                    status:
+                        payment.status ||
+                        "pending",
+
+                    created_at:
+                        payment.submitted_at,
+
+                    activation_reference:
+                        payment.transaction_reference,
+
+                    activation_method:
+                        payment.payment_method
+
+                });
+
+            }
+
+        }catch(activationError){
+
+            /*
+             * Agar activation endpoint mein
+             * koi temporary issue aaye to
+             * normal history phir bhi chalegi.
+             */
+
+            console.error(
+                "Activation history error:",
+                activationError
+            );
+
+        }
+
+
+        /* =====================================================
+           SORT ALL TRANSACTIONS
+        ===================================================== */
+
+        transactions.sort(
+            (a,b)=>{
+
+                const dateA =
+                    new Date(
+                        a.created_at ||
+                        a.date ||
+                        0
+                    ).getTime();
+
+
+                const dateB =
+                    new Date(
+                        b.created_at ||
+                        b.date ||
+                        0
+                    ).getTime();
+
+
+                return dateB - dateA;
+
+            }
+        );
+
+
+        /* =====================================================
+           TOTALS
+           
+           IMPORTANT:
+           Activation payment is NOT included in
+           Deposit / Earning / Withdrawal totals.
+        ===================================================== */
 
         let totalDeposits = 0;
         let totalEarnings = 0;
         let totalWithdrawals = 0;
 
 
-        transactions.forEach(transaction=>{
+        transactions.forEach(
+            transaction=>{
 
-            const amount = Number(transaction.amount || 0);
+                const amount =
+                    Number(
+                        transaction.amount || 0
+                    );
 
-            const type = String(transaction.type || "").toLowerCase();
+
+                const type =
+                    String(
+                        transaction.type || ""
+                    ).toLowerCase();
 
 
-            if(type === "deposit"){
-                totalDeposits += Math.abs(amount);
+                if(
+                    type === "deposit"
+                ){
+
+                    totalDeposits +=
+                        Math.abs(amount);
+
+                }
+
+
+                if(
+                    type === "earning" ||
+                    type === "referral"
+                ){
+
+                    totalEarnings +=
+                        Math.abs(amount);
+
+                }
+
+
+                if(
+                    type === "withdrawal"
+                ){
+
+                    totalWithdrawals +=
+                        Math.abs(amount);
+
+                }
+
             }
-
-            if(type === "earning" || type === "referral"){
-                totalEarnings += Math.abs(amount);
-            }
-
-            if(type === "withdrawal"){
-                totalWithdrawals += Math.abs(amount);
-            }
-
-        });
+        );
 
 
-        document.getElementById("totalDeposits").textContent =
-            "Rs. " + totalDeposits.toFixed(2);
+        /* =====================================================
+           DISPLAY TOTALS
+        ===================================================== */
 
-        document.getElementById("totalEarnings").textContent =
-            "Rs. " + totalEarnings.toFixed(2);
-
-        document.getElementById("totalWithdrawals").textContent =
-            "Rs. " + totalWithdrawals.toFixed(2);
-
-
-        const list = document.getElementById("historyList");
+        document.getElementById(
+            "totalDeposits"
+        ).textContent =
+            "Rs. " +
+            totalDeposits.toFixed(2);
 
 
-        if(transactions.length === 0){
+        document.getElementById(
+            "totalEarnings"
+        ).textContent =
+            "Rs. " +
+            totalEarnings.toFixed(2);
 
-            list.innerHTML=`
+
+        document.getElementById(
+            "totalWithdrawals"
+        ).textContent =
+            "Rs. " +
+            totalWithdrawals.toFixed(2);
+
+
+        /* =====================================================
+           HISTORY LIST
+        ===================================================== */
+
+        const list =
+            document.getElementById(
+                "historyList"
+            );
+
+
+        if(
+            transactions.length === 0
+        ){
+
+            list.innerHTML = `
+
                 <div class="empty">
 
-                    <div style="font-size:40px;margin-bottom:10px;">
+                    <div style="
+                        font-size:40px;
+                        margin-bottom:10px;
+                    ">
                         📭
                     </div>
 
-                    <h3>No Transactions Yet</h3>
+                    <h3>
+                        No Transactions Yet
+                    </h3>
 
                     <p>
-                        Your deposits, earnings and withdrawals
-                        will appear here.
+                        Your deposits, earnings,
+                        withdrawals and activation
+                        payments will appear here.
                     </p>
 
                 </div>
+
             `;
 
             return;
+
         }
 
 
-        list.innerHTML = transactions.map(transaction=>{
+        /* =====================================================
+           RENDER TRANSACTIONS
+        ===================================================== */
 
-            const type =
-                String(transaction.type || "").toLowerCase();
+        list.innerHTML =
+            transactions.map(
+                transaction=>{
 
-            const amount =
-                Number(transaction.amount || 0);
-
-
-            let icon = "📄";
-            let title = "Transaction";
-            let amountClass = "positive";
-            let sign = "+";
-
-
-            if(type === "deposit"){
-
-                icon = "💰";
-                title = "Deposit";
-                amountClass = "positive";
-                sign = "+";
-
-            }else if(type === "earning"){
-
-                icon = "🎬";
-                title = "Video Earning";
-                amountClass = "positive";
-                sign = "+";
-
-            }else if(type === "referral"){
-
-                icon = "🔗";
-                title = "Referral Bonus";
-                amountClass = "positive";
-                sign = "+";
-
-            }else if(type === "withdrawal"){
-
-                icon = "💸";
-                title = "Withdrawal";
-                amountClass = "negative";
-                sign = "-";
-
-            }
+                    const type =
+                        String(
+                            transaction.type || ""
+                        ).toLowerCase();
 
 
-            const description =
-                transaction.description ||
-                title;
-let statusText =
-    String(transaction.status || "")
-    .toLowerCase();
-
-if(!statusText){
-    statusText = "successful";
-}
-
-let statusClass = "status-successful";
-
-if(statusText === "pending"){
-    statusClass = "status-pending";
-}
-else if(statusText === "approved"){
-    statusClass = "status-approved";
-}
-else if(statusText === "rejected"){
-    statusClass = "status-rejected";
-}
-
-            const date =
-                formatDate(
-                    transaction.created_at ||
-                    transaction.date
-                );
+                    const amount =
+                        Number(
+                            transaction.amount || 0
+                        );
 
 
-            return `
+                    let icon =
+                        "📄";
 
-                <div class="history-item">
+                    let title =
+                        "Transaction";
 
-                    <div class="history-left">
+                    let amountClass =
+                        "positive";
 
-                        <div class="history-icon">
-                            ${icon}
-                        </div>
+                    let sign =
+                        "+";
 
-                        <div class="history-info">
 
+                    /* =================================================
+                       DEPOSIT
+                    ================================================= */
+
+                    if(
+                        type === "deposit"
+                    ){
+
+                        icon =
+                            "💰";
+
+                        title =
+                            "Deposit";
+
+                        amountClass =
+                            "positive";
+
+                        sign =
+                            "+";
+
+                    }
+
+
+                    /* =================================================
+                       VIDEO EARNING
+                    ================================================= */
+
+                    else if(
+                        type === "earning"
+                    ){
+
+                        icon =
+                            "🎬";
+
+                        title =
+                            "Video Earning";
+
+                        amountClass =
+                            "positive";
+
+                        sign =
+                            "+";
+
+                    }
+
+
+                    /* =================================================
+                       REFERRAL BONUS
+                    ================================================= */
+
+                    else if(
+                        type === "referral"
+                    ){
+
+                        icon =
+                            "🔗";
+
+                        title =
+                            "Referral Bonus";
+
+                        amountClass =
+                            "positive";
+
+                        sign =
+                            "+";
+
+                    }
+
+
+                    /* =================================================
+                       WITHDRAWAL
+                    ================================================= */
+
+                    else if(
+                        type === "withdrawal"
+                    ){
+
+                        icon =
+                            "💸";
+
+                        title =
+                            "Withdrawal";
+
+                        amountClass =
+                            "negative";
+
+                        sign =
+                            "-";
+
+                    }
+
+
+                    /* =================================================
+                       ACTIVATION PAYMENT
+                    ================================================= */
+
+                    else if(
+                        type === "activation"
+                    ){
+
+                        icon =
+                            "🔐";
+
+                        title =
+                            "Activation Payment";
+
+                        amountClass =
+                            "negative";
+
+                        sign =
+                            "-";
+
+                    }
+
+
+                    /* =================================================
+                       DESCRIPTION
+                    ================================================= */
+
+                    const description =
+                        transaction.description ||
+                        title;
+
+
+                    /* =================================================
+                       STATUS
+                    ================================================= */
+
+                    let statusText =
+                        String(
+                            transaction.status || ""
+                        ).toLowerCase();
+
+
+                    if(
+                        !statusText
+                    ){
+
+                        statusText =
+                            "successful";
+
+                    }
+
+
+                    let statusClass =
+                        "status-successful";
+
+
+                    if(
+                        statusText === "pending"
+                    ){
+
+                        statusClass =
+                            "status-pending";
+
+                    }
+
+                    else if(
+                        statusText === "approved"
+                    ){
+
+                        statusClass =
+                            "status-approved";
+
+                    }
+
+                    else if(
+                        statusText === "rejected"
+                    ){
+
+                        statusClass =
+                            "status-rejected";
+
+                    }
+
+
+                    /* =================================================
+                       DATE
+                    ================================================= */
+
+                    const date =
+                        formatDate(
+                            transaction.created_at ||
+                            transaction.date
+                        );
+
+
+                    /* =================================================
+                       ACTIVATION REFERENCE
+                    ================================================= */
+
+                    let referenceHTML =
+                        "";
+
+
+                    if(
+                        type === "activation" &&
+                        transaction.activation_reference
+                    ){
+
+                        referenceHTML = `
+
+                            <br>
+
+                            Reference:
                             <strong>
-                                ${escapeHTML(title)}
+                                ${escapeHTML(
+                                    transaction.activation_reference
+                                )}
                             </strong>
 
-                            <small>
-                                ${escapeHTML(description)}
-                                <br>
-                                ${date}
-                            </small>
+                        `;
+
+                    }
+
+
+                    /* =================================================
+                       ACTIVATION METHOD
+                    ================================================= */
+
+                    let methodHTML =
+                        "";
+
+
+                    if(
+                        type === "activation" &&
+                        transaction.activation_method
+                    ){
+
+                        methodHTML = `
+
+                            <br>
+
+                            Method:
+                            <strong>
+                                ${escapeHTML(
+                                    transaction.activation_method
+                                )}
+                            </strong>
+
+                        `;
+
+                    }
+
+
+                    /* =================================================
+                       FINAL HTML
+                    ================================================= */
+
+                    return `
+
+                        <div class="history-item">
+
+                            <div class="history-left">
+
+                                <div class="history-icon">
+                                    ${icon}
+                                </div>
+
+
+                                <div class="history-info">
+
+                                    <strong>
+                                        ${escapeHTML(
+                                            title
+                                        )}
+                                    </strong>
+
+
+                                    <small>
+
+                                        ${escapeHTML(
+                                            description
+                                        )}
+
+                                        ${methodHTML}
+
+                                        ${referenceHTML}
+
+                                        <br>
+
+                                        ${date}
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <div style="
+                                display:flex;
+                                flex-direction:column;
+                                align-items:flex-end;
+                                gap:7px;
+                            ">
+
+                                <div class="
+                                    amount
+                                    ${amountClass}
+                                ">
+
+                                    ${sign}
+                                    Rs.
+                                    ${Math.abs(
+                                        amount
+                                    ).toFixed(2)}
+
+                                </div>
+
+
+                                <span class="
+                                    status
+                                    ${statusClass}
+                                ">
+
+                                    ${escapeHTML(
+                                        statusText
+                                    )}
+
+                                </span>
+
+                            </div>
 
                         </div>
 
-                    </div>
+                    `;
 
-                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:7px;">
-
-    <div class="amount ${amountClass}">
-        ${sign} Rs. ${Math.abs(amount).toFixed(2)}
-    </div>
-
-    <span class="status ${statusClass}">
-        ${escapeHTML(statusText)}
-    </span>
-
-</div>
-
-                </div>
-
-            `;
-
-        }).join("");
+                }
+            ).join("");
 
 
     }catch(error){
@@ -546,37 +1064,66 @@ else if(statusText === "rejected"){
             error
         );
 
-        document.getElementById("historyList").innerHTML=`
+
+        document.getElementById(
+            "historyList"
+        ).innerHTML = `
 
             <div class="error">
-                Server connection error. Please try again.
+                Server connection error.
+                Please try again.
             </div>
 
         `;
+
     }
+
 }
+
+
+/* =========================================================
+   FORMAT DATE
+========================================================= */
 
 function formatDate(date){
 
-    if(!date){
+    if(
+        !date
+    ){
+
         return "";
+
     }
+
 
     try{
 
-        const parsed = new Date(date);
+        const parsed =
+            new Date(date);
 
-        if(Number.isNaN(parsed.getTime())){
+
+        if(
+            Number.isNaN(
+                parsed.getTime()
+            )
+        ){
+
             return "";
+
         }
+
 
         return parsed.toLocaleString(
             "en-PK",
             {
-                dateStyle: "medium",
-                timeStyle: "short"
+                dateStyle:
+                    "medium",
+
+                timeStyle:
+                    "short"
             }
         );
+
 
     }catch(error){
 
@@ -585,22 +1132,63 @@ function formatDate(date){
             error
         );
 
+
         return "";
+
     }
+
 }
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
 function escapeHTML(value){
 
-    if(value === undefined || value === null){
+    if(
+        value === undefined ||
+        value === null
+    ){
+
         return "";
+
     }
 
+
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
 }
+
+
+/* =========================================================
+   START HISTORY
+========================================================= */
 
 loadHistory();
 

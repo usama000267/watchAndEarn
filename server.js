@@ -198,7 +198,20 @@ app.get("/register", (req, res) => {
 
     res.redirect("/");
 });
+app.get("/activate", (req, res) => {
+    const file = path.join(__dirname, "public", "activate.html");
 
+    console.log("ACTIVATE FILE PATH:", file);
+    console.log("FILE EXISTS:", fs.existsSync(file));
+
+    if (fs.existsSync(file)) {
+        return res.sendFile(file);
+    }
+
+    res.status(404).send(
+        "Activation page not found. Path: " + file
+    );
+});
 /* =========================================================
    STATUS
 ========================================================= */

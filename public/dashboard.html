@@ -947,7 +947,37 @@ const active =
                             📖 How To Work
 
                         </a>
+                        <!-- ACTIVATION STATUS -->
 
+<div
+    id="activationStatusBox"
+    class="activation-box">
+
+    <h3>
+        🔄 Checking Activation Status...
+    </h3>
+
+    <p>
+        Please wait...
+    </p>
+
+</div>
+<!-- ACTIVATE ACCOUNT -->
+
+${!active ? `
+<a
+    href="activate"
+    class="action-btn secondary-action"
+    style="
+        background:#fff7ed;
+        color:#ea580c;
+        border:1px solid #fed7aa;
+    ">
+
+    🔐 Activate Account
+
+</a>
+` : ""}
                     </div>
 
                 </div>
@@ -1013,9 +1043,179 @@ const active =
 
     loadTaskCount();
     loadTodayEarning();
+    loadActivationStatus();
 }
 
+/* ================= ACTIVATION STATUS ================= */
 
+async function loadActivationStatus(){
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/activation",
+                {
+                    method:"GET",
+                    credentials:"include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(!response.ok || !data.success){
+            return;
+        }
+
+        const status =
+            String(
+                data.activation_status || ""
+            ).toLowerCase();
+
+        let box =
+            document.getElementById(
+                "activationStatusBox"
+            );
+
+        if(!box){
+            return;
+        }
+
+
+        /* ================= ACTIVE ================= */
+
+        if(status === "active"){
+
+            box.className =
+                "activation-box activation-active";
+
+            box.innerHTML = `
+
+                <h3>
+                    ✅ Account Activated
+                </h3>
+
+                <p>
+                    Your account is active and ready
+                    to use Watch & Earn services.
+                </p>
+
+            `;
+
+            return;
+        }
+
+
+        /* ================= PENDING ================= */
+
+        if(
+            data.payment &&
+            String(data.payment.status).toLowerCase()
+                === "pending"
+        ){
+
+            box.className =
+                "activation-box";
+
+            box.innerHTML = `
+
+                <h3>
+                    ⏳ Activation Pending
+                </h3>
+
+                <p>
+                    Your activation payment request has
+                    been submitted successfully and is
+                    waiting for admin verification.
+                </p>
+
+                <p style="margin-top:8px;">
+                    Payment Method:
+                    <strong>
+                        ${escapeHTML(
+                            data.payment.payment_method
+                        )}
+                    </strong>
+                </p>
+
+                <p style="margin-top:4px;">
+                    Amount:
+                    <strong>
+                        ${Number(
+                            data.payment.amount || 0
+                        ).toFixed(2)}
+                    </strong>
+                </p>
+
+            `;
+
+            return;
+        }
+
+
+        /* ================= REJECTED ================= */
+
+        if(
+            data.payment &&
+            String(data.payment.status).toLowerCase()
+                === "rejected"
+        ){
+
+            box.className =
+                "activation-box";
+
+            box.style.background =
+                "#fef2f2";
+
+            box.style.borderColor =
+                "#fecaca";
+
+            box.innerHTML = `
+
+                <h3 style="color:#b91c1c;">
+                    ❌ Activation Rejected
+                </h3>
+
+                <p style="color:#b91c1c;">
+                    Your previous activation request
+                    was rejected. You may submit a
+                    new activation request.
+                </p>
+
+            `;
+
+            return;
+        }
+
+
+        /* ================= INACTIVE ================= */
+
+        box.className =
+            "activation-box";
+
+        box.innerHTML = `
+
+            <h3>
+                🔒 Account Not Activated
+            </h3>
+
+            <p>
+                Please complete account activation to
+                start using the available earning features.
+            </p>
+
+        `;
+
+    }catch(error){
+
+        console.error(
+            "Activation status error:",
+            error
+        );
+
+    }
+}
 /* ================= TASK COUNT ================= */
 
 async function loadTaskCount(){
